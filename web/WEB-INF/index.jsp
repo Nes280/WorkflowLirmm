@@ -10,6 +10,7 @@
         </jsp:include>
         <h1>Hello World!</h1>
         <p>Welcom to the ${title} of the web sit!</p>
+        <%@include file="foot.jsp" %>
         <%@include file="foundation.jsp" %>
     </body>
 </html>

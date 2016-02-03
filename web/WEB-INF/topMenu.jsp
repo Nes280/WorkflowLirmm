@@ -11,13 +11,15 @@
 <div class="top-bar" id="example-menu">
   <div class="top-bar-left">
     <ul class="dropdown menu" data-dropdown-menu>
-      <li class="menu-text">${topMenuName}</li>
+        <li class="menu-text">${topMenuName}</li>
       <li>
-        <a href="#">One</a>
+        <a href="#">Sentiment analysis</a>
         <ul class="menu vertical">
-          <li><a href="#">One</a></li>
-          <li><a href="#">Two</a></li>
-          <li><a href="#">Three</a></li>
+          <li><a href="#">Tweets</a></li>
+          <li><a href="#">movie reviews</a></li>
+          <li><a href="#">book reviews</a></li>
+          <li><a href="#">parliamentary debates</a></li>
+
         </ul>
       </li>
       <li><a href="#">Two</a></li>
@@ -25,10 +27,27 @@
     </ul>
   </div>
   <div class="top-bar-right">
-    <ul class="menu">
+      <button type="button" class="success button">Log on</button>
+      <button class="button" type="button" data-toggle="example-dropdown">log in</button>
+      <div class="dropdown-pane left" id="example-dropdown" data-dropdown data-auto-focus="true">
+        Example form in a dropdown.
+        <form>
+          <div class="row">
+            <div >
+                <input type="text" placeholder="name">
+            </div>
+            <div >
+                <input type="password" placeholder="password">
+            </div>
+          </div>
+        </form>
+      </div>
+    
+      
+  </div>
+      <ul class="menu">
       <li><input type="search" placeholder="Search"></li>
       <li><button type="button" class="button">Search</button></li>
     </ul>
-  </div>
 </div>
     
