@@ -20,8 +20,10 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "Index", urlPatterns = {"/Index"})
 public class Index extends HttpServlet {
 public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
+    String breadcrumbs = "<li><a href=\"/index\">Home</a></li>";
         request.setAttribute( "title", "Main page" );
         request.setAttribute( "topMenuName", "WorkFlow" );
+        request.setAttribute( "breadcrumbs", breadcrumbs );
         this.getServletContext().getRequestDispatcher( "/WEB-INF/index.jsp" ).forward( request, response );
     }
 }

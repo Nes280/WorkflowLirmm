@@ -8,7 +8,10 @@
         <jsp:include page="topMenu.jsp">
             <jsp:param name="topMenuName" value="${topMenuName}"/>
         </jsp:include>
-        <%@include file="Breadcrumbs.jsp" %>
+        
+        <jsp:include page="Breadcrumbs.jsp">
+            <jsp:param name="breadcrumbs" value="${breadcrumbs}"/>
+        </jsp:include>
         <div class="row medium-8 large-7 columns">
             <div class="blog-post">
                 <h1>Hello World!</h1>
