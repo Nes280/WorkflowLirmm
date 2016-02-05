@@ -4,26 +4,24 @@
  * and open the template in the editor.
  */
 package fr.lirmm.servlets;
+/**
+ *
+ * @author Elsa Martel
+ */
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author Niels
- */
-@WebServlet(name = "Index", urlPatterns = {"/Index"})
-public class Index extends HttpServlet {
+
+public class SaisieTexteTweet extends HttpServlet {
     public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
         String breadcrumbs = "<li><a href=\"/index\">Home</a></li>";
-        request.setAttribute( "title", "Main page" );
+        request.setAttribute( "title", "Tweet" );
         request.setAttribute( "topMenuName", "WorkFlow" );
         request.setAttribute( "breadcrumbs", breadcrumbs );
-        this.getServletContext().getRequestDispatcher( "/WEB-INF/index.jsp" ).forward( request, response );
+        this.getServletContext().getRequestDispatcher( "/WEB-INF/saisieTexteTweet.jsp" ).forward( request, response );
     }
 }

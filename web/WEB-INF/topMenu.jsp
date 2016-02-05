@@ -14,7 +14,7 @@
         <li class="menu-text">${topMenuName}</li>
         <li><a href="#">Sentiment analysis</a>
             <ul class="menu vertical">
-                <li><a href="#">Tweets</a></li>
+                <li><a href="saisieTexteTweet">Tweets</a></li>
                 <li><a href="#">movie reviews</a></li>
                 <li><a href="#">book reviews</a></li>
                 <li><a href="#">parliamentary debates</a></li>

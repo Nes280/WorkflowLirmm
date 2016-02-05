@@ -11,9 +11,17 @@
         <servlet-name>index</servlet-name>
 	<servlet-class>fr.lirmm.servlets.Index</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>saisieTexteTweet</servlet-name>
+	<servlet-class>fr.lirmm.servlets.SaisieTexteTweet</servlet-class>
+    </servlet>
     <servlet-mapping>
 	<servlet-name>index</servlet-name>
 	<url-pattern>/index</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+	<servlet-name>saisieTexteTweet</servlet-name>
+	<url-pattern>/saisieTexteTweet</url-pattern>
     </servlet-mapping>
     
 </web-app>
