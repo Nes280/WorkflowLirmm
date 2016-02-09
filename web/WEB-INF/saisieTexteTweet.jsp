@@ -4,6 +4,7 @@
     Author     : Elsa Martel
 --%>
 <%@include file="head.jsp" %>
+
     <body>
         <jsp:include page="topMenu.jsp">
             <jsp:param name="topMenuName" value="${topMenuName}"/>
@@ -13,31 +14,39 @@
             <jsp:param name="breadcrumbs" value="${breadcrumbs}"/>
         </jsp:include>
         <div class="row medium-8 large-7 columns">
-            <div class="blog-post">
-                <p>Welcom to the ${title} of the web sit!</p>
-                <form>
-                    <div class="row">
-                        <div class="large-12 columns">
-                          <label>Write your tweet : 
-                            <textarea placeholder=""></textarea>
-                          </label>
+            <p>Welcom to the ${title} of the web sit!</p> 
+            
+            <ul class="tabs" data-tabs id="example-tabs">
+                <li class="tabs-title is-active"><a href="#panel1" aria-selected="true">Enter text</a></li>
+                <li class="tabs-title"><a href="#panel2">Upload a file</a></li>
+            </ul>
+            
+            <div class="tabs-content" data-tabs-content="example-tabs">
+                <div class="tabs-panel is-active" id="panel1">
+                    <form method="get" action="<c:url value="/affichageAPITweet"/>">
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <label>Write your tweet : 
+                                    <textarea id="tweetAAnalyser" name="tweetAAnalyser" placeholder=""></textarea>
+                                </label>
+                            </div>
                         </div>
-                    </div>
-                    <label for="submit" class="button">Submit</label>
-                    <input id="submit" class="show-for-sr">
-                </form>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
+                        <input type="submit" value="Valider" class="button" />
+                    </form>
+                </div>
+                <div class="tabs-panel" id="panel2">
+                    <p>Suspendisse dictum feugiat nisl ut dapibus.  Vivamus hendrerit arcu sed erat molestie vehicula. Ut in nulla enim. Phasellus molestie magna non est bibendum non venenatis nisl tempor.  Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor.</p>
+                    <label for="exampleFileUpload" class="button">Upload File</label>
+                    <input type="file" id="exampleFileUpload" class="show-for-sr">
+                </div>
             </div>
-        </div>        
+        </div>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+
         <%@include file="foot.jsp" %>
         <%@include file="foundation.jsp" %>
     </body>

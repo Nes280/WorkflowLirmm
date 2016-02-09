@@ -15,6 +15,10 @@
         <servlet-name>saisieTexteTweet</servlet-name>
 	<servlet-class>fr.lirmm.servlets.SaisieTexteTweet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>affichageAPITweet</servlet-name>
+	<servlet-class>fr.lirmm.servlets.AffichageAPITweet</servlet-class>
+    </servlet>
     <servlet-mapping>
 	<servlet-name>index</servlet-name>
 	<url-pattern>/index</url-pattern>
@@ -22,6 +26,10 @@
     <servlet-mapping>
 	<servlet-name>saisieTexteTweet</servlet-name>
 	<url-pattern>/saisieTexteTweet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+	<servlet-name>affichageAPITweet</servlet-name>
+	<url-pattern>/affichageAPITweet</url-pattern>
     </servlet-mapping>
     
 </web-app>

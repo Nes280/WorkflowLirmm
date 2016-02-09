@@ -17,11 +17,14 @@ import javax.servlet.http.HttpServletResponse;
 
 
 public class SaisieTexteTweet extends HttpServlet {
+    
+    public static final String VUE = "/WEB-INF/saisieTexteTweet.jsp";
+     
     public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
         String breadcrumbs = "<li><a href=\"/index\">Home</a></li>";
         request.setAttribute( "title", "Tweet" );
         request.setAttribute( "topMenuName", "WorkFlow" );
         request.setAttribute( "breadcrumbs", breadcrumbs );
-        this.getServletContext().getRequestDispatcher( "/WEB-INF/saisieTexteTweet.jsp" ).forward( request, response );
+        this.getServletContext().getRequestDispatcher(VUE).forward( request, response );
     }
 }
