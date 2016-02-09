@@ -5,7 +5,6 @@
  */
 package fr.lirmm.servlets;
 
-import static fr.lirmm.servlets.Index.sauverEnBase;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;

@@ -27,7 +27,6 @@
         <servlet-name>logIn</servlet-name>
         <url-pattern>/logIn</url-pattern>
     </servlet-mapping>
-<<<<<<< Updated upstream
     <servlet-mapping>
 	<servlet-name>saisieTexteTweet</servlet-name>
 	<url-pattern>/saisieTexteTweet</url-pattern>
@@ -36,13 +35,10 @@
 	<servlet-name>affichageAPITweet</servlet-name>
 	<url-pattern>/affichageAPITweet</url-pattern>
     </servlet-mapping>
-    
-=======
     <resource-ref>
         <res-ref-name>jdbc/workflow_db</res-ref-name>
         <res-type>javax.sql.ConnectionPoolDataSource</res-type>
         <res-auth>Container</res-auth>
         <res-sharing-scope>Shareable</res-sharing-scope>
     </resource-ref>
->>>>>>> Stashed changes
 </web-app>
