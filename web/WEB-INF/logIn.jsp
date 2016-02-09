@@ -1,8 +1,9 @@
 <%-- 
-    Document   : index
-    Created on : 2 févr. 2016, 20:13:36
-    Author     : Niels
+    Document   : logIn
+    Created on : 9 févr. 2016, 15:06:25
+    Author     : niels
 --%>
+
 <%@include file="head.jsp" %>
     <body>
         <jsp:include page="topMenu.jsp">
@@ -14,9 +15,7 @@
         </jsp:include>
         <div class="row medium-8 large-7 columns">
             <div class="blog-post">
-                <h1>Hello World!</h1>
-                <p>Welcom to the ${title} of the web sit!</p>
-                <p>${sql}</p>
+                <p>page de log</p>
                 <br/>
                 <br/>
                 <br/>
