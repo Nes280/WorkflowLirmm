@@ -48,3 +48,11 @@ Network Trash Folder
 Temporary Items
 .apdisk
 build/web/WEB-INF/glassfish-web.xml
+
+build/web/WEB-INF/classes/analysedesentiments/AnalyseDeSentiments.class
+
+build/web/WEB-INF/classes/analysedesentiments/CalculAttributs.class
+
+src/java/analysedesentiments/AnalyseDeSentiments.java
+
+src/java/analysedesentiments/CalculAttributs.java
