@@ -22,24 +22,42 @@ public class AffichageAPITweet extends HttpServlet{
     
     public static final String CHAMP_TWEET = "tweetAAnalyser";
     
+    public static final String ATT_TWEET = "tweet";
+    public static final String ATT_RESULTAT = "resultat";
+    public static final String ATT_MESSAGE = "message";
+    public static final String ATT_ERREUR = "erreur";
+    
     public static final String VUE = "/WEB-INF/affichageAPITweet.jsp";
     
     public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
         String tweet = request.getParameter(CHAMP_TWEET);
-        AnalyseDeSentiments a = new AnalyseDeSentiments();
+        String message; 
+        boolean erreur; 
         String resultat = "";
-        try {
-            resultat = a.start(tweet);
-        } catch (Exception ex) {
-            Logger.getLogger(AffichageAPITweet.class.getName()).log(Level.SEVERE, null, ex);
+
+        if(tweet.isEmpty()){
+            message = "No tweet";
+            erreur = true;
+        }
+        else{
+            message = "Analyse du tweet";
+            erreur = false;
+            AnalyseDeSentiments a = new AnalyseDeSentiments();
+            try {
+                resultat = a.start(tweet);
+            } catch (Exception ex) {
+                Logger.getLogger(AffichageAPITweet.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
         String breadcrumbs = "<li><a href=\"/index\">Home</a></li>";
         request.setAttribute( "title", "Tweet" );
         request.setAttribute( "topMenuName", "WorkFlow" );
         request.setAttribute( "breadcrumbs", breadcrumbs );
-        request.setAttribute("tweet", tweet);
-        request.setAttribute("resultat", resultat);
+        request.setAttribute(ATT_TWEET, tweet);
+        request.setAttribute(ATT_RESULTAT, resultat);
+        request.setAttribute(ATT_MESSAGE, message);
+        request.setAttribute(ATT_ERREUR, erreur);
         this.getServletContext().getRequestDispatcher(VUE).forward( request, response );
     }
 }
