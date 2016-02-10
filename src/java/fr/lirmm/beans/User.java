@@ -9,6 +9,7 @@ package fr.lirmm.beans;
  *
  * @author niels
  */
+
 public class User implements java.io.Serializable{
     public int Id;
     public String Fname;
@@ -24,6 +25,8 @@ public class User implements java.io.Serializable{
         this.Mail = Mail;
         this.Password = Password;
         this.Mod = Mod;
+    }
+    public User(){
     }
 
     public void setId(int Id) {
