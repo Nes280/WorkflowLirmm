@@ -10,10 +10,10 @@
   <div class="title-bar-title">Menu</div>
 </div>
 
-<div class="top-bar" id="example-menu">
+<div class="top-bar" id="example-menu" >
     <div class="top-bar-left">
     <ul class="dropdown menu" data-dropdown-menu>
-        <li class="menu-text">${topMenuName}</li>
+        <li class="menu-text"><a href="<c:url value="/index"/>">${topMenuName}</a></li>
         <li><a href="#">Sentiment analysis</a>
             <ul class="menu vertical">
                 <li><a href="saisieTexteTweet">Tweets</a></li>
@@ -23,6 +23,7 @@
             </ul>
         </li>
         <li><a href="#">Help</a></li>
+        <li><a href="<c:url value="/test"/>">test de securité</a></li>
     </ul>
     </div>
     <div class="top-bar-right">
