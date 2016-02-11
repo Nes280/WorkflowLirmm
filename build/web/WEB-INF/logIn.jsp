@@ -16,10 +16,8 @@
         <div class="row medium-8 large-7 columns">
             <div class="blog-post">
                 <p>page de log</p>
-                <p>${utilisateurs}</p>
-                <c:forEach var="utilisateur" items="${ utilisateurs }">
-                    <li><c:out value="${ utilisateur.Id }" /> <c:out value="${ utilisateur.Fname }" /></li>
-                </c:forEach>
+                <p>Bonjour ${utilisateur.getFname() }</p>
+                <p></p>  
                 <br/>
                 <br/>
                 <br/>

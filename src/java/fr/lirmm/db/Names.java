@@ -20,32 +20,33 @@ import fr.lirmm.beans.User;
 public class Names {
     private Connection connexion;
     
-    public List<User> recupererUtilisateurs() {
-        List<User> utilisateurs = new ArrayList<User>();
+    public User recupererUtilisateurs(String mail, String password) {
         Statement statement = null;
         ResultSet resultat = null;
 
         loadDatabase();
+        User utilisateur = new User();
         
         try {
             statement = connexion.createStatement();
+            
+            // Creation de la requete
+            String base = "SELECT \"Fname\", \"Lname\" FROM lirmm.\"User\"";              //bas de la requete 
+            String spec = "WHERE \"Mail\" = '"+mail+"' AND \"password\" = '"+password+"'";//specification de la requete
 
             // Exécution de la requête
-           
-            resultat = statement.executeQuery("SELECT \"Fname\", \"Lname\" FROM lirmm.\"User\"");
-            //
+            resultat = statement.executeQuery(base + spec);
+ 
             // Récupération des données
             while (resultat.next()) {
                 String nom = resultat.getString("Fname");
                 String prenom = resultat.getString("Lname");
-                
-                User utilisateur = new User();
+            
                 utilisateur.setFname(nom);
                 utilisateur.setLname(prenom);
-                
-                utilisateurs.add(utilisateur);
             }
         } catch (SQLException e) {
+            //non traité pour le moment
         } finally {
             // Fermeture de la connexion
             try {
@@ -56,10 +57,11 @@ public class Names {
                 if (connexion != null)
                     connexion.close();
             } catch (SQLException ignore) {
+                //non traité pour le moment
             }
         }
         
-        return utilisateurs;
+        return utilisateur;
     }
     
     private void loadDatabase() {
@@ -67,12 +69,13 @@ public class Names {
         try {
             Class.forName("org.postgresql");
         } catch (ClassNotFoundException e) {
+            //non traité pour le moment
         }
 
         try {
             connexion = DriverManager.getConnection("jdbc:postgresql://localhost/workflow_db", "workflow_user", "admin");
         } catch (SQLException e) {
-            e.printStackTrace();
+            //non traité pour le moment
         }
     }
    /* 
