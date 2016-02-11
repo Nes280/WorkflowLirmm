@@ -32,7 +32,7 @@ public class Names {
             
             // Creation de la requete
             String base = "SELECT \"Fname\", \"Lname\" FROM lirmm.\"User\"";              //bas de la requete 
-            String spec = "WHERE \"Mail\" = '"+mail+"' AND \"password\" = '"+password+"'";//specification de la requete
+            String spec = "WHERE \"Mail\" = '"+mail+"' AND \"Password\" = '"+password+"'";//specification de la requete
 
             // Exécution de la requête
             resultat = statement.executeQuery(base + spec);
