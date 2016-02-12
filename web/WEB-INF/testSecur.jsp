@@ -35,6 +35,10 @@
                 <br/>
             </div>
         </div>
+                <!--%@page import="analysedesentiments.AnalyseDeSentiments"%>
+        <!% AnalyseDeSentiments a = new AnalyseDeSentiments();
+        out.println(a.start("coucou"));%!-->
+        
         </c:if>
         
         <%@include file="foot.jsp" %>

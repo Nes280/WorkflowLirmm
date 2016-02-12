@@ -36,34 +36,34 @@ public class CalculAttributs {
     public CalculAttributs() throws FileNotFoundException, IOException{
         String line;
         // FEEL
-        BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream("C:\\Users\\azaz1\\Documents\\NetBeansProjects\\WorkflowLirmm\\src\\java\\ressources\\FEEL.txt")));
+        BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream("ressources/FEEL.txt")));
         while ((line=r.readLine())!=null){
             if (line.split(";")[2].equals("positive")) alPosFEEL.add(line.split(";")[1].toLowerCase());
             else if (line.split(";")[2].equals("negative")) alNegFEEL.add(line.split(";")[1].toLowerCase());
         }
         // Polarimots
-        r = new BufferedReader(new InputStreamReader(new FileInputStream("C:\\Users\\azaz1\\Documents\\NetBeansProjects\\WorkflowLirmm\\src\\java\\ressources\\Polarimots.txt")));
+        r = new BufferedReader(new InputStreamReader(new FileInputStream("ressources/Polarimots.txt")));
         while ((line=r.readLine())!=null){
             if (line.split(";")[3].equals("positive")) alPosPolarimots.add(line.split(";")[1].toLowerCase());
             else if (line.split(";")[3].equals("negative")) alNegPolarimots.add(line.split(";")[1].toLowerCase());
             else if (line.split(";")[3].equals("neutre")) alNeuPolarimots.add(line.split(";")[1].toLowerCase());
         }
         // Affects
-        r = new BufferedReader(new InputStreamReader(new FileInputStream("C:\\Users\\azaz1\\Documents\\NetBeansProjects\\WorkflowLirmm\\src\\java\\ressources\\Augustin-pol.txt")));
+        r = new BufferedReader(new InputStreamReader(new FileInputStream("ressources/Augustin-pol.txt")));
         while ((line=r.readLine())!=null){
             if (line.split(";")[1].equals("positive")) alPosAffects.add(line.split(";")[0].toLowerCase());
             else if (line.split(";")[1].equals("negative")) alNegAffects.add(line.split(";")[0].toLowerCase());            
             else if (line.split(";")[1].equals("neutre")) alNeuAffects.add(line.split(";")[0].toLowerCase());
         }
         // Diko
-        r = new BufferedReader(new InputStreamReader(new FileInputStream("C:\\Users\\azaz1\\Documents\\NetBeansProjects\\WorkflowLirmm\\src\\java\\ressources\\Diko.txt")));
+        r = new BufferedReader(new InputStreamReader(new FileInputStream("ressources/Diko.txt")));
         while ((line=r.readLine())!=null){
             if (line.split(";")[2].equals("positive")) alPosDiko.add(line.split(";")[1].toLowerCase());
             else if (line.split(";")[2].equals("negative")) alNegDiko.add(line.split(";")[1].toLowerCase());
             else if (line.split(";")[2].equals("neutre")) alNeuDiko.add(line.split(";")[1].toLowerCase());
         }
         // Negateurs
-        r = new BufferedReader(new InputStreamReader(new FileInputStream("C:\\Users\\azaz1\\Documents\\NetBeansProjects\\WorkflowLirmm\\src\\java\\ressources\\Negations.txt")));
+        r = new BufferedReader(new InputStreamReader(new FileInputStream("ressources/Negations.txt")));
         while ((line=r.readLine())!=null) Neg.add(line);
         r.close();
         // tt4j
