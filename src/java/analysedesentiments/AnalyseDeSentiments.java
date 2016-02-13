@@ -24,11 +24,10 @@ public class AnalyseDeSentiments {
     public static String start(String s) throws Exception {
         String tweet=s;
         Instances data = makeInstance(tweet);
-       /* File fi = new File("");
-        String sd = fi.getAbsolutePath();*/
-        StringToWordVector stw = (StringToWordVector) weka.core.SerializationHelper.read("models/DEFT15T1STW.model");
-        AttributeSelection ats = (AttributeSelection)weka.core.SerializationHelper.read("models/DEFT15T1IG.model");
-        Classifier cls = (Classifier) weka.core.SerializationHelper.read("models/DEFT15T1SMO.model");
+        
+        StringToWordVector stw = (StringToWordVector) weka.core.SerializationHelper.read("models\\DEFT15T1STW.model");
+        AttributeSelection ats = (AttributeSelection)weka.core.SerializationHelper.read("models\\DEFT15T1IG.model");
+        Classifier cls = (Classifier) weka.core.SerializationHelper.read("models\\DEFT15T1SMO.model");
         
         ConstructionARFF obj = new ConstructionARFF();
         data = obj.ConstructionInstances(data);

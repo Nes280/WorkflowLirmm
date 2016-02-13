@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import analysedesentiments.AnalyseDeSentiments;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,6 +34,7 @@ public class AffichageAPITweet extends HttpServlet{
     
     public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
         String tweet = request.getParameter(CHAMP_TWEET);
+        Map<String, String> listeTweet = new HashMap<String, String>();
         String message; 
         boolean erreur; 
         String resultat = "";
@@ -42,20 +46,27 @@ public class AffichageAPITweet extends HttpServlet{
         else{
             message = "Analyse du tweet";
             erreur = false;
+            String delim = "\n";
+            String[] tokens = tweet.split(delim);
             AnalyseDeSentiments a = new AnalyseDeSentiments();
-            try {
-                resultat = a.start(tweet);
-            } catch (Exception ex) {
-                Logger.getLogger(AffichageAPITweet.class.getName()).log(Level.SEVERE, null, ex);
+            
+            for(int i = 0; i < tokens.length; i++){
+                try {
+                    resultat = a.start(tokens[i]);
+                    listeTweet.put(tokens[i], resultat);
+                } catch (Exception ex) {
+                    Logger.getLogger(AffichageAPITweet.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
+            
+            
         }
         
         String breadcrumbs = "<li><a href=\"/index\">Home</a></li>";
         request.setAttribute( "title", "Tweet" );
         request.setAttribute( "topMenuName", "WorkFlow" );
         request.setAttribute( "breadcrumbs", breadcrumbs );
-        request.setAttribute(ATT_TWEET, tweet);
-        request.setAttribute(ATT_RESULTAT, resultat);
+        request.setAttribute(ATT_TWEET, listeTweet);
         request.setAttribute(ATT_MESSAGE, message);
         request.setAttribute(ATT_ERREUR, erreur);
         this.getServletContext().getRequestDispatcher(VUE).forward( request, response );

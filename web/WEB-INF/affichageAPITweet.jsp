@@ -26,8 +26,27 @@
                         <p> API affichage des resultats </p>
                         <p>${message}</p>
                         <c:if test="${ !erreur}">
-                            <p>${tweet}</p>
-                            <p>${resultat}</p>
+                            <p>
+                                <ul>
+                                    <c:forEach var="t" items="${tweet}">
+                                        <li>
+                                            <c:out value="${t.key}"/> 
+                                            <c:if test="${t.value.equals('+')}" >
+                                                <c:out value="${t.value}"/> 
+                                                <button class="success button">Positif</button>
+                                            </c:if>
+                                            <c:if test="${t.value.equals('-')}" >
+                                                <c:out value="${t.value}"/> 
+                                                <button class="alert button">Negatif</button>
+                                            </c:if>
+                                            <c:if test="${t.value.equals('=')}" >
+                                                <c:out value="${t.value}"/> 
+                                                <button class="button">Neutre</button>
+                                            </c:if>
+                                        </li>
+                                    </c:forEach>
+                                </ul>
+                            </p>
                         </c:if>
                     </div>
                     <div class="tabs-panel" id="panel2">
