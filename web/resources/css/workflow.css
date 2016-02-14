@@ -9,6 +9,7 @@ and open the template in the editor.
 */
 
 @charset "UTF-8";
+
 #offCanvas
 {
   height: 100%;
@@ -51,7 +52,7 @@ and open the template in the editor.
 .footer {
  display: inline-block;
  width: 100%;
- position: fixed;
+ 
  bottom: 0;
   background-color: #292c2f;
 
@@ -195,4 +196,5 @@ and open the template in the editor.
 
     margin-right: 0.5rem; }
 
+  
 

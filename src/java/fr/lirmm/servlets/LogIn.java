@@ -49,6 +49,7 @@ public void doPost( HttpServletRequest request, HttpServletResponse response ) t
             HttpSession session = request.getSession();
             session.setAttribute("nom", connecter.Lname);
             session.setAttribute("prenom", connecter.Fname);
+            session.setAttribute("mail", connecter.Mail);
             session.setAttribute("isLog", "1");
           
             request.setAttribute("utilisateur", utilisateur.recupererUtilisateurs(mail,pass));

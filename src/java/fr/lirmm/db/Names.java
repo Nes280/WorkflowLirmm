@@ -48,7 +48,7 @@ public class Names {
             statement = connexion.createStatement();
             Md5 cryptPw = new Md5(password);
             // Creation de la requete
-            String base = "SELECT \"Fname\", \"Lname\" FROM lirmm.\"User\"";              //base de la requete 
+            String base = "SELECT \"Fname\", \"Lname\", \"Mail\" FROM lirmm.\"User\"";              //base de la requete 
             String spec = "WHERE \"Mail\" = '"+mail+"' AND \"Password\" = '"+cryptPw.getCode()+"'";//specification de la requete
 
             // Exécution de la requête
@@ -58,9 +58,11 @@ public class Names {
             while (resultat.next()) {
                 String nom = resultat.getString("Fname");
                 String prenom = resultat.getString("Lname");
+                String email = resultat.getString("Mail");
             
                 utilisateur.setFname(nom);
                 utilisateur.setLname(prenom);
+                utilisateur.setMail(email);
             }
         } catch (SQLException e) {
             //non traité pour le moment
