@@ -1,7 +1,7 @@
 <%-- 
     Document   : logIn
     Created on : 9 févr. 2016, 15:06:25
-    Author     : niels
+    Author     : Niels
 --%>
 
 <%@include file="head.jsp" %>
@@ -19,6 +19,12 @@
                 <c:when test="${polarity == 0}"> 
                     <div class="callout alert">
                         <h5 class="text-center">Oups!</h5>
+                        <p class="text-center">${info}</p>
+                    </div>
+                </c:when>
+                <c:when test="${polarity == 1}">
+                    <div class="callout success">
+                        <h5 class="text-center">Super!</h5>
                         <p class="text-center">${info}</p>
                     </div>
                 </c:when>

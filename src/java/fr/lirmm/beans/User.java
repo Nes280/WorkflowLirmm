@@ -18,15 +18,13 @@ public class User implements java.io.Serializable{
     public String Password;
     public boolean Mod;
     
-    /*public User(int Id, String Fname, String Lname, String Mail, String Password, boolean Mod) {
-        this.Id = Id;
-        
+    public User( String Fname, String Lname, String Mail, String Password, boolean Mod) {
         this.Fname = Fname;
         this.Lname = Lname;
         this.Mail = Mail;
         this.Password = Password;
         this.Mod = Mod;
-    }*/
+    }
     public User(){
     }
 
