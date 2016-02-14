@@ -54,7 +54,7 @@ and open the template in the editor.
  width: 100%;
  
  bottom: 0;
-  background-color: #292c2f;
+  background-color: #e6e6e6;
 
   text-align: center;
 
@@ -76,7 +76,7 @@ and open the template in the editor.
 
     font-size: 1.5rem;
 
-    color: #fff;
+    color: #e6e6e6;
 
     text-align: center;
 
@@ -92,7 +92,7 @@ and open the template in the editor.
 
     text-align: left;
 
-    color: #fff; }
+    color: #000; }
 
     .footer .contact li {
 
@@ -144,7 +144,7 @@ and open the template in the editor.
 
     font-weight: normal;
 
-    color: #fff;
+    color: #000;
 
     padding: 3rem 0 2rem;
 
@@ -188,7 +188,7 @@ and open the template in the editor.
 
 .logo {
 
-  color: #fff;
+  color: #000;
 
   font-size: 1.5rem; }
 
