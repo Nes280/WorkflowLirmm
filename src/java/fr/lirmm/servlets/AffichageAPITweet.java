@@ -24,9 +24,10 @@ import java.util.logging.Logger;
 public class AffichageAPITweet extends HttpServlet{
     
     public static final String CHAMP_TWEET = "tweetAAnalyser";
+    public static final String CHAMP_FILE = "fileUpload";
     
     public static final String ATT_TWEET = "tweet";
-    public static final String ATT_RESULTAT = "resultat";
+    //public static final String ATT_RESULTAT = "resultat";
     public static final String ATT_MESSAGE = "message";
     public static final String ATT_ERREUR = "erreur";
     
@@ -34,12 +35,25 @@ public class AffichageAPITweet extends HttpServlet{
     
     public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
         String tweet = request.getParameter(CHAMP_TWEET);
+        String file = request.getParameter(CHAMP_FILE);
+        
+        if(tweet == ""){
+            tweet = null;
+        }
+        else if(file == ""){
+            file = null;
+        }
+        
+        System.out.println("tweet " + tweet + " fin tweet");
+        System.out.println("file " + file + " fin file");
+
+
         Map<String, String> listeTweet = new HashMap<String, String>();
         String message; 
         boolean erreur; 
         String resultat = "";
 
-        if(tweet.isEmpty()){
+        if(tweet == null && file == null){
             message = "No tweet";
             erreur = true;
         }

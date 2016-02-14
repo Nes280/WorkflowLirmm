@@ -35,9 +35,16 @@
                     </form>
                 </div>
                 <div class="tabs-panel" id="panel2">
-                    <p>Ecrire un tweet par ligne. </p>
-                    <label for="exampleFileUpload" class="button">Upload File</label>
-                    <input type="file" id="exampleFileUpload" class="show-for-sr">
+                    <form method="get" action="<c:url value="/affichageAPITweet"/>">
+                        <p>Ecrire un tweet par ligne. </p>
+                        <p>Write a tweet for line. The format of the text is .txt. </p>
+                        <!--<label for="fileUpload" class="button">Upload File</label>
+                        <input type="file" id="fileUpload" name="fileUpload" class="show-for-sr">-->
+                        <label>Write your tweet : 
+                            <textarea id="fileUpload" name="fileUpload" placeholder=""></textarea>
+                        </label>
+                        <input type="submit" value="Submit" class="button" />
+                    </form>
                 </div>
             </div>
         </div>
