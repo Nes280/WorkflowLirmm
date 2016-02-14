@@ -13,7 +13,6 @@ import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 import fr.lirmm.beans.User;
-import static fr.lirmm.db.DataBase.resultat;
 /**
  *
  * @author niels
@@ -47,10 +46,10 @@ public class Names {
         connecting();
         try {
             statement = connexion.createStatement();
-            
+            Md5 cryptPw = new Md5(password);
             // Creation de la requete
             String base = "SELECT \"Fname\", \"Lname\" FROM lirmm.\"User\"";              //base de la requete 
-            String spec = "WHERE \"Mail\" = '"+mail+"' AND \"Password\" = '"+password+"'";//specification de la requete
+            String spec = "WHERE \"Mail\" = '"+mail+"' AND \"Password\" = '"+cryptPw.getCode()+"'";//specification de la requete
 
             // Exécution de la requête
             resultat = statement.executeQuery(base + spec);
@@ -95,14 +94,14 @@ public class Names {
         } catch (SQLException e) {
             //non traité pour le moment
         }
-        
+        Md5 cryptPw = new Md5(utilisateur.getPassword());   
         try {
             PreparedStatement preparedStatement = connexion.prepareStatement("INSERT INTO lirmm.\"User\"(\"Fname\", \"Lname\", \"Mail\", \"Password\", \"Mod\") VALUES(?, ?, ?, ?, ?);");
            
             preparedStatement.setString(1, utilisateur.getFname());
             preparedStatement.setString(2, utilisateur.getLname());
             preparedStatement.setString(3, utilisateur.getMail());
-            preparedStatement.setString(4, utilisateur.getPassword());
+            preparedStatement.setString(4, cryptPw.getCode());
             preparedStatement.setBoolean(5, utilisateur.isMod());
             
             preparedStatement.executeUpdate();

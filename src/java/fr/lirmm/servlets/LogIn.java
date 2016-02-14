@@ -35,7 +35,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
         request.setAttribute( "topMenuName", "WorkFlow" );
         request.setAttribute( "breadcrumbs", breadcrumbs );
     
-        this.getServletContext().getRequestDispatcher( "/WEB-INF/index.jsp" ).forward( request, response );
+        this.getServletContext().getRequestDispatcher( "/WEB-INF/logIn.jsp" ).forward( request, response );
        
     }
 public void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {

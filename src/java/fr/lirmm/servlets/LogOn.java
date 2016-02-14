@@ -13,7 +13,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import fr.lirmm.db.DataBase;
 import fr.lirmm.db.Names;
 import java.sql.SQLException;
 import java.util.logging.Level;
