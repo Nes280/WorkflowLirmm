@@ -42,23 +42,26 @@ public class LogOn extends HttpServlet {
        String lastName = request.getParameter("Lname");
        String additionalInformation = "";
        int polarity = 0;
+       Names test = new Names();  
+     
        
        if (pass.equals(rePass)) {
-           //try {
-               /*if(Names.isInDataBase(mail) == false) // si le mail n'est pas déjà utilisé
-               {*/
+           try {
+               if(!test.isInDataBase(mail)) // si le mail n'est pas déjà utilisé
+               {
                    User utilisateur = new User(firstName,lastName,mail,pass,false);
-                   Names.ajouterUtilisateur(utilisateur);
+                   Names ajout = new Names();
+                   ajout.ajouterUtilisateur(utilisateur);
                    
                    polarity = 1;
                    additionalInformation = "You can now log.";
-              /* }
+               }
                else{ // existe déjà
                    additionalInformation = "Email already used.";
                }
            } catch (SQLException ex) {
                //
-           }*/
+           }
        }
        else { //erreur dans les mots de passe
            additionalInformation = "Passwords must be the same.";

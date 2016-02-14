@@ -19,26 +19,32 @@ import static fr.lirmm.db.DataBase.resultat;
  * @author niels
  */
 public class Names {
-    static private Connection connexion;
+    private Connection connexion;
+    boolean alreadyConnect = false;
+    
+    private void connecting(){
+        if (!alreadyConnect) {
+            try {
+                Class.forName("org.postgresql");
+            } catch (ClassNotFoundException e) {
+                //non traité pour le moment
+            }
+
+            try {
+                connexion = DriverManager.getConnection("jdbc:postgresql://localhost/workflow_db", "workflow_user", "admin");  
+            } catch (SQLException e) {
+                //non traité pour le moment
+            }
+            alreadyConnect = true;
+        }
+    }
     
     public User recupererUtilisateurs(String mail, String password) {
         Statement statement = null;
         ResultSet resultat = null;
-
-        try {
-            Class.forName("org.postgresql");
-        } catch (ClassNotFoundException e) {
-            //non traité pour le moment
-        }
-
-        try {
-            connexion = DriverManager.getConnection("jdbc:postgresql://localhost/workflow_db", "workflow_user", "admin");
-        } catch (SQLException e) {
-            //non traité pour le moment
-        }
         
         User utilisateur = new User();
-        
+        connecting();
         try {
             statement = connexion.createStatement();
             
@@ -75,10 +81,8 @@ public class Names {
         
         return utilisateur;
     }
-    static public void ajouterUtilisateur(User utilisateur) {
+    public void ajouterUtilisateur(User utilisateur) {
         
-        Statement statement = null;
-        ResultSet resultat = null;
 
         try {
             Class.forName("org.postgresql");
@@ -106,11 +110,15 @@ public class Names {
             e.printStackTrace();
         }
     }
-    static public boolean isInDataBase(String mail) throws SQLException //true si existe déjà false si non
-   {
+    public boolean isInDataBase(String mail) throws SQLException //true si existe déjà false si non
+    {   
         Statement statement = null;
         ResultSet resultat = null;
-        String id = "";
+        String Mail = "";
+        
+        connecting();
+        statement = connexion.createStatement();
+        
         try {
             Class.forName("org.postgresql");
         } catch (ClassNotFoundException e) {
@@ -124,14 +132,14 @@ public class Names {
         }
         try {
             // Exécution de la requête
-            resultat = statement.executeQuery("SELECT \"Id\" FROM lirmm.\"User\" WHERE \"Mail\" = '"+ mail +"'");
+            resultat = statement.executeQuery("SELECT \"Mail\" FROM lirmm.\"User\" WHERE \"Mail\" = '"+ mail +"'");
  
             // Récupération des données
             while (resultat.next()) {
-                id = resultat.getString("Id");
+                Mail = resultat.getString("Mail");
             }
-        } catch (SQLException e) {
-            //non traité pour le moment
+        } catch (NullPointerException n) {
+            System.out.println(n);
         } finally {
             // Fermeture de la connexion
             try {
@@ -145,8 +153,6 @@ public class Names {
                 //non traité pour le moment
             }
         }
-        if (id == "") {
-           return false;
-        }else return true;   
+        return Mail.equals(mail);   
    }
 }
