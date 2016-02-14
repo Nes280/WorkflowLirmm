@@ -27,15 +27,17 @@
             </ul>
         </div>
         <div class="top-bar-right">
-            <form method="get" action="<c:url value="/logIn"/>">
-                <button class="warning hollow button" href="#">${sessionScope.prenom} ${sessionScope.nom}</button>
-            </form>
+            <div class="title-bar-right">
+                <button   ></button>
+                <button class="warning hollow button" data-open="offCanvas">${sessionScope.prenom} ${sessionScope.nom}</button>
+            </div>   
         </div>
         <ul class="menu">
             <li><input type="search" placeholder="Search"></li>
             <li><button type="button" class="button">Search</button></li>
         </ul>
     </div>
+    
 </c:if>
 <c:if test="${ sessionScope.isLog != 1}">
     <div class="title-bar" data-responsive-toggle="example-menu" data-hide-for="medium">
@@ -50,7 +52,7 @@
             </ul>
         </div>
         <div class="top-bar-right">
-            <button type="button" class="success hollow button" onClick="window.location.href='<c:url value="/logOn"/>';">Log on</button>
+            <button type="button" class="success hollow button" onClick="window.location.href='<c:url value="/logOn"/>';">Signup</button>
             <button class="button" type="button" data-toggle="example-dropdown" data-open="logIn">log in</button>
             <div class="reveal" id="logIn" data-reveal>
                 <div class="medium-7 medium-centered large-5 large-centered columns">

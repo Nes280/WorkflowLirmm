@@ -5,6 +5,7 @@
 --%>
 <%@include file="head.jsp" %>
     <body>
+        <jsp:include page="offCanvasBegin.jsp" />
         <jsp:include page="topMenu.jsp">
             <jsp:param name="topMenuName" value="${topMenuName}"/>
         </jsp:include>
@@ -28,9 +29,11 @@
                 <br/>
                 <br/>
                 <br/>
+                
             </div>
         </div>
         <%@include file="foot.jsp" %>
+        <jsp:include page="offCanvasEnd.jsp" />
         <%@include file="foundation.jsp" %>
     </body>
 </html>
