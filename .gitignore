@@ -1,5 +1,8 @@
 nbproject
 build
+dist
+src/java/analysedesentiments/
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
@@ -47,9 +50,3 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
-
-src/java/analysedesentiments/
-
-
-build/web/WEB-INF/classes/fr/lirmm/beans/User.class
-build/web/WEB-INF/classes/fr/lirmm/db/Names.class
