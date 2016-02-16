@@ -5,11 +5,11 @@
 --%>
 <%@include file="head.jsp" %>
     <body>
-        <jsp:include page="offCanvasBegin.jsp" />
+       
         <jsp:include page="topMenu.jsp">
             <jsp:param name="topMenuName" value="${topMenuName}"/>
         </jsp:include>
-        
+         <jsp:include page="offCanvasBegin.jsp" />
         <jsp:include page="Breadcrumbs.jsp">
             <jsp:param name="breadcrumbs" value="${breadcrumbs}"/>
         </jsp:include>
@@ -32,8 +32,9 @@
                 
             </div>
         </div>
+                <jsp:include page="offCanvasEnd.jsp" />
         <%@include file="foot.jsp" %>
-        <jsp:include page="offCanvasEnd.jsp" />
+        
         <%@include file="foundation.jsp" %>
     </body>
 </html>

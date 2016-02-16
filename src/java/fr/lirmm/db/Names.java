@@ -20,17 +20,21 @@ import fr.lirmm.beans.User;
 public class Names {
     private Connection connexion;
     boolean alreadyConnect = false;
+    private String JDBC = "jdbc:postgresql://localhost/workflow_db";
+    private String USER = "workflow_user";
+    private String PASSWORD = "admin";
+    private String DRIVER = "org.postgresql";
     
     private void connecting(){
         if (!alreadyConnect) {
             try {
                 Class.forName("org.postgresql");
-            } catch (ClassNotFoundException e) {
+            } catch (ClassNotFoundException e){
                 //non traité pour le moment
             }
 
             try {
-                connexion = DriverManager.getConnection("jdbc:postgresql://localhost/workflow_db", "workflow_user", "admin");  
+                connexion = DriverManager.getConnection(JDBC, USER, PASSWORD);  
             } catch (SQLException e) {
                 //non traité pour le moment
             }
@@ -84,18 +88,7 @@ public class Names {
     }
     public void ajouterUtilisateur(User utilisateur) {
         
-
-        try {
-            Class.forName("org.postgresql");
-        } catch (ClassNotFoundException e) {
-            //non traité pour le moment
-        }
-
-        try {
-            connexion = DriverManager.getConnection("jdbc:postgresql://localhost/workflow_db", "workflow_user", "admin");
-        } catch (SQLException e) {
-            //non traité pour le moment
-        }
+        connecting();
         Md5 cryptPw = new Md5(utilisateur.getPassword());   
         try {
             PreparedStatement preparedStatement = connexion.prepareStatement("INSERT INTO lirmm.\"User\"(\"Fname\", \"Lname\", \"Mail\", \"Password\", \"Mod\") VALUES(?, ?, ?, ?, ?);");
@@ -111,6 +104,29 @@ public class Names {
             e.printStackTrace();
         }
     }
+    
+    public void alterUtilisateur(String lMail, String nMail, String Lname, String Fname){
+        connecting();
+          
+        try {//update article set MonChamp = 'NouvelleValeur' where MonChamp = 'AncienneValeur'
+            PreparedStatement preparedStatement = connexion.prepareStatement("UPDATE lirmm.\"User\" set \"Fname\" = '"+Fname+"',\"Lname\" = '"+Lname+"',\"Mail\" = '"+nMail+"' WHERE \"Mail\" = '"+lMail+"';");
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void alterPassword(String Mail, String password){
+        connecting();
+        Md5 cryptPw = new Md5(password);
+        try {//update article set MonChamp = 'NouvelleValeur' where MonChamp = 'AncienneValeur'
+            PreparedStatement preparedStatement = connexion.prepareStatement("UPDATE lirmm.\"User\" set \"Password\" = '"+cryptPw.getCode()+"'WHERE \"Mail\" = '"+Mail+"';");
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public boolean isInDataBase(String mail) throws SQLException //true si existe déjà false si non
     {   
         Statement statement = null;
@@ -120,17 +136,6 @@ public class Names {
         connecting();
         statement = connexion.createStatement();
         
-        try {
-            Class.forName("org.postgresql");
-        } catch (ClassNotFoundException e) {
-            //non traité pour le moment
-        }
-
-        try {
-            connexion = DriverManager.getConnection("jdbc:postgresql://localhost/workflow_db", "workflow_user", "admin");
-        } catch (SQLException e) {
-            //non traité pour le moment
-        }
         try {
             // Exécution de la requête
             resultat = statement.executeQuery("SELECT \"Mail\" FROM lirmm.\"User\" WHERE \"Mail\" = '"+ mail +"'");

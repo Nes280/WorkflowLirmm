@@ -8,7 +8,7 @@
     <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
         <div class="off-canvas position-right" id="offCanvas" data-off-canvas data-position="right">
             <ul class="no-bullet">
-                <li><a href="<c:url value="/profile"/>">Profile</a></li>
+                <li><a href="<c:url value="/profile?edit=false"/>">Profile</a></li>
                 <li><button  >Manage my models</button></li>
                 <li><button  >About</button></li>
                 <li><button  >About</button></li>

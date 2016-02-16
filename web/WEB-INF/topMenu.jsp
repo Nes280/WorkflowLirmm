@@ -28,7 +28,7 @@
         </div>
         <div class="top-bar-right">
             <div class="title-bar-right">
-                <button   ></button>
+                
                 <button class="warning hollow button" data-open="offCanvas">${sessionScope.prenom} ${sessionScope.nom}</button>
             </div>   
         </div>
