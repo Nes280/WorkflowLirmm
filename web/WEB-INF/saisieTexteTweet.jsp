@@ -23,7 +23,7 @@
             
             <div class="tabs-content" data-tabs-content="example-tabs">
                 <div class="tabs-panel is-active" id="panel1">
-                    <form method="get" action="<c:url value="/affichageAPITweet"/>">
+                    <form method="post" action="<c:url value="/affichageAPITweet"/>">
                         <div class="row">
                             <div class="large-12 columns">
                                 <label>Write your tweet : 
@@ -35,14 +35,14 @@
                     </form>
                 </div>
                 <div class="tabs-panel" id="panel2">
-                    <form method="get" action="<c:url value="/affichageAPITweet"/>">
+                    <form method="post" action="<c:url value="/affichageAPITweet"/>" enctype="multipart/form-data">
                         <p>Ecrire un tweet par ligne. </p>
                         <p>Write a tweet for line. The format of the text is .txt. </p>
-                        <!--<label for="fileUpload" class="button">Upload File</label>
-                        <input type="file" id="fileUpload" name="fileUpload" class="show-for-sr">-->
-                        <label>Write your tweet : 
+                        <label for="fileUpload" class="button">Upload File</label>
+                        <input type="file" id="fileUpload" name="fileUpload" class="show-for-sr">
+                        <!--<label>Write your tweet : 
                             <textarea id="fileUpload" name="fileUpload" placeholder=""></textarea>
-                        </label>
+                        </label>-->
                         <input type="submit" value="Submit" class="button" />
                     </form>
                 </div>

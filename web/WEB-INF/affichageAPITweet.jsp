@@ -33,15 +33,15 @@
                                             <c:out value="${t.key}"/> 
                                             <c:if test="${t.value.equals('+')}" >
                                                 <c:out value="${t.value}"/> 
-                                                <button class="success button">Positif</button>
+                                                <span class="success label"><i class="fi-plus"></i> Positif</span>
                                             </c:if>
                                             <c:if test="${t.value.equals('-')}" >
                                                 <c:out value="${t.value}"/> 
-                                                <button class="alert button">Negatif</button>
+                                                <span class="alert label"><i class="fi-minus"></i> Negatif</span>
                                             </c:if>
                                             <c:if test="${t.value.equals('=')}" >
                                                 <c:out value="${t.value}"/> 
-                                                <button class="button">Neutre</button>
+                                                <span class="info label"><i class="fi-list"></i> Neutre</span>
                                             </c:if>
                                         </li>
                                     </c:forEach>

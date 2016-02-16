@@ -14,6 +14,16 @@
     <servlet>
         <servlet-name>affichageAPITweet</servlet-name>
 	<servlet-class>fr.lirmm.servlets.AffichageAPITweet</servlet-class>
+        <init-param>
+            <param-name>chemin</param-name>
+            <param-value>/fichiers/</param-value>
+        </init-param>
+        <multipart-config>
+            <location>c:/fichiers</location>
+            <max-file-size>10485760</max-file-size>
+            <max-request-size>52428800</max-request-size>
+            <file-size-threshold>1048576</file-size-threshold>
+        </multipart-config>
     </servlet>
     <servlet-mapping>
         <servlet-name>index</servlet-name>
