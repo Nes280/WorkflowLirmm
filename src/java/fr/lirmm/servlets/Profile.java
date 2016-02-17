@@ -40,11 +40,13 @@ public class Profile extends HttpServlet {
     
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        String lMail = (String) session.getAttribute("mail");
-                
+        
+        String lMail = (String) session.getAttribute("mail");        
         String change = request.getParameter("change");
+        String info = "";
+        String classe = "";
         if (change.equals("settings")) { 
-        //ici on va changer le nom le prenom et le mail, o
+        //ici on va changer le nom le prenom et le mail, 
         //on utilise lMail qui est l'ancien mail
         //et nMail qui est le nouveau mail
         // on ne s'occupe pas de savoir ques qui a changé 
@@ -52,11 +54,31 @@ public class Profile extends HttpServlet {
             String Fname = request.getParameter("Fname");
             String Lname = request.getParameter("Lname");
             Names name = new Names();
+            
             try{
-                name.alterUtilisateur(lMail, nMail, Lname, Fname);
-                session.setAttribute("nom", Lname);
-                session.setAttribute("prenom", Fname);
-                session.setAttribute("mail", nMail);
+                if(nMail.equals(lMail)) // on ne veux pas changer le mail
+                {
+                    name.alterUtilisateur(lMail, nMail, Lname, Fname);
+                    session.setAttribute("nom", Lname);
+                    session.setAttribute("prenom", Fname);
+                    session.setAttribute("mail", nMail);
+                    info = "Success";
+                    classe = "success";
+                }
+                else{ //on veux changer le mail, dans ce cas il faut tester si il n'existe pas déjà
+                    if (!name.isInDataBase(nMail)) {
+                        name.alterUtilisateur(lMail, nMail, Lname, Fname);
+                        session.setAttribute("nom", Lname);
+                        session.setAttribute("prenom", Fname);
+                        session.setAttribute("mail", nMail);
+                        info = "Success";
+                        classe = "success";
+                    }else{
+                        info = "This eMail already exist.";
+                        classe = "alert";
+                    }
+                }
+                
                 
             }catch(Exception e){}
         }
@@ -84,7 +106,8 @@ public class Profile extends HttpServlet {
         request.setAttribute( "title", "Profile" );
         request.setAttribute( "topMenuName", "WorkFlow" );
         request.setAttribute( "breadcrumbs", breadcrumbs );
-    
+        request.setAttribute( "info", info );
+        request.setAttribute( "classe", classe );
         this.getServletContext().getRequestDispatcher( "/WEB-INF/profile.jsp" ).forward( request, response );
        
     }

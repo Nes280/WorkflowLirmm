@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
+//import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
  *
@@ -44,9 +44,9 @@ public class AffichageAPITweet extends HttpServlet{
         System.out.println("nom " + nom);
         
         //variable pour le formulaire de fichier
-        boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+        //boolean isMultipart = ServletFileUpload.isMultipartContent(request);
         
-        System.out.println("isMultipart " + isMultipart);
+        //System.out.println("isMultipart " + isMultipart);
         
         //Mettre les valeurs à null
         if(tweet == "" ){
@@ -60,7 +60,7 @@ public class AffichageAPITweet extends HttpServlet{
         String resultat = "";
 
         //cas ou les 2 formulaires sont vides
-        if(tweet == null && !isMultipart ){
+        if(tweet == null ){
             message = "No tweet";
             erreur = true;
         }

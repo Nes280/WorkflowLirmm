@@ -14,50 +14,18 @@
         <jsp:include page="Breadcrumbs.jsp">
             <jsp:param name="breadcrumbs" value="${breadcrumbs}"/>
         </jsp:include>
-        <c:choose>
-            <c:when test="${edit == 1}">
                 <div class="row medium-8 large-7 columns">
                     <div class="blog-post">
                         <div class="large-12 large-centered large-5 large-centered columns">
                             <div large large-centered large-5 large-centered columns >
-                                <div class="warning callout primary">
+                                <div class="${classe} callout primary">
                                     <h5>Change your settings</h5>
-                                    <p>It has an easy to override visual style, and is appropriately subdued.</p>
+                                    <p>${info}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </c:when>
-            <c:when test="${edit == 2}">
-                <div class="row medium-8 large-7 columns">
-                    <div class="blog-post">
-                        <div class="large-12 large-centered large-5 large-centered columns">
-                            <div large large-centered large-5 large-centered columns >
-                                <div class="warning callout primary">
-                                    <h5>Change your password</h5>
-                                    <p>It has an easy to override visual style, and is appropriately subdued.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </c:when>
-            <c:otherwise>
-                <div class="row medium-8 large-7 columns">
-                    <div class="blog-post">
-                        <div class="large-12 large-centered large-5 large-centered columns">
-                            <div large large-centered large-5 large-centered columns >
-                                <div class="warning callout primary">
-                                    <h5>This is a secondary panel</h5>
-                                    <p>It has an easy to override visual style, and is appropriately subdued.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </c:otherwise>
-        </c:choose>
+                </div>   
         <div class="row medium-8 large-7 columns">
             <div class="blog-post">
                 <div class="medium-7 medium-centered large-5 large-centered columns">
@@ -73,7 +41,7 @@
                                         <span class="prefix"><i class="fi-torso"></i></span>
                                     </div>
                                     <div class="small-10  columns">
-                                        <input type="text" name="Lname" value="${sessionScope.nom}" >
+                                        <input type="text" name="Lname" value="${sessionScope.nom}" required>
                                     </div>
                                 </div>
 
@@ -82,7 +50,7 @@
                                         <span class="prefix"><i class="fi-torso"></i></span>
                                     </div>
                                     <div class="small-10  columns" >
-                                        <input type="text" name="Fname" value="${sessionScope.prenom}" >
+                                        <input type="text" name="Fname" value="${sessionScope.prenom}" required>
                                     </div>
                                 </div>
 
@@ -91,7 +59,7 @@
                                         <span class="prefix"><i class="fi-mail"></i></span>
                                     </div>
                                     <div class="small-10  columns">
-                                        <input type="text" name="Mail" value="${sessionScope.mail}">
+                                        <input type="text" name="Mail" value="${sessionScope.mail}" required>
                                     </div>
                                 </div>
                                 <button type="submit" class="alert hollow button">Send</button>
@@ -106,7 +74,7 @@
                                         <span class="prefix"><i class="fi-lock"></i></span>
                                     </div>
                                     <div class="small-10 columns ">
-                                        <input  name="pass" type="password" value="" >
+                                        <input  name="pass" type="password" value="" required>
                                     </div>
                                 </div>
                                 <div class="row collapse">
@@ -114,7 +82,7 @@
                                         <span class="prefix"><i class="fi-lock"></i></span>
                                     </div>
                                     <div class="small-10 columns ">
-                                        <input name="rePass" type="password" value="" >
+                                        <input name="rePass" type="password" value="" required>
                                     </div>
                                 </div>
                                 <button class="hollow button">Send</button>
