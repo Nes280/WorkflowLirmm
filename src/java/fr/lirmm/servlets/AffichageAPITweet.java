@@ -25,12 +25,12 @@ public class AffichageAPITweet extends HttpServlet{
     
     public static final String CHAMP_TWEET = "tweetAAnalyser";
     public static final String CHAMP_FILE = "fileUpload";
+    public static final String CHAMP_CHOIX = "choix";
     
     public static final String CHEMIN = "chemin";
     public static final int TAILLE_TAMPON = 10240;
     
     public static final String ATT_TWEET = "tweet";
-    //public static final String ATT_RESULTAT = "resultat";
     public static final String ATT_MESSAGE = "message";
     public static final String ATT_ERREUR = "erreur";
     
@@ -41,48 +41,51 @@ public class AffichageAPITweet extends HttpServlet{
         //variable pour le formulaire de saisie de tweet
         String tweet = request.getParameter(CHAMP_TWEET);
         String nom = request.getParameter(CHAMP_FILE);
-        System.out.println("nom " + nom);
+        String choix = request.getParameter(CHAMP_CHOIX);
+        //System.out.println("nom " + nom);
         
         //variable pour le formulaire de fichier
         //boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-        
         //System.out.println("isMultipart " + isMultipart);
-        
-        //Mettre les valeurs à null
-        if(tweet == "" ){
-            tweet = null;
-        }
 
         //Preparation des résultats
         Map<String, String> listeTweet = new HashMap<String, String>();
         String message = ""; 
         boolean erreur = true; 
         String resultat = "";
+        
+        //on utilise le formulaire de saisie de texte
+        if(choix.equals("saisieTexte"))
+        {
+            //il n'y a pas de tweet à traiter
+            if(tweet == null ){
+                message = "No tweet";
+                erreur = true;
+            }
+            //on a un tweet à traiter
+            else if (tweet != null){
+                message = "Analyse du tweet";
+                erreur = false;
+                String delim = "\n";
+                String[] tokens = tweet.split(delim);
+                AnalyseDeSentiments a = new AnalyseDeSentiments();
 
-        //cas ou les 2 formulaires sont vides
-        if(tweet == null ){
-            message = "No tweet";
-            erreur = true;
+                for(int i = 0; i < tokens.length; i++){
+                    try {
+                        resultat = a.start(tokens[i]);
+                        listeTweet.put(tokens[i], resultat);
+                    } catch (Exception ex) {
+                        Logger.getLogger(AffichageAPITweet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }  
+            }
         }
-        //cas ou il y a un tweet
-        else if (tweet != null){
-            message = "Analyse du tweet";
-            erreur = false;
-            String delim = "\n";
-            String[] tokens = tweet.split(delim);
-            AnalyseDeSentiments a = new AnalyseDeSentiments();
-            
-            for(int i = 0; i < tokens.length; i++){
-                try {
-                    resultat = a.start(tokens[i]);
-                    listeTweet.put(tokens[i], resultat);
-                } catch (Exception ex) {
-                    Logger.getLogger(AffichageAPITweet.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }  
+        //on utilise le formulaire d'upload de fichier
+        else if(choix.equals("uploadFile")){
+            System.out.println("uploadFile");
+
         }
         
-
         String breadcrumbs = "<li><a href=\"/index\">Home</a></li>";
         request.setAttribute( "title", "Tweet" );
         request.setAttribute( "topMenuName", "WorkFlow" );

@@ -31,6 +31,7 @@
                                 </label>
                             </div>
                         </div>
+                        <input value="saisieTexte" name="choix" hidden>
                         <input type="submit" value="Submit" class="button" />
                     </form>
                 </div>
@@ -43,6 +44,7 @@
                         <!--<label>Write your tweet : 
                             <textarea id="fileUpload" name="fileUpload" placeholder=""></textarea>
                         </label>-->
+                        <input value="uploadFile" name="choix" hidden>
                         <input type="submit" value="Submit" class="button" />
                     </form>
                 </div>
