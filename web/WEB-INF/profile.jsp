@@ -34,14 +34,17 @@
                     
                     <c:choose>
                         <c:when test="${edit == 1}">
-                            <form  method="post" action="<c:url value="/profile"/>">
+                            <form  method="post" action="<c:url value="/profile"/>" data-abide novalidate>
+                                <div data-abide-error class="alert callout" style="display: none;">
+                                    <p><i class="fi-alert"></i> There are some errors in your form.</p>
+                                </div>
                                 <input name="change" value="settings" hidden>
                                 <div class="row collapse">
                                     <div class="small-2  columns">
                                         <span class="prefix"><i class="fi-torso"></i></span>
                                     </div>
                                     <div class="small-10  columns">
-                                        <input type="text" name="Lname" value="${sessionScope.nom}" required>
+                                        <input  pattern="text" type="text" name="Lname" value="${sessionScope.nom}" required>
                                     </div>
                                 </div>
 
@@ -50,7 +53,7 @@
                                         <span class="prefix"><i class="fi-torso"></i></span>
                                     </div>
                                     <div class="small-10  columns" >
-                                        <input type="text" name="Fname" value="${sessionScope.prenom}" required>
+                                        <input pattern="text" type="text" name="Fname" value="${sessionScope.prenom}" required>
                                     </div>
                                 </div>
 
@@ -59,7 +62,7 @@
                                         <span class="prefix"><i class="fi-mail"></i></span>
                                     </div>
                                     <div class="small-10  columns">
-                                        <input type="text" name="Mail" value="${sessionScope.mail}" required>
+                                        <input pattern="mail" type="text" name="Mail" value="${sessionScope.mail}" required>
                                     </div>
                                 </div>
                                 <button type="submit" class="alert hollow button">Send</button>

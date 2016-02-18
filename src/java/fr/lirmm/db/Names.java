@@ -28,7 +28,7 @@ public class Names {
     private void connecting(){
         if (!alreadyConnect) {
             try {
-                Class.forName("org.postgresql");
+                Class.forName(DRIVER);
             } catch (ClassNotFoundException e){
                 //non traité pour le moment
             }
@@ -106,8 +106,11 @@ public class Names {
     }
     
     public void alterUtilisateur(String lMail, String nMail, String Lname, String Fname){
+        Statement statement = null;
+        ResultSet resultat = null;
+        
         connecting();
-          
+         
         try {//update article set MonChamp = 'NouvelleValeur' where MonChamp = 'AncienneValeur'
             PreparedStatement preparedStatement = connexion.prepareStatement("UPDATE lirmm.\"User\" set \"Fname\" = '"+Fname+"',\"Lname\" = '"+Lname+"',\"Mail\" = '"+nMail+"' WHERE \"Mail\" = '"+lMail+"';");
             preparedStatement.executeUpdate();
@@ -146,7 +149,7 @@ public class Names {
             }
         } catch (NullPointerException n) {
             System.out.println(n);
-        } finally {
+        } /*finally {
             // Fermeture de la connexion
             try {
                 if (resultat != null)
@@ -158,7 +161,7 @@ public class Names {
             } catch (SQLException ignore) {
                 //non traité pour le moment
             }
-        }
+        }*/
         return Mail.equals(mail);   
    }
 }
