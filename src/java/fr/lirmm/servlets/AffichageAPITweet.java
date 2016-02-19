@@ -11,11 +11,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import analysedesentiments.AnalyseDeSentiments;
+import java.io.File;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-//import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import javax.servlet.ServletContext;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
  *
@@ -83,6 +90,39 @@ public class AffichageAPITweet extends HttpServlet{
         //on utilise le formulaire d'upload de fichier
         else if(choix.equals("uploadFile")){
             System.out.println("uploadFile");
+                        ServletFileUpload.isMultipartContent(request);
+            File savedFile = new File("./fichiers/");
+            DiskFileItemFactory factory = new DiskFileItemFactory();
+            factory.setSizeThreshold(TAILLE_TAMPON);
+            ServletContext servletContext = this.getServletConfig().getServletContext();
+            File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
+            factory.setRepository(repository);
+            
+            ServletFileUpload upload = new ServletFileUpload(factory);
+            List items;
+            try {
+                items = upload.parseRequest(request);
+                Iterator iter = items.iterator();
+                while (iter.hasNext()) {
+                   FileItem item = (FileItem) iter.next();
+                   if (item.isFormField()) {
+
+                    } 
+                    else {
+                        if (!item.getName().trim().equals("")){
+                               File fullFile = new File(item.getName());
+                               fullFile.getName();
+                              // c'est ici qu'il faudra changer le répertoire de  destination
+                               savedFile = new File("./fichiers/", fullFile.getName());
+                               item.write(savedFile);
+                        }
+                    }
+                }
+            } catch (FileUploadException ex) {
+                Logger.getLogger(AffichageAPITweet.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(AffichageAPITweet.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
         }
         
