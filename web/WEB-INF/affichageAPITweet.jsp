@@ -55,46 +55,44 @@
                 </div>
                 <div class="tabs-panel" id="panel3">
                     <p>Statistics afficher les résultats de root, positive, neutre, négative</p>
-                    <c:import url="tweet.xml" var="documentXML" />
-                    <x:parse var="doc" doc="${documentXML}" />
                     <ul class="vertical menu" data-accordion-menu>
                         <li>
                             <a href="#">Root</a>
                             <ul class="menu vertical nested">
-                                <p>micro f-measure</p>
+                                <p>Micro f-measure</p>
                                 <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
-                                    <span class="progress-meter" style="width: <x:out select="$doc/tweet/root/microfmeasure"/>">
-                                        <p class="progress-meter-text"><x:out select="$doc/tweet/root/microfmeasure"/></p>
+                                    <span class="progress-meter" style="width: ${root.getMicrofmeasure()}">
+                                        <p class="progress-meter-text">${root.getMicrofmeasure()}</p>
                                     </span>
                                 </div>
-                                <p>macro f-measure</p>
+                                <p>Macro f-measure</p>
                                 <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
-                                    <span class="progress-meter" style="width: <x:out select="$doc/tweet/root/macrofmeasure"/>">
-                                        <p class="progress-meter-text"><x:out select="$doc/tweet/root/macrofmeasure"/></p>
+                                    <span class="progress-meter" style="width: ${root.getMacrofmeasure()}">
+                                        <p class="progress-meter-text">${root.getMacrofmeasure()}</p>
                                     </span>
                                 </div>
-                                <p>micro precision</p>
+                                <p>Micro precision</p>
                                 <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
-                                    <span class="progress-meter" style="width: <x:out select="$doc/tweet/root/microprecision"/>">
-                                        <p class="progress-meter-text"><x:out select="$doc/tweet/root/microprecision"/></p>
+                                    <span class="progress-meter" style="width: ${root.getMicroprecision()}">
+                                        <p class="progress-meter-text">${root.getMicroprecision()}</p>
                                     </span>
                                 </div>
-                                <p>macro precision</p>
+                                <p>Macro precision</p>
                                 <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
-                                    <span class="progress-meter" style="width: <x:out select="$doc/tweet/root/macroprecision"/>">
-                                        <p class="progress-meter-text"><x:out select="$doc/tweet/root/macroprecision"/></p>
+                                    <span class="progress-meter" style="width: ${root.getMacroprecision()}">
+                                        <p class="progress-meter-text">${root.getMacroprecision()}</p>
                                     </span>
                                 </div>
-                                <p>micro recall</p>
+                                <p>Micro recall</p>
                                 <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
-                                    <span class="progress-meter" style="width: <x:out select="$doc/tweet/root/microrecall"/>">
-                                        <p class="progress-meter-text"><x:out select="$doc/tweet/root/microrecall"/></p>
+                                    <span class="progress-meter" style="width: ${root.getMicrorecall()}">
+                                        <p class="progress-meter-text">${root.getMicrorecall()}</p>
                                     </span>
                                 </div>
-                                <p>macro recall</p>
+                                <p>Macro recall</p>
                                 <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
-                                    <span class="progress-meter" style="width: <x:out select="$doc/tweet/root/macrorecall"/>">
-                                        <p class="progress-meter-text"><x:out select="$doc/tweet/root/macrorecall"/></p>
+                                    <span class="progress-meter" style="width: ${root.getMacrorecall()}">
+                                        <p class="progress-meter-text">${root.getMacrorecall()}</p>
                                     </span>
                                 </div>
                             </ul>
@@ -102,22 +100,22 @@
                         <li>
                             <a href="#">Positive</a>
                             <ul class="menu vertical nested">
-                                <p>f-measure</p>
+                                <p>F-measure</p>
                                 <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
-                                    <span class="progress-meter" style="width: <x:out select="$doc/tweet/positive/fmeasure"/>">
-                                        <p class="progress-meter-text"><x:out select="$doc/tweet/positive/fmeasure"/></p>
+                                    <span class="progress-meter" style="width: ${positive.getFmeasure()}">
+                                        <p class="progress-meter-text">${positive.getFmeasure()}</p>
                                     </span>
                                 </div>
-                                <p>precision</p>
+                                <p>Precision</p>
                                 <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
-                                    <span class="progress-meter" style="width: <x:out select="$doc/tweet/positive/precision"/>">
-                                        <p class="progress-meter-text"><x:out select="$doc/tweet/positive/precision"/></p>
+                                    <span class="progress-meter" style="width: ${positive.getPrecision()}">
+                                        <p class="progress-meter-text">${positive.getPrecision()}</p>
                                     </span>
                                 </div>
-                                <p>recall</p>
+                                <p>Recall</p>
                                 <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
-                                    <span class="progress-meter" style="width: <x:out select="$doc/tweet/positive/recall"/>">
-                                        <p class="progress-meter-text"><x:out select="$doc/tweet/positive/recall"/></p>
+                                    <span class="progress-meter" style="width: ${positive.getRecall()}">
+                                        <p class="progress-meter-text">${positive.getRecall()}</p>
                                     </span>
                                 </div>
                             </ul>
@@ -125,22 +123,22 @@
                         <li>
                             <a href="#">Neutre</a>
                             <ul class="menu vertical nested">
-                                <p>f-measure</p>
+                                <p>F-measure</p>
                                 <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
-                                    <span class="progress-meter" style="width: <x:out select="$doc/tweet/neutre/fmeasure"/>">
-                                        <p class="progress-meter-text"><x:out select="$doc/tweet/neutre/fmeasure"/></p>
+                                    <span class="progress-meter" style="width: ${neutre.getFmeasure()}">
+                                        <p class="progress-meter-text">${neutre.getFmeasure()}</p>
                                     </span>
                                 </div>
-                                <p>precision</p>
+                                <p>Precision</p>
                                 <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
-                                    <span class="progress-meter" style="width: <x:out select="$doc/tweet/neutre/precision"/>">
-                                        <p class="progress-meter-text"><x:out select="$doc/tweet/neutre/precision"/></p>
+                                    <span class="progress-meter" style="width: ${neutre.getPrecision()}">
+                                        <p class="progress-meter-text">${neutre.getPrecision()}</p>
                                     </span>
                                 </div>
-                                <p>recall</p>
+                                <p>Recall</p>
                                 <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
-                                    <span class="progress-meter" style="width: <x:out select="$doc/tweet/neutre/recall"/>">
-                                        <p class="progress-meter-text"><x:out select="$doc/tweet/neutre/recall"/></p>
+                                    <span class="progress-meter" style="width: ${neutre.getRecall()}">
+                                        <p class="progress-meter-text">${neutre.getRecall()}</p>
                                     </span>
                                 </div>
                             </ul>
@@ -148,22 +146,22 @@
                         <li>
                             <a href="#">Negative</a>
                             <ul class="menu vertical nested">
-                                <p>f-measure</p>
+                                <p>F-measure</p>
                                 <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
-                                    <span class="progress-meter" style="width: <x:out select="$doc/tweet/negative/fmeasure"/>">
-                                        <p class="progress-meter-text"><x:out select="$doc/tweet/negative/fmeasure"/></p>
+                                    <span class="progress-meter" style="width: ${negative.getFmeasure()}">
+                                        <p class="progress-meter-text">${negative.getFmeasure()}</p>
                                     </span>
                                 </div>
-                                <p>precision</p>
+                                <p>Precision</p>
                                 <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
-                                    <span class="progress-meter" style="width: <x:out select="$doc/tweet/negative/precision"/>">
-                                        <p class="progress-meter-text"><x:out select="$doc/tweet/negative/precision"/></p>
+                                    <span class="progress-meter" style="width: ${negative.getPrecision()}">
+                                        <p class="progress-meter-text">${negative.getPrecision()}</p>
                                     </span>
                                 </div>
-                                <p>recall</p>
+                                <p>Recall</p>
                                 <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
-                                    <span class="progress-meter" style="width: <x:out select="$doc/tweet/negative/recall"/>">
-                                        <p class="progress-meter-text"><x:out select="$doc/tweet/negative/recall"/></p>
+                                    <span class="progress-meter" style="width: ${negative.getRecall()}">
+                                        <p class="progress-meter-text">${negative.getRecall()}</p>
                                     </span>
                                 </div>
                             </ul>

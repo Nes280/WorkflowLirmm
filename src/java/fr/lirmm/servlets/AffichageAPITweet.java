@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import analysedesentiments.AnalyseDeSentiments;
+import fr.lirmm.beans.Polarite;
+import fr.lirmm.beans.Root;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -23,6 +25,23 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+ 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+ 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -40,6 +59,11 @@ public class AffichageAPITweet extends HttpServlet{
     public static final String ATT_TWEET = "tweet";
     public static final String ATT_MESSAGE = "message";
     public static final String ATT_ERREUR = "erreur";
+    public static final String ATT_ROOT = "root";
+    public static final String ATT_POSITIVE = "positive";
+    public static final String ATT_NEUTRE = "neutre";
+    public static final String ATT_NEGATIVE = "negative";
+
     
     public static final String VUE = "/WEB-INF/affichageAPITweet.jsp";
     
@@ -90,7 +114,7 @@ public class AffichageAPITweet extends HttpServlet{
         //on utilise le formulaire d'upload de fichier
         else if(choix.equals("uploadFile")){
             System.out.println("uploadFile");
-                        ServletFileUpload.isMultipartContent(request);
+            ServletFileUpload.isMultipartContent(request);
             File savedFile = new File("./fichiers/");
             DiskFileItemFactory factory = new DiskFileItemFactory();
             factory.setSizeThreshold(TAILLE_TAMPON);
@@ -126,6 +150,33 @@ public class AffichageAPITweet extends HttpServlet{
 
         }
         
+        //Valeur pour Root
+        Root root = new Root();
+        root.setMicrofmeasure(valeurXml("/tweet/root/microfmeasure"));
+        root.setMacrofmeasure(valeurXml("/tweet/root/macrofmeasure"));
+        root.setMicroprecision(valeurXml("/tweet/root/microprecision"));
+        root.setMacroprecision(valeurXml("/tweet/root/macroprecision"));
+        root.setMicrorecall(valeurXml("/tweet/root/microrecall"));
+        root.setMacrorecall(valeurXml("/tweet/root/macrorecall"));
+        
+        //Valeur pour Positive
+        Polarite positive = new Polarite();
+        positive.setFmeasure(valeurXml("/tweet/positive/fmeasure"));
+        positive.setPrecision(valeurXml("/tweet/positive/precision"));
+        positive.setRecall(valeurXml("/tweet/positive/recall"));
+        
+        //Valeur pour Neutre
+        Polarite neutre = new Polarite();
+        neutre.setFmeasure(valeurXml("/tweet/neutre/fmeasure"));
+        neutre.setPrecision(valeurXml("/tweet/neutre/precision"));
+        neutre.setRecall(valeurXml("/tweet/neutre/recall"));
+        
+        //Valeur pour Negative
+        Polarite negative = new Polarite();
+        negative.setFmeasure(valeurXml("/tweet/negative/fmeasure"));
+        negative.setPrecision(valeurXml("/tweet/negative/precision"));
+        negative.setRecall(valeurXml("/tweet/negative/recall"));
+        
         String breadcrumbs = "<li><a href=\"/index\">Home</a></li>";
         request.setAttribute( "title", "Tweet" );
         request.setAttribute( "topMenuName", "WorkFlow" );
@@ -133,7 +184,39 @@ public class AffichageAPITweet extends HttpServlet{
         request.setAttribute(ATT_TWEET, listeTweet);
         request.setAttribute(ATT_MESSAGE, message);
         request.setAttribute(ATT_ERREUR, erreur);
+        request.setAttribute(ATT_ROOT, root);
+        request.setAttribute(ATT_POSITIVE, positive);
+        request.setAttribute(ATT_NEUTRE, neutre);
+        request.setAttribute(ATT_NEGATIVE, negative);
+
         this.getServletContext().getRequestDispatcher(VUE).forward( request, response );
+    }
+    
+    
+    //Fonction qui va chercher les valeurs dans le fichier xml
+    public String valeurXml(String expression){
+        String valeur = "";
+        try{
+            File file = new File("XML/tweet.xml");
+            DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder =  builderFactory.newDocumentBuilder();
+            Document xmlDocument = builder.parse(file);
+            Element root = xmlDocument.getDocumentElement();
+            XPath xPath =  XPathFactory.newInstance().newXPath();
+            valeur = xPath.evaluate(expression,root);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }catch (XPathExpressionException e) {
+            e.printStackTrace();
+        } 
+        return valeur;
+
     }
 
 } 
