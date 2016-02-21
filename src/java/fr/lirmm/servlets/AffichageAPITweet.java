@@ -13,22 +13,17 @@ import javax.servlet.http.HttpServletResponse;
 import analysedesentiments.AnalyseDeSentiments;
 import fr.lirmm.beans.Polarite;
 import fr.lirmm.beans.Root;
-import java.io.File;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.ServletContext;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import javax.servlet.http.Part;
  
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -39,8 +34,6 @@ import javax.xml.xpath.XPathFactory;
  
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
@@ -67,17 +60,13 @@ public class AffichageAPITweet extends HttpServlet{
     
     public static final String VUE = "/WEB-INF/affichageAPITweet.jsp";
     
-    public void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
+    public void doPost( HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
         //variable pour le formulaire de saisie de tweet
         String tweet = request.getParameter(CHAMP_TWEET);
         String nom = request.getParameter(CHAMP_FILE);
         String choix = request.getParameter(CHAMP_CHOIX);
         //System.out.println("nom " + nom);
-        
-        //variable pour le formulaire de fichier
-        //boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-        //System.out.println("isMultipart " + isMultipart);
 
         //Preparation des résultats
         Map<String, String> listeTweet = new HashMap<String, String>();
@@ -113,41 +102,19 @@ public class AffichageAPITweet extends HttpServlet{
         }
         //on utilise le formulaire d'upload de fichier
         else if(choix.equals("uploadFile")){
-            System.out.println("uploadFile");
-            ServletFileUpload.isMultipartContent(request);
-            File savedFile = new File("./fichiers/");
-            DiskFileItemFactory factory = new DiskFileItemFactory();
-            factory.setSizeThreshold(TAILLE_TAMPON);
-            ServletContext servletContext = this.getServletConfig().getServletContext();
-            File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
-            factory.setRepository(repository);
-            
-            ServletFileUpload upload = new ServletFileUpload(factory);
-            List items;
-            try {
-                items = upload.parseRequest(request);
-                Iterator iter = items.iterator();
-                while (iter.hasNext()) {
-                   FileItem item = (FileItem) iter.next();
-                   if (item.isFormField()) {
 
-                    } 
-                    else {
-                        if (!item.getName().trim().equals("")){
-                               File fullFile = new File(item.getName());
-                               fullFile.getName();
-                              // c'est ici qu'il faudra changer le répertoire de  destination
-                               savedFile = new File("./fichiers/", fullFile.getName());
-                               item.write(savedFile);
-                        }
-                    }
-                }
-            } catch (FileUploadException ex) {
-                Logger.getLogger(AffichageAPITweet.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (Exception ex) {
-                Logger.getLogger(AffichageAPITweet.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
+            Part p = request.getPart(CHAMP_FILE);
+            System.out.println("nom "+ p.getName());
+            InputStream is = request.getPart(p.getName()).getInputStream();
+            int i = is.available();
+            byte[] b = new byte[i];
+            is.read(b);
+            System.out.println("longueur "+ b.length);
+            String fileName = getFileName(p);
+            System.out.println("File name "+ fileName);
+            FileOutputStream os = new FileOutputStream("./fichiers/" + fileName);
+            os.write(b);
+            is.close();
         }
         
         //Valeur pour Root
@@ -192,6 +159,19 @@ public class AffichageAPITweet extends HttpServlet{
         this.getServletContext().getRequestDispatcher(VUE).forward( request, response );
     }
     
+    
+    private String getFileName(Part part) { 
+        String partHeader = part.getHeader("content-disposition"); 
+        System.out.println("Part Header = " + partHeader); 
+        for (String cd : part.getHeader("content-disposition").split(";")) { 
+          if (cd.trim().startsWith("filename")) { 
+            return cd.substring(cd.indexOf('=') + 1).trim() 
+                .replace("\"", ""); 
+          } 
+        } 
+        return null;
+    }
+
     
     //Fonction qui va chercher les valeurs dans le fichier xml
     public String valeurXml(String expression){
