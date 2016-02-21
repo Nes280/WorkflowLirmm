@@ -54,7 +54,8 @@
                     <p> Description du modele des tweets </p>
                 </div>
                 <div class="tabs-panel" id="panel3">
-                    <p>Statistics afficher les résultats de root, positive, neutre, négative</p>
+                    <p>You can download the results in xml file.</p>
+                    <button class="info button" name="download" id="download">Download</button>
                     <ul class="vertical menu" data-accordion-menu>
                         <li>
                             <a href="#">Root</a>
