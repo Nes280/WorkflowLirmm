@@ -13,16 +13,19 @@ import javax.servlet.http.HttpServletResponse;
 import analysedesentiments.AnalyseDeSentiments;
 import fr.lirmm.beans.Polarite;
 import fr.lirmm.beans.Root;
+import java.io.BufferedReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import javax.servlet.http.Part;
  
 import javax.xml.parsers.DocumentBuilder;
@@ -64,9 +67,7 @@ public class AffichageAPITweet extends HttpServlet{
         
         //variable pour le formulaire de saisie de tweet
         String tweet = request.getParameter(CHAMP_TWEET);
-        String nom = request.getParameter(CHAMP_FILE);
         String choix = request.getParameter(CHAMP_CHOIX);
-        //System.out.println("nom " + nom);
 
         //Preparation des résultats
         Map<String, String> listeTweet = new HashMap<String, String>();
@@ -103,16 +104,54 @@ public class AffichageAPITweet extends HttpServlet{
         //on utilise le formulaire d'upload de fichier
         else if(choix.equals("uploadFile")){
             Part p = request.getPart(CHAMP_FILE);
-            System.out.println("nom "+ p.getName());
             InputStream is = request.getPart(p.getName()).getInputStream();
             int i = is.available();
             byte[] b = new byte[i];
             is.read(b);
-            System.out.println("longueur "+ b.length);
             String fileName = getFileName(p);
-            System.out.println("File name "+ fileName);
-            FileOutputStream os = new FileOutputStream("./fichiers/" + fileName);
-            os.write(b);
+            
+            //On a pas mis de fichiers
+            if(fileName.equals("")){
+                message = "No tweet";
+                erreur = true;
+            }
+            //on a uploadé un fichier
+            else{
+                message = "Analysis tweet";
+                erreur = false;
+                FileOutputStream os = new FileOutputStream("./fichiers/" + fileName);
+                os.write(b); 
+                
+                //Lecture de fichier uploader
+                String chaine = "";
+                try{
+                    InputStream ips = new FileInputStream("./fichiers/" + fileName); 
+                    InputStreamReader ipsr = new InputStreamReader(ips);
+                    BufferedReader br= new BufferedReader(ipsr);
+                    String ligne;
+                    while ((ligne=br.readLine())!=null){
+                            System.out.println(ligne);
+                            chaine+=ligne+"\n";
+                    }
+                    br.close(); 
+                    
+                    String delim = "\n\n";
+                    String[] tokens = chaine.split(delim);
+                    AnalyseDeSentiments a = new AnalyseDeSentiments();
+
+                    for(int j = 0; j < tokens.length; j++){
+                        try {
+                            resultat = a.start(tokens[j]);
+                            listeTweet.put(tokens[j], resultat);
+                        } catch (Exception ex) {
+                            Logger.getLogger(AffichageAPITweet.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }  
+		}		
+		catch (Exception e){
+			System.out.println(e.toString());
+		}
+            }
             is.close();
         }
         
@@ -159,6 +198,7 @@ public class AffichageAPITweet extends HttpServlet{
     }
     
     
+    //Fonction qui permet d'extraire le nom du fichiers du post
     private String getFileName(Part part) { 
         String partHeader = part.getHeader("content-disposition"); 
         System.out.println("Part Header = " + partHeader); 

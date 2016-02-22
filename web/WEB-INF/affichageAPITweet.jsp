@@ -43,6 +43,7 @@
                                             <span class="info label"><i class="fi-list"></i> Neutre</span>
                                         </c:if>
                                     </li>
+                                    <br/>
                                 </c:forEach>
                             </ul>
                         </p>
