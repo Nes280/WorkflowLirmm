@@ -17,9 +17,9 @@
                 <li><a href="#">Sentiment analysis</a>
                     <ul class="menu vertical">
                         <li><a href="saisieTexteTweet">Tweets</a></li>
-                        <li><a href="#">movie reviews</a></li>
-                        <li><a href="#">book reviews</a></li>
-                        <li><a href="#">parliamentary debates</a></li>
+                        <li><a href="#">Movie reviews</a></li>
+                        <li><a href="#">Book reviews</a></li>
+                        <li><a href="#">Parliamentary debates</a></li>
                     </ul>
                 </li>
                 <li><a href="#">Help</a></li>
