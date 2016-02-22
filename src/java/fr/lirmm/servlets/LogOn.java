@@ -7,7 +7,6 @@ package fr.lirmm.servlets;
 
 import fr.lirmm.beans.User;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,8 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import fr.lirmm.db.Names;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -24,6 +21,17 @@ import java.util.logging.Logger;
  */
 @WebServlet(name = "LogOn", urlPatterns = {"/logOn"})
 public class LogOn extends HttpServlet {
+    public String MAIL = "mail";
+    public String PASSWORD = "pass";
+    public String CONFIRMPW = "repass";
+    public String NOM = "Lname";
+    public String PRENOM = "FNAME";
+    
+    //Messages de sortie pour le callout
+    public String EMPTY = "";
+    public String SUCCESS = "You can now log.";
+    public String EMAIL_EXIST = "Email already used.";
+    public String SAME_PW = "Passwords must be the same.";
 
    public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
         String breadcrumbs = "<li><a href=\"/logon\">Log on</a></li>";
@@ -34,12 +42,12 @@ public class LogOn extends HttpServlet {
    }
    
    public void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
-       String mail = request.getParameter("mail");
-       String pass = request.getParameter("pass");
-       String rePass = request.getParameter("re-pass");
-       String firstName = request.getParameter("Fname");
-       String lastName = request.getParameter("Lname");
-       String additionalInformation = "";
+       String mail = request.getParameter(MAIL);
+       String pass = request.getParameter(PASSWORD);
+       String rePass = request.getParameter(CONFIRMPW);
+       String firstName = request.getParameter(PRENOM);
+       String lastName = request.getParameter(NOM);
+       String additionalInformation = EMPTY;
        int polarity = 0;
        Names test = new Names();  
      
@@ -53,17 +61,17 @@ public class LogOn extends HttpServlet {
                    ajout.ajouterUtilisateur(utilisateur);
                    
                    polarity = 1;
-                   additionalInformation = "You can now log.";
+                   additionalInformation = SUCCESS;
                }
                else{ // existe déjà
-                   additionalInformation = "Email already used.";
+                   additionalInformation = EMAIL_EXIST;
                }
            } catch (SQLException ex) {
                //
            }
        }
        else { //erreur dans les mots de passe
-           additionalInformation = "Passwords must be the same.";
+           additionalInformation = SAME_PW;
        }
        
        request.setAttribute( "topMenuName", "WorkFlow" );       
