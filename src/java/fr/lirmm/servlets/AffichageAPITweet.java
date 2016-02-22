@@ -84,7 +84,7 @@ public class AffichageAPITweet extends HttpServlet{
             }
             //on a un tweet à traiter
             else if (tweet != null){
-                message = "Analyse du tweet";
+                message = "Analysis tweet";
                 erreur = false;
                 String delim = "\n";
                 String[] tokens = tweet.split(delim);
@@ -102,7 +102,6 @@ public class AffichageAPITweet extends HttpServlet{
         }
         //on utilise le formulaire d'upload de fichier
         else if(choix.equals("uploadFile")){
-
             Part p = request.getPart(CHAMP_FILE);
             System.out.println("nom "+ p.getName());
             InputStream is = request.getPart(p.getName()).getInputStream();

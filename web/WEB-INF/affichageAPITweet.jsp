@@ -24,8 +24,9 @@
 
             <div class="tabs-content" data-tabs-content="example-tabs">
                 <div class="tabs-panel is-active" id="panel1">
-                    <p> API affichage des resultats </p>
-                    <p>${message}</p>
+                    <p>You can download the results in json file.</p>
+                    <button class="info button" name="download" id="download">Download</button>
+                    <h4>${message}</h4>
                     <c:if test="${ !erreur}">
                         <p>
                             <ul>
@@ -33,15 +34,12 @@
                                     <li>
                                         <c:out value="${t.key}"/> 
                                         <c:if test="${t.value.equals('+')}" >
-                                            <c:out value="${t.value}"/> 
                                             <span class="success label"><i class="fi-plus"></i> Positif</span>
                                         </c:if>
                                         <c:if test="${t.value.equals('-')}" >
-                                            <c:out value="${t.value}"/> 
                                             <span class="alert label"><i class="fi-minus"></i> Negatif</span>
                                         </c:if>
                                         <c:if test="${t.value.equals('=')}" >
-                                            <c:out value="${t.value}"/> 
                                             <span class="info label"><i class="fi-list"></i> Neutre</span>
                                         </c:if>
                                     </li>
