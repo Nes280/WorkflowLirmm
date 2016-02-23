@@ -87,18 +87,18 @@ public class AffichageAPITweet extends HttpServlet{
             else if (tweet != null){
                 message = "Analysis tweet";
                 erreur = false;
-                String delim = "\n";
-                String[] tokens = tweet.split(delim);
+                /*String delim = "\n";
+                String[] tokens = tweet.split(delim);*/
                 AnalyseDeSentiments a = new AnalyseDeSentiments();
 
-                for(int i = 0; i < tokens.length; i++){
+                /*for(int i = 0; i < tokens.length; i++){*/
                     try {
-                        resultat = a.start(tokens[i]);
-                        listeTweet.put(tokens[i], resultat);
+                        resultat = a.start(tweet);
+                        listeTweet.put(tweet, resultat);
                     } catch (Exception ex) {
                         Logger.getLogger(AffichageAPITweet.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }  
+               // }  
             }
         }
         //on utilise le formulaire d'upload de fichier
