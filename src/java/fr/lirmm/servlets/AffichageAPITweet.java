@@ -134,6 +134,7 @@ public class AffichageAPITweet extends HttpServlet{
                             chaine+=ligne+"\n";
                     }
                     br.close(); 
+                    ipsr.close();
                     
                     String delim = "\n\n";
                     String[] tokens = chaine.split(delim);
@@ -151,8 +152,12 @@ public class AffichageAPITweet extends HttpServlet{
 		catch (Exception e){
 			System.out.println(e.toString());
 		}
+                os.close();
             }
             is.close();
+            
+            File f = new File("./fichiers/" + fileName);
+            f.delete();
         }
         
         //Valeur pour Root
