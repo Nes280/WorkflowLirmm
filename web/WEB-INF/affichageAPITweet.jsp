@@ -50,7 +50,7 @@
                     </c:if>
                 </div>
                 <div class="tabs-panel" id="panel2">
-                    <p> Description du modele des tweets </p>
+                    <p>${description}</p>
                 </div>
                 <div class="tabs-panel" id="panel3">
                     <p>You can download the results in xml file.</p>

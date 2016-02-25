@@ -59,6 +59,7 @@ public class AffichageAPITweet extends HttpServlet{
     public static final String ATT_POSITIVE = "positive";
     public static final String ATT_NEUTRE = "neutre";
     public static final String ATT_NEGATIVE = "negative";
+    public static final String ATT_DESCRIPTION= "description";
 
     
     public static final String VUE = "/WEB-INF/affichageAPITweet.jsp";
@@ -187,6 +188,9 @@ public class AffichageAPITweet extends HttpServlet{
         negative.setPrecision(valeurXml("/tweet/negative/precision"));
         negative.setRecall(valeurXml("/tweet/negative/recall"));
         
+        //Description 
+        String description = valeurXml("/tweet/description");
+        
         String breadcrumbs = "<li><a href=\"/index\">Home</a></li>";
         request.setAttribute( "title", "Tweet" );
         request.setAttribute( "topMenuName", "WorkFlow" );
@@ -198,6 +202,7 @@ public class AffichageAPITweet extends HttpServlet{
         request.setAttribute(ATT_POSITIVE, positive);
         request.setAttribute(ATT_NEUTRE, neutre);
         request.setAttribute(ATT_NEGATIVE, negative);
+        request.setAttribute(ATT_DESCRIPTION, description);
 
         this.getServletContext().getRequestDispatcher(VUE).forward( request, response );
     }
