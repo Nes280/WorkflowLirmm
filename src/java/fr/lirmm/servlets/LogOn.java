@@ -23,7 +23,7 @@ import java.sql.SQLException;
 public class LogOn extends HttpServlet {
     public String MAIL = "mail";
     public String PASSWORD = "pass";
-    public String CONFIRMPW = "repass";
+    public String CONFIRMPW = "rePass";
     public String NOM = "Lname";
     public String PRENOM = "FNAME";
     
@@ -32,6 +32,7 @@ public class LogOn extends HttpServlet {
     public String SUCCESS = "You can now log.";
     public String EMAIL_EXIST = "Email already used.";
     public String SAME_PW = "Passwords must be the same.";
+    public String LENGTH_PW = "Password not enough long, please use at least 5 characters.";
 
    public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
         String breadcrumbs = "<li><a href=\"/logon\">Log on</a></li>";
@@ -40,7 +41,7 @@ public class LogOn extends HttpServlet {
         request.setAttribute( "breadcrumbs", breadcrumbs );
         this.getServletContext().getRequestDispatcher( "/WEB-INF/logOn.jsp" ).forward( request, response );
    }
-   
+
    public void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
        String mail = request.getParameter(MAIL);
        String pass = request.getParameter(PASSWORD);
@@ -53,25 +54,30 @@ public class LogOn extends HttpServlet {
      
        
        if (pass.equals(rePass)) {
-           try {
-               if(!test.isInDataBase(mail)) // si le mail n'est pas déjà utilisé
-               {
-                   User utilisateur = new User(firstName,lastName,mail,pass,false);
-                   Names ajout = new Names();
-                   ajout.ajouterUtilisateur(utilisateur);
-                   
-                   polarity = 1;
-                   additionalInformation = SUCCESS;
-               }
-               else{ // existe déjà
-                   additionalInformation = EMAIL_EXIST;
-               }
-           } catch (SQLException ex) {
-               //
-           }
+            if(pass.length() >= 5){
+                try {
+                    if(!test.isInDataBase(mail)) // si le mail n'est pas déjà utilisé
+                    {
+                        User utilisateur = new User(firstName,lastName,mail,pass,false);
+                        Names ajout = new Names();
+                        ajout.ajouterUtilisateur(utilisateur);
+
+                        polarity = 1;
+                        additionalInformation = SUCCESS;
+                    }
+                    else{ // existe déjà
+                        additionalInformation = EMAIL_EXIST;
+                    }
+                } catch (SQLException ex) {
+                    //
+                }
+            }
+            else {
+                additionalInformation =LENGTH_PW;
+            }
        }
        else { //erreur dans les mots de passe
-           additionalInformation = SAME_PW;
+           additionalInformation = SAME_PW + pass + rePass;
        }
        
        request.setAttribute( "topMenuName", "WorkFlow" );       

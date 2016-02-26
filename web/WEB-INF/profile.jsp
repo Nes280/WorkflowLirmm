@@ -14,18 +14,20 @@
         <jsp:include page="Breadcrumbs.jsp">
             <jsp:param name="breadcrumbs" value="${breadcrumbs}"/>
         </jsp:include>
+        <c:if test="${info != null}">
                 <div class="row medium-8 large-7 columns">
                     <div class="blog-post">
                         <div class="large-12 large-centered large-5 large-centered columns">
                             <div large large-centered large-5 large-centered columns >
                                 <div class="${classe} callout primary">
-                                    <h5>Change your settings</h5>
+                                    <h5>Information:</h5>
                                     <p>${info}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>   
+                </div>
+        </c:if>
         <div class="row medium-8 large-7 columns">
             <div class="blog-post">
                 <div class="medium-7 medium-centered large-5 large-centered columns">
@@ -67,6 +69,10 @@
                                 </div>
                                 <button type="submit" class="alert hollow button">Send</button>
                             </form>
+                            <form  method="get" action="<c:url value="/profile"/>">
+                                <input value="cancel" name="edit" hidden>
+                                <button type="submit" class="hollow button">Cancel</button>
+                            </form> 
                         </c:when>
                         
                         <c:when test="${edit == 2}">
@@ -88,8 +94,12 @@
                                         <input name="rePass" type="password" value="" required>
                                     </div>
                                 </div>
-                                <button class="hollow button">Send</button>
+                                <button class="alert hollow button">Send</button>
                             </form>
+                            <form  method="get" action="<c:url value="/profile"/>">
+                                <input value="cancel" name="edit" hidden>
+                                <button type="submit" class="hollow button">Cancel</button>
+                            </form>    
                         </c:when>
                         
                         <c:otherwise>

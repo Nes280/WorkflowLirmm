@@ -43,7 +43,7 @@
                                 <input  name="pass" id="pass" type="password" placeholder="Password" required >
                             </label>
                             <label>Password
-                                <input  name="re-pass" id="re-pass" type="password" placeholder="Password" required >
+                                <input  name="rePass" id="rePass" type="password" placeholder="Password" required >
                             </label>
                             <p>I accept the <u>Terms and Conditions</u></p>
                             <div class="switch small">
