@@ -76,6 +76,11 @@ public class AffichageAPITweet extends HttpServlet{
         boolean erreur = true; 
         String resultat = "";
         
+        //Initialiser les modèles
+        String modele1 = "DEFT15T1STW.model";
+        String modele2 = "DEFT15T1IG.model";
+        String modele3 = "DEFT15T1SMO.model";
+        
         //on utilise le formulaire de saisie de texte
         if(choix.equals("saisieTexte"))
         {
@@ -94,7 +99,7 @@ public class AffichageAPITweet extends HttpServlet{
 
                 /*for(int i = 0; i < tokens.length; i++){*/
                     try {
-                        resultat = a.start(tweet);
+                        resultat = a.start(tweet, modele1, modele2, modele3);
                         listeTweet.put(tweet, resultat);
                     } catch (Exception ex) {
                         Logger.getLogger(AffichageAPITweet.class.getName()).log(Level.SEVERE, null, ex);
@@ -143,7 +148,7 @@ public class AffichageAPITweet extends HttpServlet{
 
                     for(int j = 0; j < tokens.length; j++){
                         try {
-                            resultat = a.start(tokens[j]);
+                            resultat = a.start(tokens[j], modele1, modele2, modele3);
                             listeTweet.put(tokens[j], resultat);
                         } catch (Exception ex) {
                             Logger.getLogger(AffichageAPITweet.class.getName()).log(Level.SEVERE, null, ex);
