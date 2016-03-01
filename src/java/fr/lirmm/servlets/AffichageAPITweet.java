@@ -84,8 +84,9 @@ public class AffichageAPITweet extends HttpServlet{
         //on utilise le formulaire de saisie de texte
         if(choix.equals("saisieTexte"))
         {
+            System.out.println("tweet " + tweet);
             //il n'y a pas de tweet à traiter
-            if(tweet == null ){
+            if(tweet == null || tweet.isEmpty() ){
                 message = "No tweet";
                 erreur = true;
             }
