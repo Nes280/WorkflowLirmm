@@ -53,8 +53,11 @@
                     <p>${description}</p>
                 </div>
                 <div class="tabs-panel" id="panel3">
-                    <p>You can download the results in xml file.</p>
-                    <button class="info button" name="download" id="download">Download</button>
+                    <form method="get" action="<c:url value="/download"/>">                    
+                        <p>You can download the results in xml file.</p>
+                        <button class="info button" name="download" id="download" target="_blank">Download</button>
+                    </form>
+                    <a href="http://localhost/tweet.xml" target="_blank">${alternative}</a>
                     <ul class="vertical menu" data-accordion-menu>
                         <li>
                             <a href="#">Root</a>

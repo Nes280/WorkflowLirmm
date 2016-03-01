@@ -3,26 +3,29 @@
     <!--
     INDEX
     !-->
-    
     <servlet>
         <servlet-name>index</servlet-name>
         <servlet-class>fr.lirmm.servlets.Index</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>saisieTexteTweet</servlet-name>
-	<servlet-class>fr.lirmm.servlets.SaisieTexteTweet</servlet-class>
+        <servlet-class>fr.lirmm.servlets.SaisieTexteTweet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>affichageAPITweet</servlet-name>
-	<servlet-class>fr.lirmm.servlets.AffichageAPITweet</servlet-class>
+        <servlet-class>fr.lirmm.servlets.AffichageAPITweet</servlet-class>
         <multipart-config>
         </multipart-config>
+    </servlet>
+    <servlet>
+        <servlet-name>Download</servlet-name>
+        <servlet-class>fr.lirmm.servlets.Download</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>index</servlet-name>
         <url-pattern>/index</url-pattern>
     </servlet-mapping>
-     <servlet>
+    <servlet>
         <servlet-name>logIn</servlet-name>
         <servlet-class>fr.lirmm.servlets.LogIn</servlet-class>
     </servlet>
@@ -31,12 +34,16 @@
         <url-pattern>/logIn</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-	<servlet-name>saisieTexteTweet</servlet-name>
-	<url-pattern>/saisieTexteTweet</url-pattern>
+        <servlet-name>saisieTexteTweet</servlet-name>
+        <url-pattern>/saisieTexteTweet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-	<servlet-name>affichageAPITweet</servlet-name>
-	<url-pattern>/affichageAPITweet</url-pattern>
+        <servlet-name>affichageAPITweet</servlet-name>
+        <url-pattern>/affichageAPITweet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Download</servlet-name>
+        <url-pattern>/download</url-pattern>
     </servlet-mapping>
     <resource-ref>
         <res-ref-name>jdbc/workflow_db</res-ref-name>

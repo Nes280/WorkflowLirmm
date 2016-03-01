@@ -60,7 +60,8 @@ public class AffichageAPITweet extends HttpServlet{
     public static final String ATT_NEUTRE = "neutre";
     public static final String ATT_NEGATIVE = "negative";
     public static final String ATT_DESCRIPTION= "description";
-
+    public static final String ATT_DOWNLOAD = "alternative";
+   
     
     public static final String VUE = "/WEB-INF/affichageAPITweet.jsp";
     
@@ -209,6 +210,7 @@ public class AffichageAPITweet extends HttpServlet{
         request.setAttribute(ATT_NEUTRE, neutre);
         request.setAttribute(ATT_NEGATIVE, negative);
         request.setAttribute(ATT_DESCRIPTION, description);
+        request.setAttribute(ATT_DOWNLOAD, "alternative");
 
         this.getServletContext().getRequestDispatcher(VUE).forward( request, response );
     }

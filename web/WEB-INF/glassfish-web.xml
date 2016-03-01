@@ -8,4 +8,5 @@
     </property>
   </jsp-config>
   <parameter-encoding default-charset="UTF-8"/>
+  <property name="alternative" value="from=/tweet.xml dir=./XML/tweet.xml"/>
 </glassfish-web-app>
