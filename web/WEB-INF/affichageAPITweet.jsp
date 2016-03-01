@@ -24,11 +24,13 @@
 
             <div class="tabs-content" data-tabs-content="example-tabs">
                 <div class="tabs-panel is-active" id="panel1">
-                    <p>You can download the results in json file.</p>
-                    <button class="info button" name="download" id="download">Download</button>
                     <h4>${message}</h4>
                     <c:if test="${ !erreur}">
                         <p>
+                            <p>You can download the results in json file.</p>
+                            <button class="info button" name="download" id="download">Download</button>
+                            <br/>
+                            <br/>
                             <ul>
                                 <c:forEach var="t" items="${tweet}">
                                     <li>
@@ -53,12 +55,10 @@
                     <p>${description}</p>
                 </div>
                 <div class="tabs-panel" id="panel3">
-                    <form method="get" action="<c:url value="/download"/>">                    
-                        <p>You can download the results in xml file.</p>
-                        <button class="info button" name="download" id="download" target="_blank">Download</button>
-                    </form>
+                    <p>You can download the results in xml file.</p>
                     <a href="download?filename=tweet.xml" target="_blank">Click here to download file</a>
-                    <!--<a href="tweet.xml" target="_blank">${alternative}</a>-->
+                    <br/>
+                    <br/>
                     <ul class="vertical menu" data-accordion-menu>
                         <li>
                             <a href="#">Root</a>
