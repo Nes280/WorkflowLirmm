@@ -57,7 +57,8 @@
                         <p>You can download the results in xml file.</p>
                         <button class="info button" name="download" id="download" target="_blank">Download</button>
                     </form>
-                    <a href="http://localhost/tweet.xml" target="_blank">${alternative}</a>
+                    <a href="download?filename=tweet.xml" target="_blank">Click here to download file</a>
+                    <!--<a href="tweet.xml" target="_blank">${alternative}</a>-->
                     <ul class="vertical menu" data-accordion-menu>
                         <li>
                             <a href="#">Root</a>

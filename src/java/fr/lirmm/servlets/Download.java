@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fr.lirmm.servlets;
 
 import static fr.lirmm.servlets.AffichageAPITweet.VUE;
@@ -28,84 +23,41 @@ public class Download extends HttpServlet {
     public static final int TAILLE_TAMPON = 10240; // 10ko
 
     public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
-        /*
-         * Lecture du paramÃ¨tre 'chemin' passÃ© Ã  la servlet via la dÃ©claration
-         * dans le web.xml
-         */
-        //String chemin = this.getServletConfig().getInitParameter( "chemin" );
-        String chemin = "XML/tweet.xml";
+       String filename=null;
 
-        /*
-         * RÃ©cupÃ©ration du chemin du fichier demandÃ© au sein de l'URL de la
-         * requÃªte
-         */
-        String fichierRequis = request.getPathInfo();
+        try
+        {
+            filename = request.getParameter("filename");        
 
-        /* VÃ©rifie qu'un fichier a bien Ã©tÃ© fourni */
-        if ( fichierRequis == null ) {
-            /*
-             * Si non, alors on envoie une erreur 404, qui signifie que la
-             * ressource demandÃ©e n'existe pas
-             */
-            response.sendError( HttpServletResponse.SC_NOT_FOUND );
-            return;
-        }
-
-        /*
-         * DÃ©code le nom de fichier rÃ©cupÃ©rÃ©, susceptible de contenir des
-         * espaces et autres caractÃ¨res spÃ©ciaux, et prÃ©pare l'objet File
-         */
-        fichierRequis = URLDecoder.decode( fichierRequis, "UTF-8" );
-        File fichier = new File( chemin, fichierRequis );
-
-        /* VÃ©rifie que le fichier existe bien */
-        if ( !fichier.exists() ) {
-            /*
-             * Si non, alors on envoie une erreur 404, qui signifie que la
-             * ressource demandÃ©e n'existe pas
-             */
-            response.sendError( HttpServletResponse.SC_NOT_FOUND );
-            return;
-        }
-
-        /* RÃ©cupÃ¨re le type du fichier */
-        String type = getServletContext().getMimeType( fichier.getName() );
-
-        /*
-         * Si le type de fichier est inconnu, alors on initialise un type par
-         * dÃ©faut
-         */
-        if ( type == null ) {
-            type = "application/octet-stream";
-        }
-
-        /* Initialise la rÃ©ponse HTTP */
-        response.reset();
-        response.setBufferSize( TAILLE_TAMPON );
-        response.setContentType( type );
-        response.setHeader( "Content-Length", String.valueOf( fichier.length() ) );
-        response.setHeader( "Content-Disposition", "attachment; filename=\"" + fichier.getName() + "\"" );
-
-        /* PrÃ©pare les flux */
-        BufferedInputStream entree = null;
-        BufferedOutputStream sortie = null;
-        try {
-            /* Ouvre les flux */
-            entree = new BufferedInputStream( new FileInputStream( fichier ), TAILLE_TAMPON );
-            sortie = new BufferedOutputStream( response.getOutputStream(), TAILLE_TAMPON );
-
-            /* Lit le fichier et Ã©crit son contenu dans la rÃ©ponse HTTP */
-            byte[] tampon = new byte[TAILLE_TAMPON];
-            int longueur;
-            while ( ( longueur = entree.read( tampon ) ) > 0 ) {
-                sortie.write( tampon, 0, longueur );
+            if(filename == null || filename.equals(""))
+            {
+                throw new ServletException("File Name can't be null or empty");
             }
-        } finally {
-            sortie.close();
-            entree.close();
+
+            String filepath = "./XML/"+filename;   //change your directory path
+
+            File file = new File(filepath);
+            if(!file.exists())
+            {
+                throw new ServletException("File doesn't exists on server.");
+            }
+
+            response.setContentType("APPLICATION/OCTET-STREAM");
+            response.setHeader("Content-Disposition","attachment; filename=\"" + filename + "\""); 
+
+            java.io.FileInputStream fileInputStream = new java.io.FileInputStream(filepath);
+
+            int i; 
+            while ((i=fileInputStream.read()) != -1) 
+            {
+                 response.getWriter().write(i); 
+            } 
+            fileInputStream.close();
         }
-        
-        this.getServletContext().getRequestDispatcher(VUE).forward( request, response );
+        catch(Exception e)
+        {
+            System.err.println("Error while downloading file["+filename+"]"+e);
+        }
     }
 
 }
