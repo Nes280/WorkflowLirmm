@@ -1,18 +1,25 @@
 <%-- 
     Document   : choixSentimentAnalysis
     Created on : 4 mars 2016, 14:07:42
-    Author     : azaz1
+    Author     : Elsa Martel
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
+<%@include file="head.jsp" %>
+
     <body>
         <h1>Hello World!</h1>
         <a href="affichageModeleExistant">French Tweets polarity</a>
+        <form method="post" action="<c:url value="/affichageModeleExistant"/>">
+            <div class="row">
+                <div class="large-12 columns">
+                    <label>Write your tweet : 
+                        <textarea id="tweetAAnalyser" name="tweetAAnalyser" placeholder=""></textarea>
+                    </label>
+                </div>
+            </div>
+            <input value="saisieTexte" name="choix" hidden>
+            <input type="classify" value="Classify" class="button" />
+        </form>
+
     </body>
 </html>
