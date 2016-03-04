@@ -168,6 +168,9 @@ public class AffichageAPITweet extends HttpServlet{
             f.delete();
         }
         
+        //Création du json
+        
+        
         //Valeur pour Root
         Root root = new Root();
         root.setMicrofmeasure(valeurXml("/tweet/root/microfmeasure"));

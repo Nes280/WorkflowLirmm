@@ -17,8 +17,8 @@
             <p>Welcom to the ${title} of the web sit!</p> 
             
             <ul class="tabs" data-tabs id="example-tabs">
-                <li class="tabs-title is-active"><a href="#panel1" aria-selected="true">Enter text</a></li>
-                <li class="tabs-title"><a href="#panel2">Upload a file</a></li>
+                <li class="tabs-title is-active"><a href="#panel1" aria-selected="true">Write text</a></li>
+                <li class="tabs-title"><a href="#panel2">Upload file</a></li>
             </ul>
             
             <div class="tabs-content" data-tabs-content="example-tabs">
