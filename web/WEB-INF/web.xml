@@ -21,6 +21,10 @@
         <servlet-name>Download</servlet-name>
         <servlet-class>fr.lirmm.servlets.Download</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ChoixSentimentAnalysis</servlet-name>
+        <servlet-class>fr.lirmm.servlets.ChoixSentimentAnalysis</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>index</servlet-name>
         <url-pattern>/index</url-pattern>
@@ -44,6 +48,10 @@
     <servlet-mapping>
         <servlet-name>Download</servlet-name>
         <url-pattern>/download</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChoixSentimentAnalysis</servlet-name>
+        <url-pattern>/choixSentimentAnalysis</url-pattern>
     </servlet-mapping>
     <resource-ref>
         <res-ref-name>jdbc/workflow_db</res-ref-name>

@@ -22,6 +22,7 @@
                         <li><a href="#">Parliamentary debates</a></li>
                     </ul>
                 </li>
+                <li><a href="choixSentimentAnalysis">New Sentiment analysis</a>
                 <li><a href="#">Help</a></li>
                 <li><a href="<c:url value="/test"/>">test de securité</a></li>
             </ul>
