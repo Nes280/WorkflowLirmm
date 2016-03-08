@@ -155,7 +155,7 @@
                                 </div>
                             </div>
                             <input value="saisieTexte" name="choix" hidden>
-                            <input type="classify" value="Classify" class="button" />
+                            <input type="submit" value="Classify" class="button" />
                         </form>
                     </div>
                     <br/>
@@ -165,7 +165,7 @@
                             <label for="fileUpload" class="button">Upload File</label>
                             <input type="file" id="fileUpload" name="fileUpload" class="show-for-sr">
                             <input value="uploadFile" name="choix" hidden>
-                            <input type="classify" value="Classify" class="button" />
+                            <input type="submit" value="Classify" class="button" />
                         </form>             
                      </div>
                 </div>

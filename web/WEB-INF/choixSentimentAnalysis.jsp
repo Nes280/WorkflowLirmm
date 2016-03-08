@@ -9,17 +9,18 @@
     <body>
         <h1>Hello World!</h1>
         <a href="affichageModeleExistant">French Tweets polarity</a>
-        <form method="post" action="<c:url value="/affichageModeleExistant"/>">
-            <div class="row">
-                <div class="large-12 columns">
-                    <label>Write your tweet : 
-                        <textarea id="tweetAAnalyser" name="tweetAAnalyser" placeholder=""></textarea>
-                    </label>
+        <div>
+            <form method="post" action="<c:url value="/affichageModeleExistant"/>">
+                <div class="row">
+                    <div class="large-12 columns">
+                        <label>Write your tweet : 
+                            <textarea id="tweetAAnalyser" name="tweetAAnalyser" placeholder=""></textarea>
+                        </label>
+                    </div>
                 </div>
-            </div>
-            <input value="saisieTexte" name="choix" hidden>
-            <input type="classify" value="Classify" class="button" />
-        </form>
-
+                <input value="saisieTexte" name="choix" hidden>
+                <input type="submit" value="Classify" class="button" />
+            </form>
+        </div>
     </body>
 </html>
