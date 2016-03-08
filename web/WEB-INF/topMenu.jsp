@@ -13,7 +13,12 @@
     <div class="top-bar" id="example-menu" >
         <div class="top-bar-left">
             <ul class="dropdown menu" data-dropdown-menu>
-                <li class="menu-text"><a href="<c:url value="/index"/>">${topMenuName}</a></li>
+                <li class="menu-text"><a href="<c:url value="/index"/>"><i class="fi-home"> Home</i></a></li>
+            </ul>
+        </div>
+        <div class="top-bar-right">
+            <ul class="dropdown menu" data-dropdown-menu>
+                
                 <li><a href="#">Sentiment analysis</a>
                     <ul class="menu vertical">
                         <li><a href="saisieTexteTweet">Tweets</a></li>
@@ -24,19 +29,9 @@
                 </li>
                 <li><a href="choixSentimentAnalysis">New Sentiment analysis</a>
                 <li><a href="#">Help</a></li>
-                <li><a href="<c:url value="/test"/>">test de securité</a></li>
-            </ul>
+                <li><button class="warning hollow button" data-open="offCanvas">${sessionScope.prenom} ${sessionScope.nom}</button></li>
+            </ul>  
         </div>
-        <div class="top-bar-right">
-            <div class="title-bar-right">
-                
-                <button class="warning hollow button" data-open="offCanvas">${sessionScope.prenom} ${sessionScope.nom}</button>
-            </div>   
-        </div>
-        <ul class="menu">
-            <li><input type="search" placeholder="Search"></li>
-            <li><button type="button" class="button">Search</button></li>
-        </ul>
     </div>
     
 </c:if>

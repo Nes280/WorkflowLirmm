@@ -20,6 +20,7 @@ import fr.lirmm.beans.User;
 public class Names {
     private Connection connexion;
     boolean alreadyConnect = false;
+    //private String JDBC = "jdbc:postgresql://localhost/workflow_db";
     private String JDBC = "jdbc:postgresql://localhost/workflow_db";
     private String USER = "workflow_user";
     private String PASSWORD = "admin";

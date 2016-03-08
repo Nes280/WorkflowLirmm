@@ -30,6 +30,7 @@ public class Profile extends HttpServlet {
     public String PW_CHANGED = "Password has been changed, please use it for the next connection. ";
     public String PW_LENGTH = "Password not enough long, please use at least 5 characters.";
     public String PW_SAME = "Passwords must be the same.";
+    public String PW_EMPTY = "Passwords can't be empty.";
     
     public String info = ""; //chaîne d'information pour le callout
     public String classe = "";//classe du callout 
@@ -111,13 +112,20 @@ public class Profile extends HttpServlet {
                 else {
                     info = PW_LENGTH;
                     classe = ALERT;
-                    request.setAttribute("edit",2); //on reste sur la vue ppour changer de mot de passe
+                    request.setAttribute("edit",2); //on reste sur la vue pour changer de mot de passe
                 } 
             }
             else{
-                info = PW_SAME;
-                classe = ALERT;
-                request.setAttribute("edit",2);
+                if(pass.equals("") || rePass.equals("")){
+                    info = PW_EMPTY;
+                    classe = ALERT;
+                    request.setAttribute("edit",2);
+                }
+                else{
+                    info = PW_SAME;
+                    classe = ALERT;
+                    request.setAttribute("edit",2);
+                }
             }
         }
         

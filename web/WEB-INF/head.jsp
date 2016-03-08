@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link href="resources/css/foundation.min.css" rel="stylesheet" type="text/css"/>
+<link href="resources/css/foundation.css" rel="stylesheet" type="text/css"/>
 <link href="resources/css/workflow.css" rel="stylesheet" type="text/css"/>
 <script src="resources/js/vendor/jquery.min.js" type="text/javascript"></script>
 <script src="resources/js/foundation.min.js" type="text/javascript"></script>
