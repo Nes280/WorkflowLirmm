@@ -10,7 +10,7 @@
         <h1>Hello World!</h1>
         <a href="affichageModeleExistant">French Tweets polarity</a>
         <div>
-            <form method="post" action="<c:url value="/affichageModeleExistant"/>">
+            <form method="post" action="<c:url value="/AffichageModeleExistant"/>">
                 <div class="row">
                     <div class="large-12 columns">
                         <label>Write your tweet : 

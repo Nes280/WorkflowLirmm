@@ -5,22 +5,28 @@
  */
 package fr.lirmm.servlets;
 
+import analysedesentiments.AnalyseDeSentiments;
 import fr.lirmm.beans.Polarite;
 import fr.lirmm.beans.Root;
-import static fr.lirmm.servlets.AffichageAPITweet.ATT_DESCRIPTION;
-import static fr.lirmm.servlets.AffichageAPITweet.ATT_NEGATIVE;
-import static fr.lirmm.servlets.AffichageAPITweet.ATT_NEUTRE;
-import static fr.lirmm.servlets.AffichageAPITweet.ATT_POSITIVE;
-import static fr.lirmm.servlets.AffichageAPITweet.ATT_ROOT;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -56,11 +62,116 @@ public class AffichageModeleExistant extends HttpServlet {
     public static final String ATT_NEUTRE = "neutre";
     public static final String ATT_NEGATIVE = "negative";
     public static final String ATT_DESCRIPTION= "description";
-    public static final String ATT_DOWNLOAD = "alternative";
     
     public static final String VUE = "/WEB-INF/affichageModeleExistant.jsp";
      
     public void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
+        
+        //variable pour le formulaire de saisie de tweet
+        String tweet = request.getParameter(CHAMP_TWEET);
+        String choix = request.getParameter(CHAMP_CHOIX);
+        System.out.println("choix "+ choix);
+
+        //Preparation des résultats
+        Map<String, String> listeTweet = new HashMap<String, String>();
+        String message = ""; 
+        boolean erreur = true; 
+        String resultat = "";
+        
+        //Initialiser les modèles
+        String modele1 = "DEFT15T1STW.model";
+        String modele2 = "DEFT15T1IG.model";
+        String modele3 = "DEFT15T1SMO.model";
+        
+        //on utilise le formulaire de saisie de texte
+        if(choix.equals("saisieTexte"))
+        {
+            System.out.println("tweet " + tweet);
+            //il n'y a pas de tweet à traiter
+            if(tweet == null || tweet.isEmpty() ){
+                message = "No tweet";
+                erreur = true;
+            }
+            //on a un tweet à traiter
+            else if (tweet != null){
+                message = "Analysis tweet";
+                erreur = false;
+                /*String delim = "\n";
+                String[] tokens = tweet.split(delim);*/
+                AnalyseDeSentiments a = new AnalyseDeSentiments();
+
+                /*for(int i = 0; i < tokens.length; i++){*/
+                    try {
+                        resultat = a.start(tweet, modele1, modele2, modele3);
+                        listeTweet.put(tweet, resultat);
+                    } catch (Exception ex) {
+                        Logger.getLogger(AffichageAPITweet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+               // }  
+            }
+        }
+        //on utilise le formulaire d'upload de fichier
+        else if(choix.equals("uploadFile")){
+            Part p = request.getPart(CHAMP_FILE);
+            InputStream is = request.getPart(p.getName()).getInputStream();
+            int i = is.available();
+            byte[] b = new byte[i];
+            is.read(b);
+            String fileName = getFileName(p);
+            
+            //On a pas mis de fichiers
+            if(fileName.equals("")){
+                message = "No tweet";
+                erreur = true;
+            }
+            //on a uploadé un fichier
+            else{
+                message = "Analysis tweet";
+                erreur = false;
+                FileOutputStream os = new FileOutputStream("./fichiers/" + fileName);
+                os.write(b); 
+                
+                //Lecture de fichier uploader
+                String chaine = "";
+                try{
+                    InputStream ips = new FileInputStream("./fichiers/" + fileName); 
+                    InputStreamReader ipsr = new InputStreamReader(ips);
+                    BufferedReader br= new BufferedReader(ipsr);
+                    String ligne;
+                    while ((ligne=br.readLine())!=null){
+                            System.out.println(ligne);
+                            chaine+=ligne+"\n";
+                    }
+                    br.close(); 
+                    ipsr.close();
+                    
+                    String delim = "\n\n";
+                    String[] tokens = chaine.split(delim);
+                    AnalyseDeSentiments a = new AnalyseDeSentiments();
+
+                    for(int j = 0; j < tokens.length; j++){
+                        try {
+                            resultat = a.start(tokens[j], modele1, modele2, modele3);
+                            listeTweet.put(tokens[j], resultat);
+                        } catch (Exception ex) {
+                            Logger.getLogger(AffichageAPITweet.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }  
+		}		
+		catch (Exception e){
+			System.out.println(e.toString());
+		}
+                os.close();
+            }
+            is.close();
+            
+            File f = new File("./fichiers/" + fileName);
+            f.delete();
+        }
+        
+        //Création du json
+        
+        
         
         //Valeur pour Root
         Root root = new Root();
@@ -95,8 +206,11 @@ public class AffichageModeleExistant extends HttpServlet {
         
         String breadcrumbs = "<li><a href=\"/index\">Home</a></li>";
         request.setAttribute( "title", "Tweet" );
-        request.setAttribute( "topMenuName", "WorkFlow" );
+        request.setAttribute( "topMenuName", "Home" );
         request.setAttribute( "breadcrumbs", breadcrumbs );
+        request.setAttribute(ATT_TWEET, listeTweet);
+        request.setAttribute(ATT_MESSAGE, message);
+        request.setAttribute(ATT_ERREUR, erreur);
         request.setAttribute(ATT_ROOT, root);
         request.setAttribute(ATT_POSITIVE, positive);
         request.setAttribute(ATT_NEUTRE, neutre);
@@ -106,6 +220,19 @@ public class AffichageModeleExistant extends HttpServlet {
         this.getServletContext().getRequestDispatcher(VUE).forward( request, response );
     }
     
+    
+    private String getFileName(Part part) { 
+        String partHeader = part.getHeader("content-disposition"); 
+        System.out.println("Part Header = " + partHeader); 
+        for (String cd : part.getHeader("content-disposition").split(";")) { 
+          if (cd.trim().startsWith("filename")) { 
+            return cd.substring(cd.indexOf('=') + 1).trim() 
+                .replace("\"", ""); 
+          } 
+        } 
+        return null;
+    }
+
     
     
     //Fonction qui va chercher les valeurs dans le fichier xml

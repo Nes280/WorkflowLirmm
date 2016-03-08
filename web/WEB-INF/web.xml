@@ -33,6 +33,12 @@
         <servlet-name>logIn</servlet-name>
         <servlet-class>fr.lirmm.servlets.LogIn</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AffichageModeleExistant</servlet-name>
+        <servlet-class>fr.lirmm.servlets.AffichageModeleExistant</servlet-class>
+        <multipart-config>
+        </multipart-config>
+    </servlet>
     <servlet-mapping>
         <servlet-name>logIn</servlet-name>
         <url-pattern>/logIn</url-pattern>
@@ -52,6 +58,10 @@
     <servlet-mapping>
         <servlet-name>ChoixSentimentAnalysis</servlet-name>
         <url-pattern>/choixSentimentAnalysis</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AffichageModeleExistant</servlet-name>
+        <url-pattern>/AffichageModeleExistant</url-pattern>
     </servlet-mapping>
     <resource-ref>
         <res-ref-name>jdbc/workflow_db</res-ref-name>
