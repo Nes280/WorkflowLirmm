@@ -8,13 +8,8 @@
 <%@include file="head.jsp" %>
 
     <body>
-        <jsp:include page="topMenu.jsp">
-            <jsp:param name="topMenuName" value="${topMenuName}"/>
-        </jsp:include>
+        <%@include file="topMenu.jsp" %>
         
-        <jsp:include page="Breadcrumbs.jsp">
-            <jsp:param name="breadcrumbs" value="${breadcrumbs}"/>
-        </jsp:include>
         <div class="row medium-8 large-7 columns">
             <p>French Tweet Polarity</p> 
             
@@ -204,23 +199,6 @@
                                 <a href="download?filename=tweet.xml" target="_blank">Click here to download file A changer</a>
                                 <br/>
                                 <br/>
-                                <ul>
-                                    <c:forEach var="t" items="${tweet}">
-                                        <li>
-                                            <c:out value="${t.key}"/> 
-                                            <c:if test="${t.value.equals('+')}" >
-                                                <span class="success label"><i class="fi-plus"></i> Positif</span>
-                                            </c:if>
-                                            <c:if test="${t.value.equals('-')}" >
-                                                <span class="alert label"><i class="fi-minus"></i> Negatif</span>
-                                            </c:if>
-                                            <c:if test="${t.value.equals('=')}" >
-                                                <span class="info label"><i class="fi-list"></i> Neutre</span>
-                                            </c:if>
-                                        </li>
-                                        <br/>
-                                    </c:forEach>
-                                </ul>
                             </p>
                         </c:if>
                      </div>

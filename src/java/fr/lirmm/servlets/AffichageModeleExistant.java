@@ -9,18 +9,24 @@ import analysedesentiments.AnalyseDeSentiments;
 import fr.lirmm.beans.Polarite;
 import fr.lirmm.beans.Root;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.json.Json;
+import javax.json.stream.JsonGenerator;
+import javax.json.stream.JsonGeneratorFactory;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -38,6 +44,7 @@ import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
+
 
 
 /**
@@ -167,12 +174,22 @@ public class AffichageModeleExistant extends HttpServlet {
             
             File f = new File("./fichiers/" + fileName);
             f.delete();
+            
+            //Création du json
+            FileOutputStream fos = new FileOutputStream(new File("./fichiers/fichierjson.json"));
+            
+            JsonGeneratorFactory factory = Json.createGeneratorFactory(null);
+            JsonGenerator generator = factory.createGenerator(fos);
+            generator.writeStartArray();
+            
+            for(Entry<String, String> entry : listeTweet.entrySet())
+            {
+                generator.writeStartObject().write("phrase", entry.getKey()).
+                    write("classe", entry.getValue()).writeEnd();            
+            }            
+            generator.writeEnd().close(); 
         }
-        
-        //Création du json
-        
-        
-        
+          
         //Valeur pour Root
         Root root = new Root();
         root.setMicrofmeasure(valeurXml("/tweet/root/microfmeasure"));
