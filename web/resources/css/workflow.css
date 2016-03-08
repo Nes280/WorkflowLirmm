@@ -12,13 +12,15 @@ and open the template in the editor.
 
 .center
 {
-    width : 50%; 
-    margin : auto; 
+    margin: 2%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 
 .blue-hover:hover 
 {
-    background-color: #6699ff;
+    background-color: #9faeb7;
     opacity: 0.8;
 }
 
@@ -50,4 +52,9 @@ width: 100%;
 background-color: #e6e6e6;
 text-align: center;
 font-size: small;
+}
+
+.margin
+{
+    margin:5px;
 }

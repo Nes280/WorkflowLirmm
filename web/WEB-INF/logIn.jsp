@@ -6,14 +6,8 @@
 
 <%@include file="head.jsp" %>
     <body>
-        <jsp:include page="topMenu.jsp">
-            <jsp:param name="topMenuName" value="${topMenuName}"/>
-        </jsp:include>
-        
-        <jsp:include page="Breadcrumbs.jsp">
-            <jsp:param name="breadcrumbs" value="${breadcrumbs}"/>
-        </jsp:include>
-        
+        <%@include file="topMenu.jsp" %>
+
         <div class="row medium-8 large-7 columns">
             <c:choose>
                 <c:when test="${polarity == 0}"> 
