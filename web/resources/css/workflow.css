@@ -43,8 +43,8 @@ and open the template in the editor.
 
 
 .footer {
-position:relative;
-display: block;
+position:fixed;
+
 bottom:0;
 left:0;
 height:25px;

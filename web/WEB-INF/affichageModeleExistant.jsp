@@ -26,6 +26,7 @@
                     </div>
                     <br/>
                     <div>
+                        <hr>
                         <h3>Global</h3>
                         <p><b>Sample : Valeur à mettre</b></p>
                         <div class="row medium-uncollapse large-uncollapse">
@@ -73,6 +74,7 @@
                     </div>
                     <br/>
                     <div>
+                        <hr>
                         <h3>Classes</h3>
                         <ul class="vertical menu" data-accordion-menu>
                             <li>
@@ -185,6 +187,7 @@
                     <br/>
                     <br/>
                     <div>
+                        <hr>
                         <h3>Upload file</h3>
                         <form method="post" action="<c:url value="/AffichageModeleExistant"/>" enctype="multipart/form-data">
                             <p>Write a tweet for line and skip a line. The format of the text is .txt. </p>
