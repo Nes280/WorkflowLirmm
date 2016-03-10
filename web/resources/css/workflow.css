@@ -10,14 +10,27 @@ and open the template in the editor.
 
 @charset "UTF-8";
 
-.center
+/*Premet de créer une zone blanche pour bien voir le contenue*/ 
+.zone
 {
-    margin: 2%;
+    border-radius: 5px;
+    background-color: #fefefe;
+    width: 70%;
+    padding: 1%;
+    margin: 5%;
+    margin-left: 15%;
     display:flex;
     justify-content:center;
     align-items:center;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+.shadow
+{
+   box-shadow: 10px 5px 5px grey;
+}
+
+/*permet de changer la couleur de font au survol de la souris*/
 .blue-hover:hover 
 {
     background-color: #9faeb7;
@@ -49,7 +62,8 @@ bottom:0;
 left:0;
 height:25px;
 width: 100%;
-background-color: #e6e6e6;
+/*background-color: #e6e6e6;b2bec5*/
+background-color:#b2bec5;
 text-align: center;
 font-size: small;
 }
