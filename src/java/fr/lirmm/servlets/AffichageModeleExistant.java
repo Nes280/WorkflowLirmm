@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -38,11 +39,15 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
  
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 
@@ -65,9 +70,7 @@ public class AffichageModeleExistant extends HttpServlet {
     public static final String ATT_MESSAGE = "message";
     public static final String ATT_ERREUR = "erreur";
     public static final String ATT_ROOT = "root";
-    public static final String ATT_POSITIVE = "positive";
-    public static final String ATT_NEUTRE = "neutre";
-    public static final String ATT_NEGATIVE = "negative";
+    public static final String ATT_CLASSE= "classe";
     public static final String ATT_DESCRIPTION= "description";
     
     public static final String VUE = "/WEB-INF/affichageModeleExistant.jsp";
@@ -82,7 +85,8 @@ public class AffichageModeleExistant extends HttpServlet {
         //Preparation des résultats
         Map<String, String> listeTweet = new HashMap<String, String>();
         String message = ""; 
-        boolean erreur = true; 
+        //boolean erreur = true; 
+        int erreur = 0; 
         String resultat = "";
         
         //Initialiser les modèles
@@ -97,24 +101,24 @@ public class AffichageModeleExistant extends HttpServlet {
             //il n'y a pas de tweet à traiter
             if(tweet == null || tweet.isEmpty() ){
                 message = "No tweet";
-                erreur = true;
+                //erreur = true;
+                erreur = 0;
             }
             //on a un tweet à traiter
             else if (tweet != null){
                 message = "Analysis tweet";
-                erreur = false;
-                /*String delim = "\n";
-                String[] tokens = tweet.split(delim);*/
+                //erreur = false;
+                erreur = 1;
+                
                 AnalyseDeSentiments a = new AnalyseDeSentiments();
 
-                /*for(int i = 0; i < tokens.length; i++){*/
-                    try {
-                        resultat = a.start(tweet, modele1, modele2, modele3);
-                        listeTweet.put(tweet, resultat);
-                    } catch (Exception ex) {
-                        Logger.getLogger(AffichageAPITweet.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-               // }  
+                try {
+                    resultat = a.start(tweet, modele1, modele2, modele3);
+                    listeTweet.put(tweet, resultat);
+                } catch (Exception ex) {
+                    Logger.getLogger(AffichageAPITweet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+ 
             }
         }
         //on utilise le formulaire d'upload de fichier
@@ -129,12 +133,14 @@ public class AffichageModeleExistant extends HttpServlet {
             //On a pas mis de fichiers
             if(fileName.equals("")){
                 message = "No tweet";
-                erreur = true;
+                //erreur = true;
+                erreur = 0;
             }
             //on a uploadé un fichier
             else{
                 message = "Analysis tweet";
-                erreur = false;
+                //erreur = false;
+                erreur = 2;
                 FileOutputStream os = new FileOutputStream("./fichiers/" + fileName);
                 os.write(b); 
                 
@@ -192,52 +198,48 @@ public class AffichageModeleExistant extends HttpServlet {
           
         //Valeur pour Root
         Root root = new Root();
-        root.setMicrofmeasure(valeurXml("/tweet/root/microfmeasure"));
-        root.setMacrofmeasure(valeurXml("/tweet/root/macrofmeasure"));
-        root.setMicroprecision(valeurXml("/tweet/root/microprecision"));
-        root.setMacroprecision(valeurXml("/tweet/root/macroprecision"));
-        root.setMicrorecall(valeurXml("/tweet/root/microrecall"));
-        root.setMacrorecall(valeurXml("/tweet/root/macrorecall"));
+        root.setSample(valeurXml("/modele/root/sample"));
+        root.setMicrofmeasure(valeurXml("/modele/root/microfmeasure"));
+        root.setMacrofmeasure(valeurXml("/modele/root/macrofmeasure"));
+        root.setMicroprecision(valeurXml("/modele/root/microprecision"));
+        root.setMacroprecision(valeurXml("/modele/root/macroprecision"));
+        root.setMicrorecall(valeurXml("/modele/root/microrecall"));
+        root.setMacrorecall(valeurXml("/modele/root/macrorecall"));
         
-        //Valeur pour Positive
-        Polarite positive = new Polarite();
-        positive.setFmeasure(valeurXml("/tweet/positive/fmeasure"));
-        positive.setPrecision(valeurXml("/tweet/positive/precision"));
-        positive.setRecall(valeurXml("/tweet/positive/recall"));
+        //Recuperer les id des éléments de type classe
+        String[] classe = valeurClasseXml("/modele/classe/@id");
+        ArrayList<Polarite> listeClasse = new ArrayList<Polarite>(); 
         
-        //Valeur pour Neutre
-        Polarite neutre = new Polarite();
-        neutre.setFmeasure(valeurXml("/tweet/neutre/fmeasure"));
-        neutre.setPrecision(valeurXml("/tweet/neutre/precision"));
-        neutre.setRecall(valeurXml("/tweet/neutre/recall"));
+        //Recuperer les valeurs samples, f-measure, precision, recall
+        for(int i = 0; i < classe.length; i++)
+        {
+            System.out.println("nom classe :" + classe[i]);
+            Polarite p = new Polarite();
+            p.setClasse(classe[i]);
+            p.setSample(valeurXml("/modele/classe[@id='"+ classe[i] +"']/sample"));
+            p.setFmeasure(valeurXml("/modele/classe[@id='"+ classe[i] +"']/fmeasure"));
+            p.setPrecision(valeurXml("/modele/classe[@id='"+ classe[i] +"']/precision"));
+            p.setRecall(valeurXml("/modele/classe[@id='"+ classe[i] +"']/recall"));
+            listeClasse.add(p);
+        }
         
-        //Valeur pour Negative
-        Polarite negative = new Polarite();
-        negative.setFmeasure(valeurXml("/tweet/negative/fmeasure"));
-        negative.setPrecision(valeurXml("/tweet/negative/precision"));
-        negative.setRecall(valeurXml("/tweet/negative/recall"));
         
         //Description 
-        String description = valeurXml("/tweet/description");
+        String description = valeurXml("/modele/description");
         
-        
-        String breadcrumbs = "<li><a href=\"/index\">Home</a></li>";
         request.setAttribute( "title", "Tweet" );
-        request.setAttribute( "topMenuName", "Home" );
-        request.setAttribute( "breadcrumbs", breadcrumbs );
         request.setAttribute(ATT_TWEET, listeTweet);
         request.setAttribute(ATT_MESSAGE, message);
         request.setAttribute(ATT_ERREUR, erreur);
         request.setAttribute(ATT_ROOT, root);
-        request.setAttribute(ATT_POSITIVE, positive);
-        request.setAttribute(ATT_NEUTRE, neutre);
-        request.setAttribute(ATT_NEGATIVE, negative);
+        request.setAttribute(ATT_CLASSE, listeClasse);
         request.setAttribute(ATT_DESCRIPTION, description);
         
         this.getServletContext().getRequestDispatcher(VUE).forward( request, response );
     }
     
     
+    //Fonction qui renvoie le nom du fichier uploader
     private String getFileName(Part part) { 
         String partHeader = part.getHeader("content-disposition"); 
         System.out.println("Part Header = " + partHeader); 
@@ -251,12 +253,11 @@ public class AffichageModeleExistant extends HttpServlet {
     }
 
     
-    
     //Fonction qui va chercher les valeurs dans le fichier xml
     public String valeurXml(String expression){
         String valeur = "";
         try{
-            File file = new File("XML/tweet.xml");
+            File file = new File("XML/tweetPolarity.xml");
             DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder =  builderFactory.newDocumentBuilder();
             Document xmlDocument = builder.parse(file);
@@ -276,6 +277,45 @@ public class AffichageModeleExistant extends HttpServlet {
         } 
         return valeur;
 
+    }
+
+    
+    //Fonction qui recupere les classes des modèles
+    public String[] valeurClasseXml(String expression){
+        String[] valeur = null;
+
+        try{
+            File file = new File("XML/tweetPolarity.xml");
+            DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder =  builderFactory.newDocumentBuilder();
+            Document xmlDocument = builder.parse(file);
+            /*Element root = xmlDocument.getDocumentElement();
+            XPath xPath =  XPathFactory.newInstance().newXPath();*/
+            //NodeList listeNode = (NodeList) xPath.evaluate(expression,XPathConstants.NODESET);
+            XPathFactory xPathFactory = XPathFactory.newInstance();
+            XPath xPath = xPathFactory.newXPath();
+            XPathExpression expr = xPath.compile(expression);
+            NodeList listNode = (NodeList) expr.evaluate(xmlDocument, XPathConstants.NODESET);
+            valeur = new String[listNode.getLength()];
+            
+            for (int i = 0; i< listNode.getLength(); i++){
+                //System.out.println("taille de id " + listNode.getLength() );
+                Node classe = listNode.item(i).getChildNodes().item(0);
+                valeur[i] = classe.getNodeValue();
+                //System.out.println(valeur[i]);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }catch (XPathExpressionException e) {
+            e.printStackTrace();
+        } 
+        return valeur;
     }
 
 }

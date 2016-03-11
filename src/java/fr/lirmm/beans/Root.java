@@ -10,7 +10,7 @@ package fr.lirmm.beans;
  * @author azaz1
  */
 public class Root {
-  
+    public String sample;
     public String microfmeasure;
     public String macrofmeasure;
     public String microprecision;
@@ -20,13 +20,22 @@ public class Root {
     
     public Root(){}
     
-    public Root(String mif, String maf, String mip, String map, String mir, String mar){
+    public Root(String s, String mif, String maf, String mip, String map, String mir, String mar){
+        sample = s;
         microfmeasure = mif;
         macrofmeasure = maf;
         microprecision = mip;
         macroprecision = map;
         microrecall = mir;
         macrorecall = mar;
+    }
+   
+    public String getSample() {
+        return sample;
+    }
+
+    public void setSample(String sample) {
+        this.sample = sample;
     }
     
     public String getMicrofmeasure() {

@@ -28,7 +28,7 @@
                     <div>
                         <hr>
                         <h3>Global</h3>
-                        <p><b>Sample : Valeur à mettre</b></p>
+                        <p><b>Sample : ${root.getSample()}</b></p>
                         <div class="row medium-uncollapse large-uncollapse">
                             <div class="small-6 columns">
                                 <p>Micro precision</p>
@@ -77,79 +77,36 @@
                         <hr>
                         <h3>Classes</h3>
                         <ul class="vertical menu" data-accordion-menu>
-                            <li>
-                                <a href="#">Positive</a>
-                                <ul class="menu vertical nested">
-                                    <p>F-measure</p>
-                                    <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
-                                        <span class="progress-meter" style="width: ${positive.getFmeasure()}">
-                                            <p class="progress-meter-text">${positive.getFmeasure()}</p>
-                                        </span>
-                                    </div>
-                                    <p>Precision</p>
-                                    <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
-                                        <span class="progress-meter" style="width: ${positive.getPrecision()}">
-                                            <p class="progress-meter-text">${positive.getPrecision()}</p>
-                                        </span>
-                                    </div>
-                                    <p>Recall</p>
-                                    <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
-                                        <span class="progress-meter" style="width: ${positive.getRecall()}">
-                                            <p class="progress-meter-text">${positive.getRecall()}</p>
-                                        </span>
-                                    </div>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#">Neutre</a>
-                                <ul class="menu vertical nested">
-                                    <p>F-measure</p>
-                                    <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
-                                        <span class="progress-meter" style="width: ${neutre.getFmeasure()}">
-                                            <p class="progress-meter-text">${neutre.getFmeasure()}</p>
-                                        </span>
-                                    </div>
-                                    <p>Precision</p>
-                                    <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
-                                        <span class="progress-meter" style="width: ${neutre.getPrecision()}">
-                                            <p class="progress-meter-text">${neutre.getPrecision()}</p>
-                                        </span>
-                                    </div>
-                                    <p>Recall</p>
-                                    <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
-                                        <span class="progress-meter" style="width: ${neutre.getRecall()}">
-                                            <p class="progress-meter-text">${neutre.getRecall()}</p>
-                                        </span>
-                                    </div>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#">Negative</a>
-                                <ul class="menu vertical nested">
-                                    <p>F-measure</p>
-                                    <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
-                                        <span class="progress-meter" style="width: ${negative.getFmeasure()}">
-                                            <p class="progress-meter-text">${negative.getFmeasure()}</p>
-                                        </span>
-                                    </div>
-                                    <p>Precision</p>
-                                    <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
-                                        <span class="progress-meter" style="width: ${negative.getPrecision()}">
-                                            <p class="progress-meter-text">${negative.getPrecision()}</p>
-                                        </span>
-                                    </div>
-                                    <p>Recall</p>
-                                    <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
-                                        <span class="progress-meter" style="width: ${negative.getRecall()}">
-                                            <p class="progress-meter-text">${negative.getRecall()}</p>
-                                        </span>
-                                    </div>
-                                </ul>
-                            </li>
+                            <c:forEach var="c" items="${classe}">
+                                <li>
+                                    <a href="#">${c.getClasse()}</a>
+                                    <ul class="menu vertical nested">
+                                        <p><b>Sample : ${c.getSample()}</b></p>
+                                        <p>F-measure</p>
+                                        <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
+                                            <span class="progress-meter" style="width: ${c.getFmeasure()}">
+                                                <p class="progress-meter-text">${c.getFmeasure()}</p>
+                                            </span>
+                                        </div>
+                                        <p>Precision</p>
+                                        <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
+                                            <span class="progress-meter" style="width: ${c.getPrecision()}">
+                                                <p class="progress-meter-text">${c.getPrecision()}</p>
+                                            </span>
+                                        </div>
+                                        <p>Recall</p>
+                                        <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
+                                            <span class="progress-meter" style="width: ${c.getRecall()}">
+                                                <p class="progress-meter-text">${c.getRecall()}</p>
+                                            </span>
+                                        </div>
+                                    </ul>                                
+                                </li>
+                            </c:forEach>
                         </ul>
                         <br/>
                         <p>You can download the results in xml file.</p>
-                        <a href="download?folder=XML&filename=tweet.xml" target="_blank">Click here to download file</a>
+                        <a href="download?folder=XML&filename=tweetPolarity.xml" target="_blank">Click here to download file</a>
                     </div>
                 </div>
                 <div class="tabs-panel is-active" id="panel2">
@@ -166,7 +123,7 @@
                             <input value="saisieTexte" name="choix" hidden>
                             <input type="submit" value="Classify" class="button" />
                         </form>
-                        <c:if test="${ !erreur}">
+                        <c:if test="${erreur == 1 }">
                             <p>
                                 <c:forEach var="t" items="${tweet}">
                                     <c:out value="${t.key}"/> 
@@ -196,7 +153,7 @@
                             <input value="uploadFile" name="choix" hidden>
                             <input type="submit" value="Classify" class="button" />
                         </form>  
-                        <c:if test="${ !erreur}">
+                        <c:if test="${erreur == 2}">
                             <p>
                                 <p>You can download the results in json file.</p>
                                 <a href="download?folder=fichiers&filename=fichierjson.json" target="_blank">Click here to download file A changer</a>

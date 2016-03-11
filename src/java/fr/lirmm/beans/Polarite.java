@@ -10,18 +10,38 @@ package fr.lirmm.beans;
  * @author azaz1
  */
 public class Polarite {
+    public String classe;
+    public String sample;
     public String fmeasure;
     public String precision;
     public String recall;
     
     public Polarite(){}
     
-    public Polarite(String f,  String p,  String r){
+    public Polarite(String c, String s, String f,  String p,  String r){
+        classe = c;
+        sample = s;
         fmeasure = f;
         precision = p;
         recall = r;
     }
+    
+    public String getClasse() {
+        return classe;
+    }
 
+    public void setClasse(String classe) {
+        this.classe = classe;
+    }
+
+    public String getSample() {
+        return sample;
+    }
+
+    public void setSample(String sample) {
+        this.sample = sample;
+    }
+    
     public String getFmeasure() {
         return fmeasure;
     }
