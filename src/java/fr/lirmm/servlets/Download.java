@@ -21,20 +21,24 @@ public class Download extends HttpServlet {
 
     public static final String VUE = "/WEB-INF/download.jsp";
     public static final int TAILLE_TAMPON = 10240; // 10ko
+    public static final String CHAMP_FILE = "filename";
+    public static final String CHAMP_FOLDER = "folder";
 
     public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
        String filename=null;
+       String folder = null;
 
         try
         {
-            filename = request.getParameter("filename");        
-
+            filename = request.getParameter(CHAMP_FILE);      
+            folder = request.getParameter(CHAMP_FOLDER);
+            
             if(filename == null || filename.equals(""))
             {
                 throw new ServletException("File Name can't be null or empty");
             }
 
-            String filepath = "./XML/"+filename;   //change your directory path
+            String filepath = "./"+ folder +"/"+filename;   //change your directory path
 
             File file = new File(filepath);
             if(!file.exists())

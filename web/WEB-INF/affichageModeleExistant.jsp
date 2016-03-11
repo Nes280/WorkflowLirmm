@@ -10,7 +10,7 @@
     <body>
         <%@include file="topMenu.jsp" %>
         
-        <div class="row medium-8 large-7 columns">
+        <div class="row medium-8 large-7 columns" >
             <p>French Tweet Polarity</p> 
             
             <ul class="tabs" data-tabs id="example-tabs">
@@ -149,7 +149,7 @@
                         </ul>
                         <br/>
                         <p>You can download the results in xml file.</p>
-                        <a href="download?filename=tweet.xml" target="_blank">Click here to download file</a>
+                        <a href="download?folder=XML&filename=tweet.xml" target="_blank">Click here to download file</a>
                     </div>
                 </div>
                 <div class="tabs-panel is-active" id="panel2">
@@ -199,7 +199,7 @@
                         <c:if test="${ !erreur}">
                             <p>
                                 <p>You can download the results in json file.</p>
-                                <a href="download?filename=tweet.xml" target="_blank">Click here to download file A changer</a>
+                                <a href="download?folder=fichiers&filename=fichierjson.json" target="_blank">Click here to download file A changer</a>
                                 <br/>
                                 <br/>
                             </p>
