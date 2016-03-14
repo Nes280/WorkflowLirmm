@@ -25,6 +25,10 @@
         <servlet-name>ChoixSentimentAnalysis</servlet-name>
         <servlet-class>fr.lirmm.servlets.ChoixSentimentAnalysis</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Manage</servlet-name>
+        <servlet-class>fr.lirmm.servlets.Manage</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>index</servlet-name>
         <url-pattern>/index</url-pattern>
@@ -62,6 +66,10 @@
     <servlet-mapping>
         <servlet-name>AffichageModeleExistant</servlet-name>
         <url-pattern>/AffichageModeleExistant</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Manage</servlet-name>
+        <url-pattern>/manage</url-pattern>
     </servlet-mapping>
     <resource-ref>
         <res-ref-name>jdbc/workflow_db</res-ref-name>

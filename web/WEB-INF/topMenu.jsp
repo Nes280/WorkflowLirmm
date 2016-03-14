@@ -36,7 +36,7 @@
                 <div class="medium-7 medium-centered large-5 large-centered columns">
                         <div class="row column log-in-form">
                             <a href="<c:url value="/profile?edit=false"/>">Profile</a> <br />
-                         <a href="#">Manage your models</a>
+                         <a href="<c:url value="/manage"/>">Manage your models</a>
                         <form method="get" action="<c:url value="/logOut"/>">
                            <button class="alert hollow button" href="#">Log out</button>
                         </form>   
