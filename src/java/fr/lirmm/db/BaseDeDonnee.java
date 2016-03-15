@@ -13,18 +13,26 @@ import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 import fr.lirmm.beans.User;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import fr.lirmm.beans.Model;
+import java.text.SimpleDateFormat;
+import java.sql.Date;
 /**
  *
  * @author niels
  */
-public class Names {
+public class BaseDeDonnee {
+    private static String JDBC = "jdbc:postgresql://localhost/workflow_db";
+    private static String USER = "workflow_user";
+    private static String PASSWORD = "admin";
+    private static String DRIVER = "org.postgresql";
+    
     private Connection connexion;
     boolean alreadyConnect = false;
-    //private String JDBC = "jdbc:postgresql://localhost/workflow_db";
-    private String JDBC = "jdbc:postgresql://localhost/workflow_db";
-    private String USER = "workflow_user";
-    private String PASSWORD = "admin";
-    private String DRIVER = "org.postgresql";
+    //private String JDBC = "jdbc:postgresql://192.168.0.2:5432/workflow_db"; 
     
     private void connecting(){
         if (!alreadyConnect) {
@@ -43,6 +51,26 @@ public class Names {
         }
     }
     
+    protected String getUserId(String user_mail) throws SQLException
+    {
+        Statement statement = null;
+        ResultSet resultat = null;
+        String user_id = "";
+        connecting();
+        statement = connexion.createStatement();
+        
+        resultat = statement.executeQuery("SELECT \"Id\" FROM lirmm.\"User\" WHERE \"Mail\" = '"+ user_mail +"'");
+        while (resultat.next()) 
+        {
+            user_id = resultat.getString("Id");
+        }
+        return user_id;  
+    }
+    
+    /**
+     * PARTIE POUR LES UTILISATEURS
+     *  
+     */
     public User recupererUtilisateurs(String mail, String password) {
         Statement statement = null;
         ResultSet resultat = null;
@@ -150,19 +178,112 @@ public class Names {
             }
         } catch (NullPointerException n) {
             System.out.println(n);
-        } /*finally {
-            // Fermeture de la connexion
-            try {
-                if (resultat != null)
-                    resultat.close();
-                if (statement != null)
-                    statement.close();
-                if (connexion != null)
-                    connexion.close();
-            } catch (SQLException ignore) {
-                //non traité pour le moment
-            }
-        }*/
+        } 
         return Mail.equals(mail);   
    }
+  /**
+   * PARTIE POUR LES FICHIER
+   * 
+   * les fichiers sont utilisé pour les models utilisateur
+   */  
+    
+   /**
+    * Methode pour tester l'existance d'un fichier
+    * renvoi true si oui false si non
+    */ 
+    public boolean isInDatabase(String file_name, String user_mail) throws SQLException
+    {
+        Statement statement = null;
+        ResultSet resultat = null;
+        String file = "";
+        String user_id = "";
+        
+        connecting();
+        statement = connexion.createStatement();
+        
+        try {
+            user_id = getUserId(user_mail);
+            
+            // Exécution de la requête
+            resultat = statement.executeQuery("SELECT \"Id_file\" FROM lirmm.\"File\" WHERE \"Name\" = '"+ file_name +"' AND \"Id_user\" = '"+ user_id+"'");
+ 
+            // Récupération des données
+            while (resultat.next()) {
+                file = resultat.getString("Id_file");
+            }
+        } catch (NullPointerException n) {
+            System.out.println(n);
+        } 
+        return !file.isEmpty();
+    }
+    
+    /**
+     * Methode pour la recupération de fichier
+     * renvoie une List<String> des fichiers de l'utilisateur
+     *  
+     */
+    public ArrayList<String> getFileUser(String user_mail) throws SQLException
+    {
+        Statement statement = null;
+        ResultSet resultat = null;
+        ArrayList<String> file = new ArrayList<String>();
+        String user_id = "";
+        connecting();
+        statement = connexion.createStatement();
+        
+        try {
+            user_id = getUserId(user_mail);
+            
+            // Exécution de la requête
+            resultat = statement.executeQuery("SELECT \"Name\" FROM lirmm.\"File\" WHERE \"Id_user\" = '"+ user_id+"'");
+ 
+            // Récupération des données
+            while (resultat.next()) {
+                file.add(resultat.getString("Name"));
+            }
+        } catch (NullPointerException n) {
+            System.out.println(n);
+        } 
+        return file;
+    }
+    
+    /**
+     * Methode pour la creation d'un fichier (model)
+     * cette methode ce deroule en 2 temps:
+     * - creation du fichier dans le serveur
+     * - indexation du fichier sur la BD
+     * 
+     * renvoi 0 si OK, -1 si le fichier existe déjà
+     */
+    public int newFileUser( String file_name, String user_mail, String info )throws SQLException, FileNotFoundException, IOException
+    {
+        
+        if (!isInDatabase(file_name + ".model", user_mail))
+        {
+            String user_id = getUserId(user_mail);
+            
+            Model file = new Model(file_name, user_mail, info, user_id); 
+            file.create();
+            
+            Statement statement = null;
+            connecting();
+            statement = connexion.createStatement();
+
+            try {
+                PreparedStatement preparedStatement = connexion.prepareStatement("INSERT INTO lirmm.\"File\"(\"Id_user\", \"Name\", \"Info\", \"Date_create\") VALUES(?, ?, ?, ?);");
+
+                preparedStatement.setInt(1, Integer.parseInt(file.getId()));
+                preparedStatement.setString(2, file.getNom());
+                preparedStatement.setString(3, file.getInfo());
+                preparedStatement.setDate(4, new java.sql.Date(new java.util.Date().getTime()));
+
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return 0;
+        }
+        else return -1;
+        
+    }
 }

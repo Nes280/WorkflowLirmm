@@ -5,7 +5,7 @@
  */
 package fr.lirmm.servlets;
 import fr.lirmm.beans.User;
-import fr.lirmm.db.Names;
+import fr.lirmm.db.BaseDeDonnee;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -44,7 +44,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
     }
 public void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
      
-        Names utilisateur = new Names();
+        BaseDeDonnee utilisateur = new BaseDeDonnee();
         String mail = request.getParameter(MAIL);
         String pass = request.getParameter(PASSWORD);
         User connecter = utilisateur.recupererUtilisateurs(mail,pass);

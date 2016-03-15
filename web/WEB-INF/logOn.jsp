@@ -15,6 +15,12 @@
                             <p class="text-center">${info}</p>
                         </div>
                     </c:when>
+                    <c:otherwise>
+                        <div class="callout">
+                            <h5 class="text-center">Information</h5>
+                            <p class="text-center">Please use a password with at last 5 characters</p>
+                        </div>
+                    </c:otherwise>
                 </c:choose>
                 <div class="blog-post">
                     <div class="medium-7 medium-centered large-5 large-centered columns">

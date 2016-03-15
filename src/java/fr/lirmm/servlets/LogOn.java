@@ -12,7 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import fr.lirmm.db.Names;
+import fr.lirmm.db.BaseDeDonnee;
 import java.sql.SQLException;
 
 /**
@@ -50,7 +50,7 @@ public class LogOn extends HttpServlet {
        String lastName = request.getParameter(NOM);
        String additionalInformation = EMPTY;
        int polarity = 0;
-       Names test = new Names();  
+       BaseDeDonnee test = new BaseDeDonnee();  
      
        
        if (pass.equals(rePass)) {
@@ -59,7 +59,7 @@ public class LogOn extends HttpServlet {
                     if(!test.isInDataBase(mail)) // si le mail n'est pas déjà utilisé
                     {
                         User utilisateur = new User(firstName,lastName,mail,pass,false);
-                        Names ajout = new Names();
+                        BaseDeDonnee ajout = new BaseDeDonnee();
                         ajout.ajouterUtilisateur(utilisateur);
 
                         polarity = 1;

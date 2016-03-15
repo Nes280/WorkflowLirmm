@@ -7,6 +7,6 @@
 
   <div class="footer">
 
-      <p class="copywrite">Copywrite © 2016 Team ADVENCE, LIRMM</p>
+      <p class="copywrite">Copywrite © 2016 Team ADVANSE, LIRMM</p>
 
     </div>

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import fr.lirmm.db.Names;
+import fr.lirmm.db.BaseDeDonnee;
 /**
  *
  * @author Niels
@@ -67,7 +67,7 @@ public class Profile extends HttpServlet {
             String nMail = request.getParameter("Mail");
             String Fname = request.getParameter("Fname");
             String Lname = request.getParameter("Lname");
-            Names name = new Names();
+            BaseDeDonnee name = new BaseDeDonnee();
             
             try{
                 if(nMail.equals(lMail)) // on ne veux pas changer le mail
@@ -102,7 +102,7 @@ public class Profile extends HttpServlet {
      
             if (pass.equals(rePass) && !pass.equals("")) {
                 if(pass.length() >= 5){
-                    Names name = new Names();
+                    BaseDeDonnee name = new BaseDeDonnee();
                     try{
                         name.alterPassword(lMail, pass);
                     }catch(Exception e){}

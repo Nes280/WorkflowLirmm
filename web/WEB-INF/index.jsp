@@ -11,6 +11,7 @@
             <div class="blog-post">
                 <h1>Hello World!</h1>
                 <p>Welcom to the ${title} of the web sit!</p>
+                <img src="resources/content/ajax-loader.gif"/>
                 <p>${isLog}</p>
                 <br/>
                 <br/>
