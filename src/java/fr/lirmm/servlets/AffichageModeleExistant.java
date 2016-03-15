@@ -33,6 +33,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -76,6 +77,7 @@ public class AffichageModeleExistant extends HttpServlet {
     public static final String ATT_TYPE_ANALYSIS = "typeAnalysis";
     public static final String ATT_TITRE = "titre";
     public static final String ATT_FILE_XML = "fichierXML";
+    public static final String ATT_FILE_JSON = "fichierJSON";
     
     
     public static final String VUE = "/WEB-INF/affichageModeleExistant.jsp";
@@ -92,6 +94,9 @@ public class AffichageModeleExistant extends HttpServlet {
             choix = "";
         }
         
+        //Nom du fichier JSON
+        String nomFichierJSON = ""; 
+        
         //variable pour le choix du type d'analyse
         String typeAnalysis = request.getParameter(CHAMP_TYPE_ANALYSIS);
         System.out.println("type Analyse " + typeAnalysis);
@@ -106,7 +111,6 @@ public class AffichageModeleExistant extends HttpServlet {
         
         //Nom du fichier XML 
         String fxml = ""; 
-        //Chargement du fichier xml 
         
         //Chargement des variables, modèles suivant le type d'analyse
         if(typeAnalysis.equals("FrenchTweetsPolarity")){
@@ -283,8 +287,16 @@ public class AffichageModeleExistant extends HttpServlet {
             File f = new File("./fichiers/" + fileName);
             f.delete();
             
+            //Recuperer le prenom et nom de l'utilisateur 
+            HttpSession session = request.getSession();
+            Object prenom = session.getAttribute("prenom");
+            Object nom = session.getAttribute("nom");
+            //System.out.println(prenom + " " + nom);
+            
+            nomFichierJSON = prenom + "" + nom + "-" + typeAnalysis + ".json";
+            
             //Création du json
-            FileOutputStream fos = new FileOutputStream(new File("./fichiers/fichierjson.json"));
+            FileOutputStream fos = new FileOutputStream(new File("./fichiers/" + nomFichierJSON));
             
             JsonGeneratorFactory factory = Json.createGeneratorFactory(null);
             JsonGenerator generator = factory.createGenerator(fos);
@@ -339,6 +351,7 @@ public class AffichageModeleExistant extends HttpServlet {
         request.setAttribute(ATT_TYPE_ANALYSIS, typeAnalysis);
         request.setAttribute(ATT_TITRE, titre);
         request.setAttribute(ATT_FILE_XML, fxml);
+        request.setAttribute(ATT_FILE_JSON, nomFichierJSON);
         
         this.getServletContext().getRequestDispatcher(VUE).forward( request, response );
     }

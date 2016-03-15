@@ -161,7 +161,7 @@
                             <c:if test="${erreur == 2}">
                                 <p>
                                     <p>You can download the results in json file.</p>
-                                    <a href="download?folder=fichiers&filename=fichierjson.json" target="_blank">Click here to download file</a>
+                                    <a href="download?folder=fichiers&filename=${fichierJSON}" target="_blank">Click here to download file</a>
                                     <br/>
                                     <br/>
                                 </p>
