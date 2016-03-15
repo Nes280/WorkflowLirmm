@@ -14,7 +14,7 @@
         </c:if>
         <c:if test="${ sessionScope.isLog == 1}">
             <div class="row medium-8 large-7 columns" >
-                <p>French Tweet Polarity</p> 
+                <p>${titre}</p> 
 
                 <ul class="tabs" data-tabs id="example-tabs">
                     <li class="tabs-title"><a href="#panel1">Description</a></li>
@@ -109,7 +109,7 @@
                             </ul>
                             <br/>
                             <p>You can download the results in xml file.</p>
-                            <a href="download?folder=XML&filename=tweetPolarity.xml" target="_blank">Click here to download file</a>
+                            <a href="download?folder=XML&filename=${fichierXML}" target="_blank">Click here to download file</a>
                         </div>
                     </div>
                     <div class="tabs-panel is-active" id="panel2">
@@ -124,6 +124,7 @@
                                     </div>
                                 </div>
                                 <input value="saisieTexte" name="choix" hidden>
+                                <input value="${typeAnalysis}" name="typeAnalysis" hidden>
                                 <input type="submit" value="Classify" class="button" />
                             </form>
                             <c:if test="${erreur == 1 }">
@@ -154,12 +155,13 @@
                                 <label for="fileUpload" class="button">Upload File</label>
                                 <input type="file" id="fileUpload" name="fileUpload" class="show-for-sr">
                                 <input value="uploadFile" name="choix" hidden>
+                                <input value="${typeAnalysis}" name="typeAnalysis" hidden>
                                 <input type="submit" value="Classify" class="button" />
                             </form>  
                             <c:if test="${erreur == 2}">
                                 <p>
                                     <p>You can download the results in json file.</p>
-                                    <a href="download?folder=fichiers&filename=fichierjson.json" target="_blank">Click here to download file A changer</a>
+                                    <a href="download?folder=fichiers&filename=fichierjson.json" target="_blank">Click here to download file</a>
                                     <br/>
                                     <br/>
                                 </p>

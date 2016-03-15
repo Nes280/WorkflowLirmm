@@ -24,7 +24,7 @@
                     <td>This is longer content Donec id elit non mi porta gravida at eget metus.</td>
                     <td>Content Goes Here</td>
                     <td><form method="post" action="<c:url value="/AffichageModeleExistant"/>">
-                            <input value="saisieTexte" name="choix" hidden>
+                            <input value="FrenchTweetsPolarity" name="typeAnalysis" hidden>
                             <input type="submit" value="Classify" class="button" />
                         </form>
                     </td>
@@ -34,7 +34,7 @@
                     <td>This is longer content Donec id elit non mi porta gravida at eget metus.</td>
                     <td>Content Goes Here</td>
                     <td><form method="post" action="<c:url value="/AffichageModeleExistant"/>">
-                            <input value="saisieTexte" name="choix" hidden>
+                            <input value="FrenchTweetsSubjectivity" name="typeAnalysis" hidden>
                             <input type="submit" value="Classify" class="button" />
                         </form>
                     </td>
@@ -44,7 +44,7 @@
                     <td>This is longer content Donec id elit non mi porta gravida at eget metus.</td>
                     <td>Content Goes Here</td>
                     <td><form method="post" action="<c:url value="/AffichageModeleExistant"/>">
-                            <input value="saisieTexte" name="choix" hidden>
+                            <input value="FrenchTweetsEmotions" name="typeAnalysis" hidden>
                             <input type="submit" value="Classify" class="button" />
                         </form>
                     </td>
@@ -54,7 +54,7 @@
                     <td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
                     <td>Content Goes Here</td>
                     <td><form method="post" action="<c:url value="/AffichageModeleExistant"/>">
-                            <input value="saisieTexte" name="choix" hidden>
+                            <input value="FrenchProductReviews" name="typeAnalysis" hidden>
                             <input type="submit" value="Classify" class="button" />
                         </form>
                     </td>
@@ -64,7 +64,7 @@
                     <td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
                     <td>Content Goes Here</td>
                     <td><form method="post" action="<c:url value="/AffichageModeleExistant"/>">
-                            <input value="saisieTexte" name="choix" hidden>
+                            <input value="FrenchVideosGames" name="typeAnalysis" hidden>
                             <input type="submit" value="Classify" class="button" />
                         </form>
                     </td>
@@ -74,7 +74,7 @@
                     <td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
                     <td>Content Goes Here</td>
                     <td><form method="post" action="<c:url value="/AffichageModeleExistant"/>">
-                            <input value="saisieTexte" name="choix" hidden>
+                            <input value="FrenchParlementaryDebates" name="typeAnalysis" hidden>
                             <input type="submit" value="Classify" class="button" />
                         </form>
                     </td>

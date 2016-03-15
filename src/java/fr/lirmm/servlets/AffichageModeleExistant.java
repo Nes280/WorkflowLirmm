@@ -62,6 +62,7 @@ public class AffichageModeleExistant extends HttpServlet {
     public static final String CHAMP_TWEET = "tweetAAnalyser";
     public static final String CHAMP_FILE = "fileUpload";
     public static final String CHAMP_CHOIX = "choix";
+    public static final String CHAMP_TYPE_ANALYSIS = "typeAnalysis";
     
     public static final String CHEMIN = "chemin";
     public static final int TAILLE_TAMPON = 10240;
@@ -72,6 +73,10 @@ public class AffichageModeleExistant extends HttpServlet {
     public static final String ATT_ROOT = "root";
     public static final String ATT_CLASSE= "classe";
     public static final String ATT_DESCRIPTION= "description";
+    public static final String ATT_TYPE_ANALYSIS = "typeAnalysis";
+    public static final String ATT_TITRE = "titre";
+    public static final String ATT_FILE_XML = "fichierXML";
+    
     
     public static final String VUE = "/WEB-INF/affichageModeleExistant.jsp";
      
@@ -80,8 +85,109 @@ public class AffichageModeleExistant extends HttpServlet {
         //variable pour le formulaire de saisie de tweet
         String tweet = request.getParameter(CHAMP_TWEET);
         String choix = request.getParameter(CHAMP_CHOIX);
-        System.out.println("choix "+ choix);
+        //System.out.println("choix "+ choix);
+        
+        //Au debut choix est null donc il faut l'initialiser
+        if(choix == null){
+            choix = "";
+        }
+        
+        //variable pour le choix du type d'analyse
+        String typeAnalysis = request.getParameter(CHAMP_TYPE_ANALYSIS);
+        System.out.println("type Analyse " + typeAnalysis);
+        
+        //3 Modeles
+        String modele1 = ""; 
+        String modele2 = ""; 
+        String modele3 = "";
+        
+        //Variable de titre
+        String titre = ""; 
+        
+        //Nom du fichier XML 
+        String fxml = ""; 
+        //Chargement du fichier xml 
+        
+        //Chargement des variables, modèles suivant le type d'analyse
+        if(typeAnalysis.equals("FrenchTweetsPolarity")){
+            //Initialiser les modèles
+            modele1 = "DEFT15T1STW.model";
+            modele2 = "DEFT15T1IG.model";
+            modele3 = "DEFT15T1SMO.model";
 
+            //Initialiser le titre de la page 
+            titre = "French Tweets Polarity";
+
+            //Fichier XML 
+            fxml = "tweetPolarity.xml";
+        }
+        else if(typeAnalysis.equals("FrenchTweetsSubjectivity"))
+        {            
+            //Initialiser les modèles A changer quand on aura les modeles
+            modele1 = "DEFT15T1STW.model";
+            modele2 = "DEFT15T1IG.model";
+            modele3 = "DEFT15T1SMO.model";
+
+            //Initialiser le titre de la page 
+            titre = "French Tweets Subjectivity";
+
+            //Fichier XML 
+            fxml = "tweetSubjectivity.xml";
+        }
+        else if(typeAnalysis.equals("FrenchTweetsEmotions"))
+        {            
+            //Initialiser les modèles A changer quand on aura les modeles
+            modele1 = "DEFT15T1STW.model";
+            modele2 = "DEFT15T1IG.model";
+            modele3 = "DEFT15T1SMO.model";
+
+            //Initialiser le titre de la page 
+            titre = "French Tweets Emotions";
+
+            //Fichier XML 
+            fxml = "tweetEmotion.xml";
+        }
+        else if(typeAnalysis.equals("FrenchProductReviews"))
+        {            
+            //Initialiser les modèles A changer quand on aura les modeles
+            modele1 = "DEFT15T1STW.model";
+            modele2 = "DEFT15T1IG.model";
+            modele3 = "DEFT15T1SMO.model";
+
+            //Initialiser le titre de la page 
+            titre = "French Product Reviews";
+
+            //Fichier XML 
+            fxml = "productReview.xml";
+        }
+        else if(typeAnalysis.equals("FrenchVideosGames"))
+        {            
+            //Initialiser les modèles A changer quand on aura les modeles
+            modele1 = "DEFT15T1STW.model";
+            modele2 = "DEFT15T1IG.model";
+            modele3 = "DEFT15T1SMO.model";
+
+            //Initialiser le titre de la page 
+            titre = "French Videos Games";
+
+            //Fichier XML 
+            fxml = "videoGames.xml";
+        }
+        else if(typeAnalysis.equals("FrenchParlementaryDebates"))
+        {            
+            //Initialiser les modèles A changer quand on aura les modeles
+            modele1 = "DEFT15T1STW.model";
+            modele2 = "DEFT15T1IG.model";
+            modele3 = "DEFT15T1SMO.model";
+
+            //Initialiser le titre de la page 
+            titre = "French Parlementary Debates";
+
+            //Fichier XML 
+            fxml = "parlementaryDebates.xml";
+        }
+        
+        
         //Preparation des résultats
         Map<String, String> listeTweet = new HashMap<String, String>();
         String message = ""; 
@@ -89,10 +195,6 @@ public class AffichageModeleExistant extends HttpServlet {
         int erreur = 0; 
         String resultat = "";
         
-        //Initialiser les modèles
-        String modele1 = "DEFT15T1STW.model";
-        String modele2 = "DEFT15T1IG.model";
-        String modele3 = "DEFT15T1SMO.model";
         
         //on utilise le formulaire de saisie de texte
         if(choix.equals("saisieTexte"))
@@ -198,16 +300,16 @@ public class AffichageModeleExistant extends HttpServlet {
           
         //Valeur pour Root
         Root root = new Root();
-        root.setSample(valeurXml("/modele/root/sample"));
-        root.setMicrofmeasure(valeurXml("/modele/root/microfmeasure"));
-        root.setMacrofmeasure(valeurXml("/modele/root/macrofmeasure"));
-        root.setMicroprecision(valeurXml("/modele/root/microprecision"));
-        root.setMacroprecision(valeurXml("/modele/root/macroprecision"));
-        root.setMicrorecall(valeurXml("/modele/root/microrecall"));
-        root.setMacrorecall(valeurXml("/modele/root/macrorecall"));
+        root.setSample(valeurXml(fxml, "/modele/root/sample"));
+        root.setMicrofmeasure(valeurXml(fxml, "/modele/root/microfmeasure"));
+        root.setMacrofmeasure(valeurXml(fxml, "/modele/root/macrofmeasure"));
+        root.setMicroprecision(valeurXml(fxml, "/modele/root/microprecision"));
+        root.setMacroprecision(valeurXml(fxml, "/modele/root/macroprecision"));
+        root.setMicrorecall(valeurXml(fxml, "/modele/root/microrecall"));
+        root.setMacrorecall(valeurXml(fxml, "/modele/root/macrorecall"));
         
         //Recuperer les id des éléments de type classe
-        String[] classe = valeurClasseXml("/modele/classe/@id");
+        String[] classe = valeurClasseXml(fxml, "/modele/classe/@id");
         ArrayList<Polarite> listeClasse = new ArrayList<Polarite>(); 
         
         //Recuperer les valeurs samples, f-measure, precision, recall
@@ -216,16 +318,16 @@ public class AffichageModeleExistant extends HttpServlet {
             System.out.println("nom classe :" + classe[i]);
             Polarite p = new Polarite();
             p.setClasse(classe[i]);
-            p.setSample(valeurXml("/modele/classe[@id='"+ classe[i] +"']/sample"));
-            p.setFmeasure(valeurXml("/modele/classe[@id='"+ classe[i] +"']/fmeasure"));
-            p.setPrecision(valeurXml("/modele/classe[@id='"+ classe[i] +"']/precision"));
-            p.setRecall(valeurXml("/modele/classe[@id='"+ classe[i] +"']/recall"));
+            p.setSample(valeurXml(fxml, "/modele/classe[@id='"+ classe[i] +"']/sample"));
+            p.setFmeasure(valeurXml(fxml, "/modele/classe[@id='"+ classe[i] +"']/fmeasure"));
+            p.setPrecision(valeurXml(fxml, "/modele/classe[@id='"+ classe[i] +"']/precision"));
+            p.setRecall(valeurXml(fxml, "/modele/classe[@id='"+ classe[i] +"']/recall"));
             listeClasse.add(p);
         }
         
         
         //Description 
-        String description = valeurXml("/modele/description");
+        String description = valeurXml(fxml, "/modele/description");
         
         request.setAttribute( "title", "Tweet" );
         request.setAttribute(ATT_TWEET, listeTweet);
@@ -234,6 +336,9 @@ public class AffichageModeleExistant extends HttpServlet {
         request.setAttribute(ATT_ROOT, root);
         request.setAttribute(ATT_CLASSE, listeClasse);
         request.setAttribute(ATT_DESCRIPTION, description);
+        request.setAttribute(ATT_TYPE_ANALYSIS, typeAnalysis);
+        request.setAttribute(ATT_TITRE, titre);
+        request.setAttribute(ATT_FILE_XML, fxml);
         
         this.getServletContext().getRequestDispatcher(VUE).forward( request, response );
     }
@@ -254,10 +359,10 @@ public class AffichageModeleExistant extends HttpServlet {
 
     
     //Fonction qui va chercher les valeurs dans le fichier xml
-    public String valeurXml(String expression){
+    public String valeurXml(String f, String expression){
         String valeur = "";
         try{
-            File file = new File("XML/tweetPolarity.xml");
+            File file = new File("XML/" + f);
             DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder =  builderFactory.newDocumentBuilder();
             Document xmlDocument = builder.parse(file);
@@ -281,11 +386,11 @@ public class AffichageModeleExistant extends HttpServlet {
 
     
     //Fonction qui recupere les classes des modèles
-    public String[] valeurClasseXml(String expression){
+    public String[] valeurClasseXml(String f,String expression){
         String[] valeur = null;
 
         try{
-            File file = new File("XML/tweetPolarity.xml");
+            File file = new File("XML/" + f);
             DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder =  builderFactory.newDocumentBuilder();
             Document xmlDocument = builder.parse(file);
