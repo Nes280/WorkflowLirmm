@@ -25,7 +25,7 @@ public class LogOn extends HttpServlet {
     public String PASSWORD = "pass";
     public String CONFIRMPW = "rePass";
     public String NOM = "Lname";
-    public String PRENOM = "FNAME";
+    public String PRENOM = "Fname";
     
     //Messages de sortie pour le callout
     public String EMPTY = "";
