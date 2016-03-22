@@ -13,6 +13,7 @@
             <%@include file="forbidden.jsp" %>
         </c:if>
         <c:if test="${ sessionScope.isLog == 1}">
+            <div class="zone">
             <div class="row medium-8 large-7 columns" >
                 <p>${titre}</p> 
 
@@ -169,6 +170,7 @@
                          </div>
                     </div>
                 </div>
+            </div>
             </div>
             <br/>
             <br/>
