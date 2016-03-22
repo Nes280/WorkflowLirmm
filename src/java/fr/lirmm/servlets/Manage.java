@@ -26,64 +26,89 @@ public class Manage extends HttpServlet {
     public static String FILE_NAME = "file_name";
     public static String INFO = "info";
     public static String LENGTH = "The length of additional information must be less than 100 characters. ";
+    public static String FIC_INFO = "ficInfo";
+    public static String FIC_NOM = "ficNom";
+    public static String F5 = "please, use the submit buton;";
+    
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
         HttpSession session = request.getSession();
         Object mail = session.getAttribute("mail");
         
-        
         BaseDeDonnee bd = new BaseDeDonnee();
-        try {
-            ArrayList<String> b = new ArrayList<String>();
-            b = bd.getFileUser(mail + "");
-            request.setAttribute( "test", b );
-            System.out.println(b);
-        } catch (SQLException ex) {
-            Logger.getLogger(Manage.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
-        
+        request.setAttribute( "tableau", faireListeFichier(bd, (String)mail) );
         request.setAttribute( "title", "Manage" );
         request.setAttribute( "topMenuName", "WorkFlow" );
 
         this.getServletContext().getRequestDispatcher( "/WEB-INF/manage.jsp" ).forward( request, response );
-       
     }
     
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
         HttpSession session = request.getSession();
         Object mail = session.getAttribute("mail");
+        Object ficInfo = session.getAttribute(FIC_INFO);
+        Object ficNom = session.getAttribute(FIC_NOM);
         String file_name = request.getParameter(FILE_NAME);
         String info = request.getParameter(INFO);
+        BaseDeDonnee bd = new BaseDeDonnee();
         
-        if (info.length() < 100)
-        {
-            BaseDeDonnee bd = new BaseDeDonnee();
-            try {
-                int create = bd.newFileUser(file_name, mail + "", info);
+        
+        if (!info.equals(ficInfo) && !file_name.equals(ficNom)) {     
+        
+            if (info.length() < 100 && !file_name.isEmpty() && !info.isEmpty())
+            {
 
-                System.out.println(create);
-            } catch (SQLException ex) {
-                Logger.getLogger(Manage.class.getName()).log(Level.SEVERE, null, ex);
+                try {
+                    
+                    int create = bd.newFileUser(file_name, mail + "", info);
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(Manage.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                request.setAttribute( "title", "Manage" );
+                request.setAttribute( "tableau", faireListeFichier(bd, (String)mail) );
+                session.setAttribute(FIC_INFO, info);
+                session.setAttribute(FIC_NOM, file_name);
             }
+            else
+            {
+                request.setAttribute( "tableau", faireListeFichier(bd, (String)mail) );
+                request.setAttribute( "info", LENGTH );
+                request.setAttribute( "title", "Manage" );
 
-
-            request.setAttribute( "title", "Manage" );
-            request.setAttribute( "topMenuName", "WorkFlow" );
-
-            this.getServletContext().getRequestDispatcher( "/WEB-INF/manage.jsp" ).forward( request, response );
+            }
         }
-        else
+        else //l'utilisateur a fait un refresh on ne fait rien
         {
-            request.setAttribute( "info", LENGTH );
+            request.setAttribute( "tableau", faireListeFichier(bd, (String)mail) );
             request.setAttribute( "title", "Manage" );
-            request.setAttribute( "topMenuName", "WorkFlow" );
-
-            this.getServletContext().getRequestDispatcher( "/WEB-INF/manage.jsp" ).forward( request, response );
         }
+        
+       this.getServletContext().getRequestDispatcher( "/WEB-INF/manage.jsp" ).forward( request, response );
     }
     
-
+    public String faireListeFichier(BaseDeDonnee bd, String mail)
+    {
+        String tableau = "";
+        try {
+            ArrayList<String> liste = new ArrayList<String>();
+            liste = bd.getFileUser(mail + "");
+            
+            for (int i = 0; i < liste.size(); i = i + 2) {
+                
+                String nom = liste.get(i); 
+                String information = liste.get(i+1);
+                
+                tableau += "<tr class=\"blue-hover\">\n" +"<td>"+nom+"</td>\n" +"<td>"+information+"</td>\n" +"</tr>\n"; 
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Manage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return tableau;
+    }
 }

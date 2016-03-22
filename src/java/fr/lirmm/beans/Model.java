@@ -29,13 +29,13 @@ public class Model {
     
     public int create()throws IOException
     {
-        File dir = new File("./user_models/" + user_mail); 
+        File dir = new File("./user_models/" + user_id); 
         if(!dir.exists())
         {
           // si non on le crée
           dir.mkdir();
         }
-        FileOutputStream os = new FileOutputStream("./user_models/" + user_mail + "/" + file_name + ".model");
+        FileOutputStream os = new FileOutputStream("./user_models/" + user_id + "/" + file_name + ".model");
         os.write(0);
         return 1;
     }

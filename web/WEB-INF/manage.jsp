@@ -11,8 +11,20 @@
             <%@include file="forbidden.jsp" %>
         </c:if>
         <c:if test="${ sessionScope.isLog == 1}">
+            
             <div class="zone">
-              <div class="row medium-8 large-7 columns">
+              <div class="row medium-8 large-12 columns">
+                  <table class="">
+                      <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Information</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        ${tableau}
+                      </tbody>
+                  </table>
                   <div class="blog-post">
                       <form method="post" action="<c:url value="/manage"/>" data-abide novalidate>
                             <div data-abide-error class="alert callout" style="display: none;">
@@ -21,10 +33,10 @@
                             <div class="row column log-on-form">
                                 <h4 class="text-center">Create a new model</h4>
                                 <label>File name
-                                    <input pattern="text" name="file_name" id="file_name" type="text" placeholder="File name" required>
+                                    <input pattern="text" value="" name="file_name" id="file_name" type="text" placeholder="File name" required>
                                 </label>
                                 <label>Additional information
-                                    <textarea id="info" name="info" placeholder="Additional information"></textarea>
+                                    <textarea id="info" value="" name="info" placeholder="Additional information"></textarea>
                                 </label>
                                 <input type="submit" value="Create new file" class="button" />  
                             </div>   

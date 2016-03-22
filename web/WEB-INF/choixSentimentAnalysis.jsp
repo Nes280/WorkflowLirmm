@@ -16,8 +16,8 @@
                     <th>Description</th>
                     <th width="150">Number of models</th>
                     <th width="150">Table Header</th>
-                  </tr!-->
-                </thead>
+                  </tr>
+                </thead!-->
                 <tbody>
                   <tr class="blue-hover">
                     <td><i class="fi-social-twitter"></i> French tweets polarity</td>

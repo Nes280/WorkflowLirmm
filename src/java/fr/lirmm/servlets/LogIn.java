@@ -27,6 +27,8 @@ public class LogIn extends HttpServlet {
     public String PRENOM = "prenom";
     public String BOOLEANLOG = "isLog";
     public String UPLOAD = "isUpload";
+    public String FIC_INFO = "ficInfo";
+    public String FIC_NOM = "ficNom";
 
     
     
@@ -56,6 +58,8 @@ public void doPost( HttpServletRequest request, HttpServletResponse response ) t
             session.setAttribute(NOM, connecter.Lname);
             session.setAttribute(PRENOM, connecter.Fname);
             session.setAttribute(MAIL, connecter.Mail);
+            session.setAttribute(FIC_INFO, "");
+            session.setAttribute(FIC_NOM, "");
             session.setAttribute(BOOLEANLOG, "1");
             session.setAttribute(UPLOAD, "0");
           
