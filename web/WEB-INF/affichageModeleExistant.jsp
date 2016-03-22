@@ -14,7 +14,7 @@
         </c:if>
         <c:if test="${ sessionScope.isLog == 1}">
             <div class="zone">
-            <div class="row medium-8 large-7 columns" >
+            <div class="row medium-8 large-12 columns" >
                 <p>${titre}</p> 
 
                 <ul class="tabs" data-tabs id="example-tabs">
@@ -167,6 +167,7 @@
                                     <br/>
                                 </p>
                             </c:if>
+                            ${information}
                          </div>
                     </div>
                 </div>
@@ -177,8 +178,8 @@
             <br/>
             <br/>
             <br/>       
-
-
+            
+            
             <%@include file="foot.jsp" %>
             <%@include file="foundation.jsp" %>
         </c:if>

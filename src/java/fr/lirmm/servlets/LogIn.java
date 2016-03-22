@@ -26,6 +26,8 @@ public class LogIn extends HttpServlet {
     public String NOM = "nom";
     public String PRENOM = "prenom";
     public String BOOLEANLOG = "isLog";
+    public String UPLOAD = "isUpload";
+
     
     
 
@@ -55,6 +57,7 @@ public void doPost( HttpServletRequest request, HttpServletResponse response ) t
             session.setAttribute(PRENOM, connecter.Fname);
             session.setAttribute(MAIL, connecter.Mail);
             session.setAttribute(BOOLEANLOG, "1");
+            session.setAttribute(UPLOAD, "0");
           
             request.setAttribute("utilisateur", utilisateur.recupererUtilisateurs(mail,pass));
             String breadcrumbs = "<li><a href=\"/index\">Index</a></li>";

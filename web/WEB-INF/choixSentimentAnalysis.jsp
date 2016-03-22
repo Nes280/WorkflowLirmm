@@ -21,8 +21,7 @@
                 <tbody>
                   <tr class="blue-hover">
                     <td><i class="fi-social-twitter"></i> French tweets polarity</td>
-                    <td>This is longer content Donec id elit non mi porta gravida at eget metus.</td>
-                    <td>Content Goes Here</td>
+                    <td>${tweetPolarity}</td>
                     <td><form method="post" action="<c:url value="/AffichageModeleExistant"/>">
                             <input value="FrenchTweetsPolarity" name="typeAnalysis" hidden>
                             <input type="submit" value="Classify" class="button" />
@@ -31,8 +30,7 @@
                   </tr>
                   <tr class="blue-hover">
                     <td><i class="fi-social-twitter"></i> French  tweets subjectivity</td>
-                    <td>This is longer content Donec id elit non mi porta gravida at eget metus.</td>
-                    <td>Content Goes Here</td>
+                    <td>${tweetSubjectivity}</td>
                     <td><form method="post" action="<c:url value="/AffichageModeleExistant"/>">
                             <input value="FrenchTweetsSubjectivity" name="typeAnalysis" hidden>
                             <input type="submit" value="Classify" class="button" />
@@ -41,8 +39,7 @@
                   </tr>
                   <tr class="blue-hover">
                     <td><i class="fi-social-twitter"></i> French  tweets emotions</td>
-                    <td>This is longer content Donec id elit non mi porta gravida at eget metus.</td>
-                    <td>Content Goes Here</td>
+                    <td>${tweetEmotion}</td>
                     <td><form method="post" action="<c:url value="/AffichageModeleExistant"/>">
                             <input value="FrenchTweetsEmotions" name="typeAnalysis" hidden>
                             <input type="submit" value="Classify" class="button" />
@@ -51,8 +48,7 @@
                   </tr>
                   <tr class="blue-hover">
                     <td><i class="fi-video"></i> French product reviews</td>
-                    <td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
-                    <td>Content Goes Here</td>
+                    <td>${productReviews}</td>
                     <td><form method="post" action="<c:url value="/AffichageModeleExistant"/>">
                             <input value="FrenchProductReviews" name="typeAnalysis" hidden>
                             <input type="submit" value="Classify" class="button" />
@@ -61,8 +57,7 @@
                   </tr>
                   <tr class="blue-hover">
                     <td><i class="fi-book"></i> French videos games</td>
-                    <td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
-                    <td>Content Goes Here</td>
+                    <td>${videosGames}</td>
                     <td><form method="post" action="<c:url value="/AffichageModeleExistant"/>">
                             <input value="FrenchVideosGames" name="typeAnalysis" hidden>
                             <input type="submit" value="Classify" class="button" />
@@ -71,8 +66,7 @@
                   </tr>
                   <tr class="blue-hover">
                     <td><i class="fi-torsos-all"></i> French parlementary debates</td>
-                    <td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
-                    <td>Content Goes Here</td>
+                    <td>${parlementaryDebates}</td>
                     <td><form method="post" action="<c:url value="/AffichageModeleExistant"/>">
                             <input value="FrenchParlementaryDebates" name="typeAnalysis" hidden>
                             <input type="submit" value="Classify" class="button" />

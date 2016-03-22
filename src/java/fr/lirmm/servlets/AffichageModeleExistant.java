@@ -78,7 +78,9 @@ public class AffichageModeleExistant extends HttpServlet {
     public static final String ATT_TITRE = "titre";
     public static final String ATT_FILE_XML = "fichierXML";
     public static final String ATT_FILE_JSON = "fichierJSON";
+    public static final String ATT_INFO = "information";
     
+    public String UPLOAD = "isUpload";
     
     public static final String VUE = "/WEB-INF/affichageModeleExistant.jsp";
      
@@ -111,6 +113,8 @@ public class AffichageModeleExistant extends HttpServlet {
         
         //Nom du fichier XML 
         String fxml = ""; 
+        
+        String information = "";
         
         //Chargement des variables, modèles suivant le type d'analyse
         if(typeAnalysis.equals("FrenchTweetsPolarity")){
@@ -229,85 +233,99 @@ public class AffichageModeleExistant extends HttpServlet {
         }
         //on utilise le formulaire d'upload de fichier
         else if(choix.equals("uploadFile")){
-            Part p = request.getPart(CHAMP_FILE);
-            InputStream is = request.getPart(p.getName()).getInputStream();
-            int i = is.available();
-            byte[] b = new byte[i];
-            is.read(b);
-            String fileName = getFileName(p);
-            
-            //On a pas mis de fichiers
-            if(fileName.equals("")){
-                message = "No tweet";
-                //erreur = true;
-                erreur = 0;
-            }
-            //on a uploadé un fichier
-            else{
-                message = "Analysis tweet";
-                //erreur = false;
-                erreur = 2;
-                FileOutputStream os = new FileOutputStream("./fichiers/" + fileName);
-                os.write(b); 
-                
-                //Lecture de fichier uploader
-                String chaine = "";
-                try{
-                    InputStream ips = new FileInputStream("./fichiers/" + fileName); 
-                    InputStreamReader ipsr = new InputStreamReader(ips);
-                    BufferedReader br= new BufferedReader(ipsr);
-                    String ligne;
-                    while ((ligne=br.readLine())!=null){
-                            System.out.println(ligne);
-                            chaine+=ligne+"\n";
-                    }
-                    br.close(); 
-                    ipsr.close();
-                    
-                    String delim = "\n\n";
-                    String[] tokens = chaine.split(delim);
-                    AnalyseDeSentiments a = new AnalyseDeSentiments();
-
-                    for(int j = 0; j < tokens.length; j++){
-                        try {
-                            resultat = a.start(tokens[j], modele1, modele2, modele3);
-                            listeTweet.put(tokens[j], resultat);
-                        } catch (Exception ex) {
-                            Logger.getLogger(AffichageAPITweet.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }  
-		}		
-		catch (Exception e){
-			System.out.println(e.toString());
-		}
-                os.close();
-            }
-            is.close();
-            
-            File f = new File("./fichiers/" + fileName);
-            f.delete();
             
             //Recuperer le prenom et nom de l'utilisateur 
             HttpSession session = request.getSession();
-            Object prenom = session.getAttribute("prenom");
-            Object nom = session.getAttribute("nom");
-            //System.out.println(prenom + " " + nom);
-            
-            nomFichierJSON = prenom + "" + nom + "-" + typeAnalysis + ".json";
-            
-            //Création du json
-            FileOutputStream fos = new FileOutputStream(new File("./fichiers/" + nomFichierJSON));
-            
-            JsonGeneratorFactory factory = Json.createGeneratorFactory(null);
-            JsonGenerator generator = factory.createGenerator(fos);
-            generator.writeStartArray();
-            
-            for(Entry<String, String> entry : listeTweet.entrySet())
+            Object isUpload = session.getAttribute(UPLOAD);
+            System.out.println(isUpload + " ");
+            if(isUpload.equals("0"))
             {
-                generator.writeStartObject().write("phrase", entry.getKey()).
-                    write("classe", entry.getValue()).writeEnd();            
-            }            
-            generator.writeEnd().close(); 
+                session.setAttribute("Upload", 1);
+                Part p = request.getPart(CHAMP_FILE);
+                InputStream is = request.getPart(p.getName()).getInputStream();
+                int i = is.available();
+                byte[] b = new byte[i];
+                is.read(b);
+                String fileName = getFileName(p);
+
+                //On a pas mis de fichiers
+                if(fileName.equals("")){
+                    message = "No tweet";
+                    //erreur = true;
+                    erreur = 0;
+                }
+                //on a uploadé un fichier
+                else{
+                    message = "Analysis tweet";
+                    //erreur = false;
+                    erreur = 2;
+                    FileOutputStream os = new FileOutputStream("./fichiers/" + fileName);
+                    os.write(b); 
+
+                    //Lecture de fichier uploader
+                    String chaine = "";
+                    try{
+                        InputStream ips = new FileInputStream("./fichiers/" + fileName); 
+                        InputStreamReader ipsr = new InputStreamReader(ips);
+                        BufferedReader br= new BufferedReader(ipsr);
+                        String ligne;
+                        while ((ligne=br.readLine())!=null){
+                                System.out.println(ligne);
+                                chaine+=ligne+"\n";
+                        }
+                        br.close(); 
+                        ipsr.close();
+
+                        String delim = "\n\n";
+                        String[] tokens = chaine.split(delim);
+                        AnalyseDeSentiments a = new AnalyseDeSentiments();
+
+                        for(int j = 0; j < tokens.length; j++){
+                            try {
+                                resultat = a.start(tokens[j], modele1, modele2, modele3);
+                                listeTweet.put(tokens[j], resultat);
+                            } catch (Exception ex) {
+                                Logger.getLogger(AffichageAPITweet.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }  
+                    }		
+                    catch (Exception e){
+                            System.out.println(e.toString());
+                    }
+                    os.close();
+                }
+                is.close();
+
+                File f = new File("./fichiers/" + fileName);
+                f.delete();
+
+                //Recuperer le prenom et nom de l'utilisateur 
+                session = request.getSession();
+                Object prenom = session.getAttribute("prenom");
+                Object nom = session.getAttribute("nom");
+                //System.out.println(prenom + " " + nom);
+
+                nomFichierJSON = prenom + "" + nom + "-" + typeAnalysis + ".json";
+
+                //Création du json
+                FileOutputStream fos = new FileOutputStream(new File("./fichiers/" + nomFichierJSON));
+
+                JsonGeneratorFactory factory = Json.createGeneratorFactory(null);
+                JsonGenerator generator = factory.createGenerator(fos);
+                generator.writeStartArray();
+
+                for(Entry<String, String> entry : listeTweet.entrySet())
+                {
+                    generator.writeStartObject().write("phrase", entry.getKey()).
+                        write("classe", entry.getValue()).writeEnd();            
+                }            
+                generator.writeEnd().close();
+                session.setAttribute(UPLOAD, "0");
+            }
+            else
+            {
+                information = "You have already upload a file";
+            }
         }
           
         //Valeur pour Root
@@ -319,6 +337,7 @@ public class AffichageModeleExistant extends HttpServlet {
         root.setMacroprecision(valeurXml(fxml, "/modele/root/macroprecision"));
         root.setMicrorecall(valeurXml(fxml, "/modele/root/microrecall"));
         root.setMacrorecall(valeurXml(fxml, "/modele/root/macrorecall"));
+        
         
         //Recuperer les id des éléments de type classe
         String[] classe = valeurClasseXml(fxml, "/modele/classe/@id");
@@ -340,6 +359,27 @@ public class AffichageModeleExistant extends HttpServlet {
         
         //Description 
         String description = valeurXml(fxml, "/modele/description");
+        
+        //URL 
+        String[] url = valeurUrlXml(fxml, "/modele/url");
+        for(int i = 0; i < url.length; i++)
+        {
+            System.out.println(url[i]);
+            String lien = "";
+            if(url[i].contains("2007")){
+                lien = "<a href=\" "+url[i] + " \">DEFT 2007</a>";
+                description = description.replace("DEFT 2007", lien);
+                System.out.println(description);
+            }
+            else if(url[i].contains("2015"))
+            {
+                lien = "<a href=\" "+url[i] + " \">DEFT 2015</a>";
+                description = description.replace("DEFT 2015", lien);
+                System.out.println(description);
+
+            }
+        }
+        
         
         request.setAttribute( "title", "Tweet" );
         request.setAttribute(ATT_TWEET, listeTweet);
@@ -396,7 +436,40 @@ public class AffichageModeleExistant extends HttpServlet {
         return valeur;
 
     }
-
+    
+    //Fonction qui recupere les URL 
+    public String[] valeurUrlXml(String f,String expression){
+        String[] valeur = null;
+        try{
+            File file = new File("XML/" + f);
+            DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder =  builderFactory.newDocumentBuilder();
+            Document xmlDocument = builder.parse(file);
+            XPathFactory xPathFactory = XPathFactory.newInstance();
+            XPath xPath = xPathFactory.newXPath();
+            XPathExpression expr = xPath.compile(expression);
+            NodeList listNode = (NodeList) expr.evaluate(xmlDocument, XPathConstants.NODESET);
+            valeur = new String[listNode.getLength()];
+            
+            for (int i = 0; i< listNode.getLength(); i++){
+                //System.out.println("taille de id " + listNode.getLength() );
+                Node classe = listNode.item(i).getChildNodes().item(0);
+                valeur[i] = classe.getNodeValue();
+                //System.out.println(valeur[i]);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }catch (XPathExpressionException e) {
+            e.printStackTrace();
+        } 
+        return valeur;
+    }
     
     //Fonction qui recupere les classes des modèles
     public String[] valeurClasseXml(String f,String expression){
@@ -407,9 +480,6 @@ public class AffichageModeleExistant extends HttpServlet {
             DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder =  builderFactory.newDocumentBuilder();
             Document xmlDocument = builder.parse(file);
-            /*Element root = xmlDocument.getDocumentElement();
-            XPath xPath =  XPathFactory.newInstance().newXPath();*/
-            //NodeList listeNode = (NodeList) xPath.evaluate(expression,XPathConstants.NODESET);
             XPathFactory xPathFactory = XPathFactory.newInstance();
             XPath xPath = xPathFactory.newXPath();
             XPathExpression expr = xPath.compile(expression);
