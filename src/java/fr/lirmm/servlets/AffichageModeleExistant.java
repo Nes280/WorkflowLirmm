@@ -30,6 +30,7 @@ import javax.json.stream.JsonGenerator;
 import javax.json.stream.JsonGeneratorFactory;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -236,11 +237,30 @@ public class AffichageModeleExistant extends HttpServlet {
             
             //Recuperer le prenom et nom de l'utilisateur 
             HttpSession session = request.getSession();
+            Object pr = session.getAttribute("prenom");
+            Object no = session.getAttribute("nom");
+            
+            //Construction du nom du cookie 
+            String nomCookie = pr + "" + no; 
             Object isUpload = session.getAttribute(UPLOAD);
-            System.out.println(isUpload + " ");
-            if(isUpload.equals("0"))
+            
+            Cookie[] cookies = request.getCookies();
+            System.out.println("taille du cookie " + cookies.length);
+            
+            //Recherche du cookie
+            boolean trouver = rechercheCookie(cookies, nomCookie); 
+            
+            if(!trouver)
             {
-                session.setAttribute("Upload", 1);
+                //Recuperer le prenom et nom de l'utilisateur 
+                Object prenom = session.getAttribute("prenom");
+                Object nom = session.getAttribute("nom");
+                
+                //Construction du cookie
+                Cookie c = new Cookie(prenom + "" + nom, "1");
+                c.setMaxAge(24*3600);
+                response.addCookie(c);
+
                 Part p = request.getPart(CHAMP_FILE);
                 InputStream is = request.getPart(p.getName()).getInputStream();
                 int i = is.available();
@@ -302,12 +322,6 @@ public class AffichageModeleExistant extends HttpServlet {
                 File f = new File("./fichiers/" + fileName);
                 f.delete();
 
-                //Recuperer le prenom et nom de l'utilisateur 
-                session = request.getSession();
-                Object prenom = session.getAttribute("prenom");
-                Object nom = session.getAttribute("nom");
-                //System.out.println(prenom + " " + nom);
-
                 nomFichierJSON = prenom + "" + nom + "-" + typeAnalysis + ".json";
 
                 //Création du json
@@ -324,7 +338,19 @@ public class AffichageModeleExistant extends HttpServlet {
                 }            
                 generator.writeEnd().close();
                 
-                session.setAttribute(UPLOAD, "0");
+                //Supprimer le cookie
+                Cookie[] cookiesFinal = request.getCookies();
+                System.out.println("taille du cookie a la fin " + cookiesFinal.length);
+
+                //Recherche du cookie
+                for(int j = 0; j < cookiesFinal.length; j++){
+                    if(cookies[j].getName().equals(nomCookie)){
+                        cookies[j].setMaxAge(0);
+                    }
+                    System.out.println("Final cookies " + cookies[j].getName());
+                }
+                c.setMaxAge(0);
+                response.addCookie(c);
             }
             else
             {
@@ -373,14 +399,11 @@ public class AffichageModeleExistant extends HttpServlet {
             if(url[i].contains("2007")){
                 lien = "<a href=\" "+url[i] + " \">DEFT 2007</a>";
                 description = description.replace("DEFT 2007", lien);
-                System.out.println(description);
             }
             else if(url[i].contains("2015"))
             {
                 lien = "<a href=\" "+url[i] + " \">DEFT 2015</a>";
                 description = description.replace("DEFT 2015", lien);
-                System.out.println(description);
-
             }
         }
         
@@ -508,6 +531,18 @@ public class AffichageModeleExistant extends HttpServlet {
             e.printStackTrace();
         } 
         return valeur;
+    }
+    
+    public boolean rechercheCookie(Cookie[] cookies, String nomCookie){
+        boolean trouver = false; 
+        //Recherche du cookie
+        for(int i = 0; i < cookies.length; i++){
+            if(cookies[i].getName().equals(nomCookie)){
+                trouver = true; 
+            }
+            System.out.println("cookies " + cookies[i].getName());
+        }
+        return trouver; 
     }
 
 }
