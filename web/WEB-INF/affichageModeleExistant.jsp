@@ -132,15 +132,7 @@
                                 <p>
                                     <c:forEach var="t" items="${tweet}">
                                         <c:out value="${t.key}"/> 
-                                        <c:if test="${t.value.equals('+')}" >
-                                            <span class="success label"><i class="fi-plus"></i> Positif</span>
-                                        </c:if>
-                                        <c:if test="${t.value.equals('-')}" >
-                                            <span class="alert label"><i class="fi-minus"></i> Negatif</span>
-                                        </c:if>
-                                        <c:if test="${t.value.equals('=')}" >
-                                            <span class="info label"><i class="fi-list"></i> Neutre</span>
-                                        </c:if>
+                                        <c:out value="${t.value}"/>
                                         <br/>
                                     </c:forEach>
                                 </p>
@@ -152,7 +144,7 @@
                             <hr>
                             <h3>Upload file</h3>
                             <form method="post" action="<c:url value="/AffichageModeleExistant"/>" enctype="multipart/form-data">
-                                <p>Write a tweet for line and skip a line. The format of the text is .txt. </p>
+                                <p>Write a tweet for line. The format of the text is .txt. </p>
                                 <label for="fileUpload" class="button">Upload File</label>
                                 <input type="file" id="fileUpload" name="fileUpload" class="show-for-sr">
                                 <input value="uploadFile" name="choix" hidden>

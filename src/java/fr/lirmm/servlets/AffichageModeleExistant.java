@@ -245,6 +245,9 @@ public class AffichageModeleExistant extends HttpServlet {
                 InputStream is = request.getPart(p.getName()).getInputStream();
                 int i = is.available();
                 byte[] b = new byte[i];
+                System.out.println("byte " + b.length);
+                //A limiter la taille  
+                //A faire
                 is.read(b);
                 String fileName = getFileName(p);
 
@@ -270,13 +273,13 @@ public class AffichageModeleExistant extends HttpServlet {
                         BufferedReader br= new BufferedReader(ipsr);
                         String ligne;
                         while ((ligne=br.readLine())!=null){
-                                System.out.println(ligne);
+                                //System.out.println(ligne);
                                 chaine+=ligne+"\n";
                         }
                         br.close(); 
                         ipsr.close();
 
-                        String delim = "\n\n";
+                        String delim = "\n";
                         String[] tokens = chaine.split(delim);
                         AnalyseDeSentiments a = new AnalyseDeSentiments();
 
@@ -309,7 +312,7 @@ public class AffichageModeleExistant extends HttpServlet {
 
                 //Création du json
                 FileOutputStream fos = new FileOutputStream(new File("./fichiers/" + nomFichierJSON));
-
+                
                 JsonGeneratorFactory factory = Json.createGeneratorFactory(null);
                 JsonGenerator generator = factory.createGenerator(fos);
                 generator.writeStartArray();
@@ -320,6 +323,7 @@ public class AffichageModeleExistant extends HttpServlet {
                         write("classe", entry.getValue()).writeEnd();            
                 }            
                 generator.writeEnd().close();
+                
                 session.setAttribute(UPLOAD, "0");
             }
             else
@@ -507,3 +511,14 @@ public class AffichageModeleExistant extends HttpServlet {
     }
 
 }
+
+
+/*<c:if test="${t.value.equals('+')}" >
+                                            <span class="success label"><i class="fi-plus"></i> Positif</span>
+                                        </c:if>
+                                        <c:if test="${t.value.equals('-')}" >
+                                            <span class="alert label"><i class="fi-minus"></i> Negatif</span>
+                                        </c:if>
+                                        <c:if test="${t.value.equals('=')}" >
+                                            <span class="info label"><i class="fi-list"></i> Neutre</span>
+                                        </c:if>*/
