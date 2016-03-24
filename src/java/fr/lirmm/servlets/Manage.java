@@ -98,12 +98,14 @@ public class Manage extends HttpServlet {
             ArrayList<String> liste = new ArrayList<String>();
             liste = bd.getFileUser(mail + "");
             
-            for (int i = 0; i < liste.size(); i = i + 2) {
+            for (int i = 0; i < liste.size(); i = i + 3) {
                 
                 String nom = liste.get(i); 
                 String information = liste.get(i+1);
+                String date_modif = liste.get(i+2);
                 
-                tableau += "<tr class=\"blue-hover\">\n" +"<td>"+nom+"</td>\n" +"<td>"+information+"</td>\n" +"</tr>\n"; 
+                
+                tableau += "<tr class=\"blue-hover\">\n" +"<td>"+nom+"</td>\n" +"<td>"+information+"</td>\n"+"<td>"+date_modif+"</td>\n"+"<td></td>\n"+"<td></td>\n" +"</tr>\n"; 
             }
             
         } catch (SQLException ex) {

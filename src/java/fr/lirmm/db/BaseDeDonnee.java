@@ -235,12 +235,13 @@ public class BaseDeDonnee {
             user_id = getUserId(user_mail);
             
             // Exécution de la requête
-            resultat = statement.executeQuery("SELECT \"Name\", \"Info\" FROM lirmm.\"File\" WHERE \"Id_user\" = '"+ user_id+"'");
+            resultat = statement.executeQuery("SELECT \"Name\", \"Info\", \"Date_update\" FROM lirmm.\"File\" WHERE \"Id_user\" = '"+ user_id+"'");
  
             // Récupération des données
             while (resultat.next()) {
                 file.add(resultat.getString("Name"));
                 file.add(resultat.getString("Info"));
+                file.add(resultat.getString("Date_update"));
             }
         } catch (NullPointerException n) {
             System.out.println(n);
@@ -271,12 +272,13 @@ public class BaseDeDonnee {
             statement = connexion.createStatement();
 
             try {
-                PreparedStatement preparedStatement = connexion.prepareStatement("INSERT INTO lirmm.\"File\"(\"Id_user\", \"Name\", \"Info\", \"Date_create\") VALUES(?, ?, ?, ?);");
+                PreparedStatement preparedStatement = connexion.prepareStatement("INSERT INTO lirmm.\"File\"(\"Id_user\", \"Name\", \"Info\", \"Date_create\", \"Date_update\") VALUES(?, ?, ?, ?, ?);");
 
                 preparedStatement.setInt(1, Integer.parseInt(file.getId()));
                 preparedStatement.setString(2, file.getNom());
                 preparedStatement.setString(3, file.getInfo());
                 preparedStatement.setDate(4, new java.sql.Date(new java.util.Date().getTime()));
+                preparedStatement.setDate(5, new java.sql.Date(new java.util.Date().getTime()));
 
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
