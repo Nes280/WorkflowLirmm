@@ -148,8 +148,8 @@
                                 <label for="fileUpload" class="button">Upload File</label>
                                 <input type="file" id="fileUpload" name="fileUpload" class="show-for-sr">
                                 <input value="uploadFile" name="choix" hidden>
-                                <input value="${typeAnalysis}" name="typeAnalysis" hidden>
-                                <input type="submit" value="Classify" class="button" />
+                                <input value="${typeAnalysis}" name="typeAnalysis"  hidden>
+                                <input type="submit" value="Classify" class="button"/>
                             </form>  
                             <c:if test="${erreur == 2}">
                                 <p>
