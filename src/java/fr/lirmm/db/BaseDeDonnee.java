@@ -51,7 +51,7 @@ public class BaseDeDonnee {
         }
     }
     
-    protected String getUserId(String user_mail) throws SQLException
+    public String getUserId(String user_mail) throws SQLException
     {
         Statement statement = null;
         ResultSet resultat = null;

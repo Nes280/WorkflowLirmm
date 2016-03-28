@@ -8,6 +8,7 @@ package fr.lirmm.servlets;
 import analysedesentiments.AnalyseDeSentiments;
 import fr.lirmm.beans.Polarite;
 import fr.lirmm.beans.Root;
+import fr.lirmm.db.BaseDeDonnee;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -237,29 +238,38 @@ public class AffichageModeleExistant extends HttpServlet {
             
             //Recuperer le prenom et nom de l'utilisateur 
             HttpSession session = request.getSession();
-            Object pr = session.getAttribute("prenom");
-            Object no = session.getAttribute("nom");
+            Object prenom = session.getAttribute("prenom");
+            Object nom = session.getAttribute("nom");
+            Object email = session.getAttribute("mail");
+            
+            BaseDeDonnee bd = new BaseDeDonnee();
+            String id = "";
+            try {
+                id = bd.getUserId(email + "");
+            }
+            catch(Exception ex)
+            {
+                System.out.println(ex);
+            }
+            System.out.println("id "+id);
             
             //Construction du nom du cookie 
-            String nomCookie = pr + "" + no; 
-            Object isUpload = session.getAttribute(UPLOAD);
+            //String nomCookie = pr + "" + no; 
+            //Object isUpload = session.getAttribute(UPLOAD);
             
-            Cookie[] cookies = request.getCookies();
-            System.out.println("taille du cookie " + cookies.length);
+            /*Cookie[] cookies = request.getCookies();
+            System.out.println("taille du cookie " + cookies.length);*/
             
             //Recherche du cookie
-            boolean trouver = rechercheCookie(cookies, nomCookie); 
+            /*boolean trouver = rechercheCookie(cookies, nomCookie); 
             
             if(!trouver)
-            {
-                //Recuperer le prenom et nom de l'utilisateur 
-                Object prenom = session.getAttribute("prenom");
-                Object nom = session.getAttribute("nom");
-                
+            {*/
+
                 //Construction du cookie
-                Cookie c = new Cookie(prenom + "" + nom, "1");
+                /*Cookie c = new Cookie(prenom + "" + nom, "1");
                 c.setMaxAge(24*3600);
-                response.addCookie(c);
+                response.addCookie(c);*/
 
                 Part p = request.getPart(CHAMP_FILE);
                 InputStream is = request.getPart(p.getName()).getInputStream();
@@ -270,6 +280,7 @@ public class AffichageModeleExistant extends HttpServlet {
                 //A faire
                 is.read(b);
                 String fileName = getFileName(p);
+                String nomFichier = id + "" + prenom + "" + nom + ".txt"; 
 
                 //On a pas mis de fichiers
                 if(fileName.equals("")){
@@ -279,83 +290,95 @@ public class AffichageModeleExistant extends HttpServlet {
                 }
                 //on a uploadé un fichier
                 else{
+                    System.out.println("On rentre dans le else et on écrit");
                     message = "Analysis tweet";
-                    //erreur = false;
                     erreur = 2;
-                    FileOutputStream os = new FileOutputStream("./fichiers/" + fileName);
+                    FileOutputStream os = new FileOutputStream("./fichiers/" + nomFichier);
                     os.write(b); 
-
+                    System.out.println("Fin d'écriture");
+                                                
                     //Lecture de fichier uploader
-                    String chaine = "";
+                    //String chaine = "";
                     try{
-                        InputStream ips = new FileInputStream("./fichiers/" + fileName); 
+                        InputStream ips = new FileInputStream("./fichiers/" + nomFichier); 
                         InputStreamReader ipsr = new InputStreamReader(ips);
                         BufferedReader br= new BufferedReader(ipsr);
+                        
+                        System.out.println("lecture du fichier");
+                        //Objet pour l'analyse
+                        AnalyseDeSentiments a = new AnalyseDeSentiments();
+
                         String ligne;
                         while ((ligne=br.readLine())!=null){
-                                //System.out.println(ligne);
-                                chaine+=ligne+"\n";
+                            //System.out.println(ligne);
+                            //chaine+=ligne+"\n";
+                            resultat = a.start(ligne, modele1, modele2, modele3);
+                            listeTweet.put(ligne, resultat);
                         }
                         br.close(); 
                         ipsr.close();
+                        System.out.println("fin de lecture");
 
-                        String delim = "\n";
-                        String[] tokens = chaine.split(delim);
-                        AnalyseDeSentiments a = new AnalyseDeSentiments();
+                        /*String delim = "\n";
+                        String[] tokens = chaine.split(delim);*/
 
-                        for(int j = 0; j < tokens.length; j++){
+                        /*for(int j = 0; j < tokens.length; j++){
                             try {
                                 resultat = a.start(tokens[j], modele1, modele2, modele3);
                                 listeTweet.put(tokens[j], resultat);
                             } catch (Exception ex) {
                                 Logger.getLogger(AffichageAPITweet.class.getName()).log(Level.SEVERE, null, ex);
                             }
-                        }  
+                        }*/ 
                     }		
                     catch (Exception e){
                             System.out.println(e.toString());
                     }
                     os.close();
+                    
+                    is.close();
+
+                    File f = new File("./fichiers/" + nomFichier);
+                    f.delete();
+
+                    System.out.println("Creation du json");
+                    nomFichierJSON = id + "-" + typeAnalysis + ".json";
+
+                    //Création du json
+                    FileOutputStream fos = new FileOutputStream(new File("./fichiers/" + nomFichierJSON));
+
+                    JsonGeneratorFactory factory = Json.createGeneratorFactory(null);
+                    JsonGenerator generator = factory.createGenerator(fos);
+                    generator.writeStartArray();
+
+                    for(Entry<String, String> entry : listeTweet.entrySet())
+                    {
+                        generator.writeStartObject().write("phrase", entry.getKey()).
+                            write("classe", entry.getValue()).writeEnd();            
+                    }            
+                    generator.writeEnd().close();
+                    System.out.println("Fin du fichie json");
                 }
-                is.close();
-
-                File f = new File("./fichiers/" + fileName);
-                f.delete();
-
-                nomFichierJSON = prenom + "" + nom + "-" + typeAnalysis + ".json";
-
-                //Création du json
-                FileOutputStream fos = new FileOutputStream(new File("./fichiers/" + nomFichierJSON));
                 
-                JsonGeneratorFactory factory = Json.createGeneratorFactory(null);
-                JsonGenerator generator = factory.createGenerator(fos);
-                generator.writeStartArray();
-
-                for(Entry<String, String> entry : listeTweet.entrySet())
-                {
-                    generator.writeStartObject().write("phrase", entry.getKey()).
-                        write("classe", entry.getValue()).writeEnd();            
-                }            
-                generator.writeEnd().close();
                 
                 //Supprimer le cookie
-                Cookie[] cookiesFinal = request.getCookies();
+                /*Cookie[] cookiesFinal = request.getCookies();
                 System.out.println("taille du cookie a la fin " + cookiesFinal.length);
 
                 //Recherche du cookie
                 for(int j = 0; j < cookiesFinal.length; j++){
-                    if(cookies[j].getName().equals(nomCookie)){
-                        cookies[j].setMaxAge(0);
+                    if(cookiesFinal[j].getName().equals(nomCookie)){
+                        cookiesFinal[j].setMaxAge(0);
                     }
                     System.out.println("Final cookies " + cookies[j].getName());
                 }
                 c.setMaxAge(0);
-                response.addCookie(c);
-            }
+                response.addCookie(c);*/
+            /*}
             else
             {
                 information = "You have already upload a file";
-            }
+            }*/
         }
           
         //Valeur pour Root
@@ -376,7 +399,7 @@ public class AffichageModeleExistant extends HttpServlet {
         //Recuperer les valeurs samples, f-measure, precision, recall
         for(int i = 0; i < classe.length; i++)
         {
-            System.out.println("nom classe :" + classe[i]);
+            //System.out.println("nom classe :" + classe[i]);
             Polarite p = new Polarite();
             p.setClasse(classe[i]);
             p.setSample(valeurXml(fxml, "/modele/classe[@id='"+ classe[i] +"']/sample"));
@@ -394,7 +417,7 @@ public class AffichageModeleExistant extends HttpServlet {
         String[] url = valeurUrlXml(fxml, "/modele/url");
         for(int i = 0; i < url.length; i++)
         {
-            System.out.println(url[i]);
+            //System.out.println(url[i]);
             String lien = "";
             if(url[i].contains("2007")){
                 lien = "<a href=\" "+url[i] + " \">DEFT 2007</a>";
@@ -427,7 +450,7 @@ public class AffichageModeleExistant extends HttpServlet {
     //Fonction qui renvoie le nom du fichier uploader
     private String getFileName(Part part) { 
         String partHeader = part.getHeader("content-disposition"); 
-        System.out.println("Part Header = " + partHeader); 
+        //System.out.println("Part Header = " + partHeader); 
         for (String cd : part.getHeader("content-disposition").split(";")) { 
           if (cd.trim().startsWith("filename")) { 
             return cd.substring(cd.indexOf('=') + 1).trim() 
