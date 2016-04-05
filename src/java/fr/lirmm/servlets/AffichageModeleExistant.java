@@ -6,6 +6,7 @@
 package fr.lirmm.servlets;
 
 import analysedesentiments.AnalyseDeSentiments;
+import com.sun.xml.ws.util.StringUtils;
 import fr.lirmm.beans.Polarite;
 import fr.lirmm.beans.Root;
 import fr.lirmm.db.BaseDeDonnee;
@@ -15,11 +16,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,6 +52,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import weka.classifiers.Classifier;
+import weka.filters.supervised.attribute.AttributeSelection;
+import weka.filters.unsupervised.attribute.StringToWordVector;
 
 
 
@@ -61,6 +64,8 @@ import org.xml.sax.SAXException;
  */
 @WebServlet(name = "AffichageModeleExistant", urlPatterns = {"/affichageModeleExistant"})
 public class AffichageModeleExistant extends HttpServlet {
+    
+    public final Charset UTF8_CHARSET = Charset.forName("UTF-8");
 
     public static final String CHAMP_TWEET = "tweetAAnalyser";
     public static final String CHAMP_FILE = "fileUpload";
@@ -251,7 +256,7 @@ public class AffichageModeleExistant extends HttpServlet {
             {
                 System.out.println(ex);
             }
-            System.out.println("id "+id);
+            //System.out.println("id "+id);
             
             //Construction du nom du cookie 
             //String nomCookie = pr + "" + no; 
@@ -279,6 +284,8 @@ public class AffichageModeleExistant extends HttpServlet {
                 //A limiter la taille  
                 //A faire
                 is.read(b);
+                
+               
                 String fileName = getFileName(p);
                 String nomFichier = id + "" + prenom + "" + nom + ".txt"; 
 
@@ -293,8 +300,13 @@ public class AffichageModeleExistant extends HttpServlet {
                     System.out.println("On rentre dans le else et on écrit");
                     message = "Analysis tweet";
                     erreur = 2;
+                                        
                     FileOutputStream os = new FileOutputStream("./fichiers/" + nomFichier);
+                    //String d = decodeUTF8(b);
+                    //b = encodeUTF8(d);
+                    
                     os.write(b); 
+                    
                     System.out.println("Fin d'écriture");
                                                 
                     //Lecture de fichier uploader
@@ -307,12 +319,24 @@ public class AffichageModeleExistant extends HttpServlet {
                         System.out.println("lecture du fichier");
                         //Objet pour l'analyse
                         AnalyseDeSentiments a = new AnalyseDeSentiments();
-
+                        
+                        //Chargement des modèles
+                        StringToWordVector stw = a.loadModelOne(modele1);
+                        AttributeSelection ats = a.loadModelTwo(modele2);
+                        Classifier cls = a.loadModelThree(modele3);
+                        
                         String ligne;
                         while ((ligne=br.readLine())!=null){
-                            //System.out.println(ligne);
-                            //chaine+=ligne+"\n";
-                            resultat = a.start(ligne, modele1, modele2, modele3);
+                            System.out.println(ligne);
+
+                            //changement encodage 
+                            byte[] somebyte = ligne.getBytes();
+                            String encoding = "UTF-8"; //ANSI Cp1252 ISO-8859-1
+                            String sortie = new String(somebyte, encoding);
+                            System.out.println("sortie " +sortie);
+    
+                            //resultat = a.start(ligne, modele1, modele2, modele3);
+                            resultat = a.analyse(ligne, stw, ats, cls);
                             listeTweet.put(ligne, resultat);
                         }
                         br.close(); 
@@ -450,7 +474,7 @@ public class AffichageModeleExistant extends HttpServlet {
     //Fonction qui renvoie le nom du fichier uploader
     private String getFileName(Part part) { 
         String partHeader = part.getHeader("content-disposition"); 
-        //System.out.println("Part Header = " + partHeader); 
+        System.out.println("Part Header = " + partHeader); 
         for (String cd : part.getHeader("content-disposition").split(";")) { 
           if (cd.trim().startsWith("filename")) { 
             return cd.substring(cd.indexOf('=') + 1).trim() 
@@ -566,6 +590,16 @@ public class AffichageModeleExistant extends HttpServlet {
             System.out.println("cookies " + cookies[i].getName());
         }
         return trouver; 
+    }
+    
+    //encodage
+    byte[] encodeUTF8(String string){
+        return string.getBytes(UTF8_CHARSET);
+    }
+    
+    //decodage
+    String decodeUTF8(byte[] bytes){
+        return new String(bytes, UTF8_CHARSET);
     }
 
 }

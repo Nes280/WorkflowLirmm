@@ -120,13 +120,15 @@ public class BaseDeDonnee {
         connecting();
         Md5 cryptPw = new Md5(utilisateur.getPassword());   
         try {
-            PreparedStatement preparedStatement = connexion.prepareStatement("INSERT INTO lirmm.\"User\"(\"Fname\", \"Lname\", \"Mail\", \"Password\", \"Mod\") VALUES(?, ?, ?, ?, ?);");
+            PreparedStatement preparedStatement = connexion.prepareStatement("INSERT INTO lirmm.\"User\"(\"Fname\", \"Lname\", \"Mail\", \"Password\", \"Mod\", \"IsUpload\", \"IsTraining\") VALUES(?, ?, ?, ?, ?, ?, ?);");
            
             preparedStatement.setString(1, utilisateur.getFname());
             preparedStatement.setString(2, utilisateur.getLname());
             preparedStatement.setString(3, utilisateur.getMail());
             preparedStatement.setString(4, cryptPw.getCode());
             preparedStatement.setBoolean(5, utilisateur.isMod());
+            preparedStatement.setBoolean(6, false);
+            preparedStatement.setBoolean(7, false);
             
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -272,13 +274,12 @@ public class BaseDeDonnee {
             statement = connexion.createStatement();
 
             try {
-                PreparedStatement preparedStatement = connexion.prepareStatement("INSERT INTO lirmm.\"File\"(\"Id_user\", \"Name\", \"Info\", \"Date_create\", \"Date_update\") VALUES(?, ?, ?, ?, ?);");
+                PreparedStatement preparedStatement = connexion.prepareStatement("INSERT INTO lirmm.\"File\"(\"Id_user\", \"Name\", \"Info\", \"Date_create\") VALUES(?, ?, ?, ?);");
 
                 preparedStatement.setInt(1, Integer.parseInt(file.getId()));
                 preparedStatement.setString(2, file.getNom());
                 preparedStatement.setString(3, file.getInfo());
                 preparedStatement.setDate(4, new java.sql.Date(new java.util.Date().getTime()));
-                preparedStatement.setDate(5, new java.sql.Date(new java.util.Date().getTime()));
 
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
