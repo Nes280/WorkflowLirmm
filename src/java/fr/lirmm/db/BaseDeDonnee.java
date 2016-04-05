@@ -25,10 +25,10 @@ import java.sql.Date;
  * @author niels
  */
 public class BaseDeDonnee {
-    private static String JDBC = "jdbc:postgresql://localhost/workflow_db";
-    private static String USER = "workflow_user";
+    private static String JDBC = "jdbc:derby://localhost:1527/Workflow_lirmm.db";
+    private static String USER = "Workflow_user";
     private static String PASSWORD = "admin";
-    private static String DRIVER = "org.postgresql";
+    private static String DRIVER = "apache_derby_net";
     
     private Connection connexion;
     boolean alreadyConnect = false;
@@ -45,7 +45,7 @@ public class BaseDeDonnee {
             try {
                 connexion = DriverManager.getConnection(JDBC, USER, PASSWORD);  
             } catch (SQLException e) {
-                //non traité pour le moment
+                System.out.println(e);
             }
             alreadyConnect = true;
         }
@@ -59,7 +59,7 @@ public class BaseDeDonnee {
         connecting();
         statement = connexion.createStatement();
         
-        resultat = statement.executeQuery("SELECT \"Id\" FROM lirmm.\"User\" WHERE \"Mail\" = '"+ user_mail +"'");
+        resultat = statement.executeQuery("SELECT Id FROM WORKFLOW_USER.Users WHERE Mail = '"+ user_mail +"'");
         while (resultat.next()) 
         {
             user_id = resultat.getString("Id");
@@ -81,8 +81,8 @@ public class BaseDeDonnee {
             statement = connexion.createStatement();
             Md5 cryptPw = new Md5(password);
             // Creation de la requete
-            String base = "SELECT \"Fname\", \"Lname\", \"Mail\" FROM lirmm.\"User\"";              //base de la requete 
-            String spec = "WHERE \"Mail\" = '"+mail+"' AND \"Password\" = '"+cryptPw.getCode()+"'";//specification de la requete
+            String base = "SELECT Fname, Lname, Mail FROM WORKFLOW_USER.Users";              //base de la requete 
+            String spec = "WHERE Mail = "+mail+" AND Password = "+cryptPw.getCode()+"";//specification de la requete
 
             // Exécution de la requête
             resultat = statement.executeQuery(base + spec);
@@ -92,6 +92,8 @@ public class BaseDeDonnee {
                 String nom = resultat.getString("Fname");
                 String prenom = resultat.getString("Lname");
                 String email = resultat.getString("Mail");
+                
+               // System.out.println(nom + "  " + prenom +"      " + email);
             
                 utilisateur.setFname(nom);
                 utilisateur.setLname(prenom);
@@ -120,7 +122,7 @@ public class BaseDeDonnee {
         connecting();
         Md5 cryptPw = new Md5(utilisateur.getPassword());   
         try {
-            PreparedStatement preparedStatement = connexion.prepareStatement("INSERT INTO lirmm.\"User\"(\"Fname\", \"Lname\", \"Mail\", \"Password\", \"Mod\", \"IsUpload\", \"IsTraining\") VALUES(?, ?, ?, ?, ?, ?, ?);");
+            PreparedStatement preparedStatement = connexion.prepareStatement("INSERT INTO WORKFLOW_USER.Users(Fname, Lname, Mail, Password, Mod, IsUpload, IsTraining) VALUES(?, ?, ?, ?, ?, ?, ?)");
            
             preparedStatement.setString(1, utilisateur.getFname());
             preparedStatement.setString(2, utilisateur.getLname());
@@ -143,7 +145,7 @@ public class BaseDeDonnee {
         connecting();
          
         try {//update article set MonChamp = 'NouvelleValeur' where MonChamp = 'AncienneValeur'
-            PreparedStatement preparedStatement = connexion.prepareStatement("UPDATE lirmm.\"User\" set \"Fname\" = '"+Fname+"',\"Lname\" = '"+Lname+"',\"Mail\" = '"+nMail+"' WHERE \"Mail\" = '"+lMail+"';");
+            PreparedStatement preparedStatement = connexion.prepareStatement("UPDATE WORKFLOW_USER.Users set Fname = '"+Fname+"',Lname = '"+Lname+"',Mail = '"+nMail+"' WHERE Mail = '"+lMail+"';");
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -154,7 +156,7 @@ public class BaseDeDonnee {
         connecting();
         Md5 cryptPw = new Md5(password);
         try {//update article set MonChamp = 'NouvelleValeur' where MonChamp = 'AncienneValeur'
-            PreparedStatement preparedStatement = connexion.prepareStatement("UPDATE lirmm.\"User\" set \"Password\" = '"+cryptPw.getCode()+"'WHERE \"Mail\" = '"+Mail+"';");
+            PreparedStatement preparedStatement = connexion.prepareStatement("UPDATE WORKFLOW_USER.Users set password = '"+cryptPw.getCode()+"'WHERE Mail = '"+Mail+"';");
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -172,7 +174,7 @@ public class BaseDeDonnee {
         
         try {
             // Exécution de la requête
-            resultat = statement.executeQuery("SELECT \"Mail\" FROM lirmm.\"User\" WHERE \"Mail\" = '"+ mail +"'");
+            resultat = statement.executeQuery("SELECT Mail FROM WORKFLOW_USER.Users WHERE Mail = '"+ mail +"'");
  
             // Récupération des données
             while (resultat.next()) {
@@ -207,7 +209,7 @@ public class BaseDeDonnee {
             user_id = getUserId(user_mail);
             
             // Exécution de la requête
-            resultat = statement.executeQuery("SELECT \"Id_file\" FROM lirmm.\"File\" WHERE \"Name\" = '"+ file_name +"' AND \"Id_user\" = '"+ user_id+"'");
+            resultat = statement.executeQuery("SELECT Id_file FROM WORKFLOW_USER.Files WHERE Name = '"+ file_name +"' AND Id_user = '"+ user_id+"'");
  
             // Récupération des données
             while (resultat.next()) {
@@ -237,7 +239,7 @@ public class BaseDeDonnee {
             user_id = getUserId(user_mail);
             
             // Exécution de la requête
-            resultat = statement.executeQuery("SELECT \"Id_file\", \"Name\", \"Info\", \"Date_update\" FROM lirmm.\"File\" WHERE \"Id_user\" = '"+ user_id+"'");
+            resultat = statement.executeQuery("SELECT Id_file, Name, Info, Date_update FROM WORKFLOW_USER.Files WHERE Id_user = '"+ user_id+"'");
  
             // Récupération des données
             while (resultat.next()) {
@@ -275,7 +277,7 @@ public class BaseDeDonnee {
             statement = connexion.createStatement();
 
             try {
-                PreparedStatement preparedStatement = connexion.prepareStatement("INSERT INTO lirmm.\"File\"(\"Id_user\", \"Name\", \"Info\", \"Date_create\") VALUES(?, ?, ?, ?);");
+                PreparedStatement preparedStatement = connexion.prepareStatement("INSERT INTO WORKFLOW_USER.Files(Id_user, Name, Info, Date_create) VALUES(?, ?, ?, ?);");
 
                 preparedStatement.setInt(1, Integer.parseInt(file.getId()));
                 preparedStatement.setString(2, file.getNom());
@@ -306,14 +308,14 @@ public class BaseDeDonnee {
         connecting();
         statement = connexion.createStatement();
         
-        resultat = statement.executeQuery("SELECT \"Id\" FROM lirmm.\"User\" WHERE \"Mail\" = '"+ user_mail +"'");
+        resultat = statement.executeQuery("SELECT Id FROM WORKFLOW_USER.Users WHERE Mail = '"+ user_mail +"'");
         while (resultat.next()) 
         {
             user_id = resultat.getString("Id");
         }
         resultatFinal[0] = user_id;
         
-        resultat = statement.executeQuery("SELECT \"IsUpload\" FROM lirmm.\"User\" WHERE \"Id\" = '"+ user_id +"'");
+        resultat = statement.executeQuery("SELECT IsUpload FROM WORKFLOW_USER.Users WHERE Id = '"+ user_id +"'");
         while (resultat.next()) 
         {
             user_isupload = resultat.getString("IsUpload");
@@ -325,7 +327,7 @@ public class BaseDeDonnee {
     public void setIsUpload(String Id, String IsUpload){
         connecting();
         try {
-            PreparedStatement preparedStatement = connexion.prepareStatement("UPDATE lirmm.\"User\" set \"IsUpload\" = '"+IsUpload+"'WHERE \"Id\" = '"+Id+"';");
+            PreparedStatement preparedStatement = connexion.prepareStatement("UPDATE WORKFLOW_USER.Users set IsUpload = '"+IsUpload+"'WHERE Id = '"+Id+"';");
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

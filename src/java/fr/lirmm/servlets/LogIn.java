@@ -52,6 +52,7 @@ public void doPost( HttpServletRequest request, HttpServletResponse response ) t
         String mail = request.getParameter(MAIL);
         String pass = request.getParameter(PASSWORD);
         User connecter = utilisateur.recupererUtilisateurs(mail,pass);
+        System.out.println(connecter.Fname + "##############################");
         if(connecter.Fname != null)
         {
             HttpSession session = request.getSession();
