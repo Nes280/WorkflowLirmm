@@ -246,18 +246,6 @@ public class AffichageModeleExistant extends HttpServlet {
             Object prenom = session.getAttribute("prenom");
             Object nom = session.getAttribute("nom");
             Object email = session.getAttribute("mail");
-            
-            //Faire ma fonction qui recupere IsUpload
-            BaseDeDonnee bd = new BaseDeDonnee();
-            String id = "";
-            try {
-                id = bd.getUserId(email + "");
-            }
-            catch(Exception ex)
-            {
-                System.out.println(ex);
-            }
-            
 
             Part p = request.getPart(CHAMP_FILE);
             InputStream is = request.getPart(p.getName()).getInputStream();
@@ -270,7 +258,6 @@ public class AffichageModeleExistant extends HttpServlet {
 
 
             String fileName = getFileName(p);
-            String nomFichier = id + "" + prenom + "" + nom + ".txt"; 
 
             //On a pas mis de fichiers
             if(fileName.equals("")){
@@ -280,81 +267,109 @@ public class AffichageModeleExistant extends HttpServlet {
             }
             //on a uploadé un fichier
             else{
-                System.out.println("On rentre dans le else et on écrit");
-                message = "Analysis tweet";
-                erreur = 2;
-
-                FileOutputStream os = new FileOutputStream("./fichiers/" + nomFichier);
-                //String d = decodeUTF8(b);
-                //b = encodeUTF8(d);
-
-                os.write(b); 
-
-                System.out.println("Fin d'écriture");
-
-
-                try{
-                    InputStream ips = new FileInputStream("./fichiers/" + nomFichier); 
-                    InputStreamReader ipsr = new InputStreamReader(ips);
-                    BufferedReader br= new BufferedReader(ipsr);
-
-                    System.out.println("lecture du fichier");
-
-                    //Objet pour l'analyse
-                    AnalyseDeSentiments a = new AnalyseDeSentiments();
-
-                    //Chargement des modèles
-                    StringToWordVector stw = a.loadModelOne(modele1);
-                    AttributeSelection ats = a.loadModelTwo(modele2);
-                    Classifier cls = a.loadModelThree(modele3);
-
-                    String ligne;
-                    while ((ligne=br.readLine())!=null){
-                        System.out.println(ligne);
-
-                        //changement encodage 
-                        byte[] somebyte = ligne.getBytes();
-                        String encoding = "UTF-8"; //ANSI Cp1252 ISO-8859-1
-                        String sortie = new String(somebyte, encoding);
-                        System.out.println("sortie " +sortie);
-
-                        //resultat = a.start(ligne, modele1, modele2, modele3);
-                        resultat = a.analyse(sortie, stw, ats, cls);
-                        listeTweet.put(sortie, resultat);
-                    }
-                    br.close(); 
-                    ipsr.close();
-                    System.out.println("fin de lecture");
-
-                }		
-                catch (Exception e){
-                        System.out.println(e.toString());
+                
+                //recupération de l'id et du isUpload
+                BaseDeDonnee bd = new BaseDeDonnee();
+                String[] res = new String[2];
+                try {
+                    res = bd.getUserIsUpload(email + "");
                 }
-                os.close();
-
-                is.close();
-
-                File f = new File("./fichiers/" + nomFichier);
-                f.delete();
-
-                System.out.println("Creation du json");
-                nomFichierJSON = id + "-" + typeAnalysis + ".json";
-
-                //Création du json
-                FileOutputStream fos = new FileOutputStream(new File("./fichiers/" + nomFichierJSON));
-
-                JsonGeneratorFactory factory = Json.createGeneratorFactory(null);
-                JsonGenerator generator = factory.createGenerator(fos);
-                generator.writeStartArray();
-
-                for(Entry<String, String> entry : listeTweet.entrySet())
+                catch(Exception ex)
                 {
-                    generator.writeStartObject().write("phrase", entry.getKey()).
-                        write("classe", entry.getValue()).writeEnd();            
-                }            
-                generator.writeEnd().close();
-                System.out.println("Fin du fichie json");
-            }       
+                    System.out.println(ex);
+                }
+                
+                //Recupere les valeurs que l'on a besoin 
+                String id = res[0];
+                String isUpload = res[1];
+                
+                if(isUpload.equals("f")){
+                    //Nom du fichier texte
+                    String nomFichier = id + "" + prenom + "" + nom + ".txt"; 
+                    
+                    bd.setIsUpload(id, "true");
+
+                    System.out.println("On rentre dans le else et on écrit");
+                    message = "Analysis tweet";
+                    erreur = 2;
+
+                    FileOutputStream os = new FileOutputStream("./fichiers/" + nomFichier);
+                    //String d = decodeUTF8(b);
+                    //b = encodeUTF8(d);
+                    os.write(b); 
+
+                    System.out.println("Fin d'écriture");
+
+                    try{
+                        InputStream ips = new FileInputStream("./fichiers/" + nomFichier); 
+                        InputStreamReader ipsr = new InputStreamReader(ips);
+                        BufferedReader br= new BufferedReader(ipsr);
+
+                        System.out.println("lecture du fichier");
+
+                        //Objet pour l'analyse
+                        AnalyseDeSentiments a = new AnalyseDeSentiments();
+
+                        //Chargement des modèles
+                        StringToWordVector stw = a.loadModelOne(modele1);
+                        AttributeSelection ats = a.loadModelTwo(modele2);
+                        Classifier cls = a.loadModelThree(modele3);
+
+                        String ligne;
+                        while ((ligne=br.readLine())!=null){
+                            System.out.println(ligne);
+
+                            //changement encodage 
+                            byte[] somebyte = ligne.getBytes();
+                            String encoding = "UTF-8"; //ANSI Cp1252 ISO-8859-1
+                            String sortie = new String(somebyte, encoding);
+                            System.out.println("sortie " +sortie);
+
+                            //resultat = a.start(ligne, modele1, modele2, modele3);
+                            resultat = a.analyse(sortie, stw, ats, cls);
+                            listeTweet.put(sortie, resultat);
+                        }
+                        br.close(); 
+                        ipsr.close();
+                        System.out.println("fin de lecture");
+
+                    }		
+                    catch (Exception e){
+                            System.out.println(e.toString());
+                    }
+                    os.close();
+
+                    is.close();
+
+                    File f = new File("./fichiers/" + nomFichier);
+                    f.delete();
+
+                    System.out.println("Creation du json");
+                    nomFichierJSON = id + "-" + typeAnalysis + ".json";
+
+                    //Création du json
+                    FileOutputStream fos = new FileOutputStream(new File("./fichiers/" + nomFichierJSON));
+
+                    JsonGeneratorFactory factory = Json.createGeneratorFactory(null);
+                    JsonGenerator generator = factory.createGenerator(fos);
+                    generator.writeStartArray();
+
+                    for(Entry<String, String> entry : listeTweet.entrySet())
+                    {
+                        generator.writeStartObject().write("phrase", entry.getKey()).
+                            write("classe", entry.getValue()).writeEnd();            
+                    }            
+                    generator.writeEnd().close();
+                    System.out.println("Fin du fichie json");
+                    
+                    bd.setIsUpload(id, "false");
+
+                    
+                }                              
+                else{
+                    information = "You have an upload";
+                }
+            }
         }
           
         //Valeur pour Root
@@ -418,6 +433,7 @@ public class AffichageModeleExistant extends HttpServlet {
         request.setAttribute(ATT_TITRE, titre);
         request.setAttribute(ATT_FILE_XML, fxml);
         request.setAttribute(ATT_FILE_JSON, nomFichierJSON);
+        request.setAttribute(ATT_INFO, information);
         
         this.getServletContext().getRequestDispatcher(VUE).forward( request, response );
     }

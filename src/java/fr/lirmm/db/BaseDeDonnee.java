@@ -290,4 +290,46 @@ public class BaseDeDonnee {
         else return -1;
         
     }
+    
+    
+    /*
+     * Partie Upload de fichier
+     */
+    public String[] getUserIsUpload(String user_mail) throws SQLException
+    {
+        String[] resultatFinal = new String[2];
+        Statement statement = null;
+        ResultSet resultat = null;
+        String user_id = "";
+        String user_isupload = "";
+        connecting();
+        statement = connexion.createStatement();
+        
+        resultat = statement.executeQuery("SELECT \"Id\" FROM lirmm.\"User\" WHERE \"Mail\" = '"+ user_mail +"'");
+        while (resultat.next()) 
+        {
+            user_id = resultat.getString("Id");
+        }
+        resultatFinal[0] = user_id;
+        
+        resultat = statement.executeQuery("SELECT \"IsUpload\" FROM lirmm.\"User\" WHERE \"Id\" = '"+ user_id +"'");
+        while (resultat.next()) 
+        {
+            user_isupload = resultat.getString("IsUpload");
+        }
+        resultatFinal[1] = user_isupload;
+        return resultatFinal;  
+    }
+    
+    public void setIsUpload(String Id, String IsUpload){
+        connecting();
+        try {
+            PreparedStatement preparedStatement = connexion.prepareStatement("UPDATE lirmm.\"User\" set \"IsUpload\" = '"+IsUpload+"'WHERE \"Id\" = '"+Id+"';");
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
 }
