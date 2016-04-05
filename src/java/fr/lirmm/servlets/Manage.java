@@ -103,6 +103,7 @@ public class Manage extends HttpServlet {
                 String nom = liste.get(i); 
                 String information = liste.get(i+1);
                 String date_modif = liste.get(i+2);
+                if (date_modif == null) date_modif = "Not yet trained";
                 
                 
                 tableau += "<tr class=\"blue-hover\">\n" +"<td>"+nom+"</td>\n" +"<td>"+information+"</td>\n"+"<td>"+date_modif+"</td>\n"+"<td></td>\n"+"<td></td>\n" +"</tr>\n"; 
