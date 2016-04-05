@@ -247,6 +247,7 @@ public class AffichageModeleExistant extends HttpServlet {
             Object nom = session.getAttribute("nom");
             Object email = session.getAttribute("mail");
             
+            //Faire ma fonction qui recupere IsUpload
             BaseDeDonnee bd = new BaseDeDonnee();
             String id = "";
             try {
@@ -256,153 +257,104 @@ public class AffichageModeleExistant extends HttpServlet {
             {
                 System.out.println(ex);
             }
-            //System.out.println("id "+id);
             
-            //Construction du nom du cookie 
-            //String nomCookie = pr + "" + no; 
-            //Object isUpload = session.getAttribute(UPLOAD);
-            
-            /*Cookie[] cookies = request.getCookies();
-            System.out.println("taille du cookie " + cookies.length);*/
-            
-            //Recherche du cookie
-            /*boolean trouver = rechercheCookie(cookies, nomCookie); 
-            
-            if(!trouver)
-            {*/
 
-                //Construction du cookie
-                /*Cookie c = new Cookie(prenom + "" + nom, "1");
-                c.setMaxAge(24*3600);
-                response.addCookie(c);*/
+            Part p = request.getPart(CHAMP_FILE);
+            InputStream is = request.getPart(p.getName()).getInputStream();
+            int i = is.available();
+            byte[] b = new byte[i];
+            System.out.println("byte " + b.length);
+            //A limiter la taille  
+            //A faire
+            is.read(b);
 
-                Part p = request.getPart(CHAMP_FILE);
-                InputStream is = request.getPart(p.getName()).getInputStream();
-                int i = is.available();
-                byte[] b = new byte[i];
-                System.out.println("byte " + b.length);
-                //A limiter la taille  
-                //A faire
-                is.read(b);
-                
-               
-                String fileName = getFileName(p);
-                String nomFichier = id + "" + prenom + "" + nom + ".txt"; 
 
-                //On a pas mis de fichiers
-                if(fileName.equals("")){
-                    message = "No tweet";
-                    //erreur = true;
-                    erreur = 0;
-                }
-                //on a uploadé un fichier
-                else{
-                    System.out.println("On rentre dans le else et on écrit");
-                    message = "Analysis tweet";
-                    erreur = 2;
-                                        
-                    FileOutputStream os = new FileOutputStream("./fichiers/" + nomFichier);
-                    //String d = decodeUTF8(b);
-                    //b = encodeUTF8(d);
-                    
-                    os.write(b); 
-                    
-                    System.out.println("Fin d'écriture");
-                                                
-                    //Lecture de fichier uploader
-                    //String chaine = "";
-                    try{
-                        InputStream ips = new FileInputStream("./fichiers/" + nomFichier); 
-                        InputStreamReader ipsr = new InputStreamReader(ips);
-                        BufferedReader br= new BufferedReader(ipsr);
-                        
-                        System.out.println("lecture du fichier");
-                        //Objet pour l'analyse
-                        AnalyseDeSentiments a = new AnalyseDeSentiments();
-                        
-                        //Chargement des modèles
-                        StringToWordVector stw = a.loadModelOne(modele1);
-                        AttributeSelection ats = a.loadModelTwo(modele2);
-                        Classifier cls = a.loadModelThree(modele3);
-                        
-                        String ligne;
-                        while ((ligne=br.readLine())!=null){
-                            System.out.println(ligne);
+            String fileName = getFileName(p);
+            String nomFichier = id + "" + prenom + "" + nom + ".txt"; 
 
-                            //changement encodage 
-                            byte[] somebyte = ligne.getBytes();
-                            String encoding = "UTF-8"; //ANSI Cp1252 ISO-8859-1
-                            String sortie = new String(somebyte, encoding);
-                            System.out.println("sortie " +sortie);
-    
-                            //resultat = a.start(ligne, modele1, modele2, modele3);
-                            resultat = a.analyse(ligne, stw, ats, cls);
-                            listeTweet.put(ligne, resultat);
-                        }
-                        br.close(); 
-                        ipsr.close();
-                        System.out.println("fin de lecture");
+            //On a pas mis de fichiers
+            if(fileName.equals("")){
+                message = "No tweet";
+                //erreur = true;
+                erreur = 0;
+            }
+            //on a uploadé un fichier
+            else{
+                System.out.println("On rentre dans le else et on écrit");
+                message = "Analysis tweet";
+                erreur = 2;
 
-                        /*String delim = "\n";
-                        String[] tokens = chaine.split(delim);*/
+                FileOutputStream os = new FileOutputStream("./fichiers/" + nomFichier);
+                //String d = decodeUTF8(b);
+                //b = encodeUTF8(d);
 
-                        /*for(int j = 0; j < tokens.length; j++){
-                            try {
-                                resultat = a.start(tokens[j], modele1, modele2, modele3);
-                                listeTweet.put(tokens[j], resultat);
-                            } catch (Exception ex) {
-                                Logger.getLogger(AffichageAPITweet.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        }*/ 
-                    }		
-                    catch (Exception e){
-                            System.out.println(e.toString());
+                os.write(b); 
+
+                System.out.println("Fin d'écriture");
+
+
+                try{
+                    InputStream ips = new FileInputStream("./fichiers/" + nomFichier); 
+                    InputStreamReader ipsr = new InputStreamReader(ips);
+                    BufferedReader br= new BufferedReader(ipsr);
+
+                    System.out.println("lecture du fichier");
+
+                    //Objet pour l'analyse
+                    AnalyseDeSentiments a = new AnalyseDeSentiments();
+
+                    //Chargement des modèles
+                    StringToWordVector stw = a.loadModelOne(modele1);
+                    AttributeSelection ats = a.loadModelTwo(modele2);
+                    Classifier cls = a.loadModelThree(modele3);
+
+                    String ligne;
+                    while ((ligne=br.readLine())!=null){
+                        System.out.println(ligne);
+
+                        //changement encodage 
+                        byte[] somebyte = ligne.getBytes();
+                        String encoding = "UTF-8"; //ANSI Cp1252 ISO-8859-1
+                        String sortie = new String(somebyte, encoding);
+                        System.out.println("sortie " +sortie);
+
+                        //resultat = a.start(ligne, modele1, modele2, modele3);
+                        resultat = a.analyse(sortie, stw, ats, cls);
+                        listeTweet.put(sortie, resultat);
                     }
-                    os.close();
-                    
-                    is.close();
+                    br.close(); 
+                    ipsr.close();
+                    System.out.println("fin de lecture");
 
-                    File f = new File("./fichiers/" + nomFichier);
-                    f.delete();
-
-                    System.out.println("Creation du json");
-                    nomFichierJSON = id + "-" + typeAnalysis + ".json";
-
-                    //Création du json
-                    FileOutputStream fos = new FileOutputStream(new File("./fichiers/" + nomFichierJSON));
-
-                    JsonGeneratorFactory factory = Json.createGeneratorFactory(null);
-                    JsonGenerator generator = factory.createGenerator(fos);
-                    generator.writeStartArray();
-
-                    for(Entry<String, String> entry : listeTweet.entrySet())
-                    {
-                        generator.writeStartObject().write("phrase", entry.getKey()).
-                            write("classe", entry.getValue()).writeEnd();            
-                    }            
-                    generator.writeEnd().close();
-                    System.out.println("Fin du fichie json");
+                }		
+                catch (Exception e){
+                        System.out.println(e.toString());
                 }
-                
-                
-                //Supprimer le cookie
-                /*Cookie[] cookiesFinal = request.getCookies();
-                System.out.println("taille du cookie a la fin " + cookiesFinal.length);
+                os.close();
 
-                //Recherche du cookie
-                for(int j = 0; j < cookiesFinal.length; j++){
-                    if(cookiesFinal[j].getName().equals(nomCookie)){
-                        cookiesFinal[j].setMaxAge(0);
-                    }
-                    System.out.println("Final cookies " + cookies[j].getName());
-                }
-                c.setMaxAge(0);
-                response.addCookie(c);*/
-            /*}
-            else
-            {
-                information = "You have already upload a file";
-            }*/
+                is.close();
+
+                File f = new File("./fichiers/" + nomFichier);
+                f.delete();
+
+                System.out.println("Creation du json");
+                nomFichierJSON = id + "-" + typeAnalysis + ".json";
+
+                //Création du json
+                FileOutputStream fos = new FileOutputStream(new File("./fichiers/" + nomFichierJSON));
+
+                JsonGeneratorFactory factory = Json.createGeneratorFactory(null);
+                JsonGenerator generator = factory.createGenerator(fos);
+                generator.writeStartArray();
+
+                for(Entry<String, String> entry : listeTweet.entrySet())
+                {
+                    generator.writeStartObject().write("phrase", entry.getKey()).
+                        write("classe", entry.getValue()).writeEnd();            
+                }            
+                generator.writeEnd().close();
+                System.out.println("Fin du fichie json");
+            }       
         }
           
         //Valeur pour Root
