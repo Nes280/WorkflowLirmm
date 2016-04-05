@@ -25,10 +25,15 @@ import javax.servlet.http.HttpSession;
 public class Manage extends HttpServlet {
     public static String FILE_NAME = "file_name";
     public static String INFO = "info";
+    public static String ACTION = "action";
+    public static String FILEID = "fileID";
     public static String LENGTH = "The length of additional information must be less than 100 characters. ";
     public static String FIC_INFO = "ficInfo";
     public static String FIC_NOM = "ficNom";
     public static String F5 = "please, use the submit buton;";
+    public static String MANAGE = "/WorkflowLirmm/manage";
+    public static String TRAIN = "/WorkflowLirmm/train";
+
     
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -49,46 +54,66 @@ public class Manage extends HttpServlet {
         
         HttpSession session = request.getSession();
         Object mail = session.getAttribute("mail");
-        Object ficInfo = session.getAttribute(FIC_INFO);
-        Object ficNom = session.getAttribute(FIC_NOM);
-        String file_name = request.getParameter(FILE_NAME);
-        String info = request.getParameter(INFO);
         BaseDeDonnee bd = new BaseDeDonnee();
         
-        
-        if (!info.equals(ficInfo) && !file_name.equals(ficNom)) {     
-        
-            if (info.length() < 100 && !file_name.isEmpty() && !info.isEmpty())
-            {
-
-                try {
-                    
-                    int create = bd.newFileUser(file_name, mail + "", info);
-
-                } catch (SQLException ex) {
-                    Logger.getLogger(Manage.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                
-                request.setAttribute( "title", "Manage" );
-                request.setAttribute( "tableau", faireListeFichier(bd, (String)mail) );
-                session.setAttribute(FIC_INFO, info);
-                session.setAttribute(FIC_NOM, file_name);
-            }
-            else
-            {
-                request.setAttribute( "tableau", faireListeFichier(bd, (String)mail) );
-                request.setAttribute( "info", LENGTH );
-                request.setAttribute( "title", "Manage" );
-
-            }
-        }
-        else //l'utilisateur a fait un refresh on ne fait rien
+        if(request.getAttribute(ACTION) != null )
         {
+            
+            Object ficInfo = session.getAttribute(FIC_INFO);
+            Object ficNom = session.getAttribute(FIC_NOM);
+            String file_name = request.getParameter(FILE_NAME);
+            String info = request.getParameter(INFO);
+            
+
+
+            if (!info.equals(ficInfo) && !file_name.equals(ficNom)) {     
+
+                if (info.length() < 100 && !file_name.isEmpty() && !info.isEmpty())
+                {
+
+                    try {
+
+                        int create = bd.newFileUser(file_name, mail + "", info);
+
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Manage.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    request.setAttribute( "title", "Manage" );
+                    request.setAttribute( "tableau", faireListeFichier(bd, (String)mail) );
+                    session.setAttribute(FIC_INFO, info);
+                    session.setAttribute(FIC_NOM, file_name);
+                }
+                else
+                {
+                    request.setAttribute( "tableau", faireListeFichier(bd, (String)mail) );
+                    request.setAttribute( "info", LENGTH );
+                    request.setAttribute( "title", "Manage" );
+
+                }
+            }
+            else //l'utilisateur a fait un refresh on ne fait rien
+            {
+                request.setAttribute( "tableau", faireListeFichier(bd, (String)mail) );
+                request.setAttribute( "title", "Manage" );
+            }
+
+           this.getServletContext().getRequestDispatcher( "/WEB-INF/manage.jsp" ).forward( request, response );
+        }
+        
+        //is on a cliqué sur delete
+        if(request.getAttribute(ACTION).equals("delet") )
+        {
+            String fileId = request.getAttribute(FILEID).toString();
+            deleteFile(fileId, bd, mail.toString());
+
             request.setAttribute( "tableau", faireListeFichier(bd, (String)mail) );
             request.setAttribute( "title", "Manage" );
+            request.setAttribute( "topMenuName", "WorkFlow" );
+
+            this.getServletContext().getRequestDispatcher( "/WEB-INF/manage.jsp" ).forward( request, response );
         }
         
-       this.getServletContext().getRequestDispatcher( "/WEB-INF/manage.jsp" ).forward( request, response );
     }
     
     public String faireListeFichier(BaseDeDonnee bd, String mail)
@@ -98,20 +123,44 @@ public class Manage extends HttpServlet {
             ArrayList<String> liste = new ArrayList<String>();
             liste = bd.getFileUser(mail + "");
             
-            for (int i = 0; i < liste.size(); i = i + 3) {
+            for (int i = 0; i < liste.size(); i = i + 4) {
                 
-                String nom = liste.get(i); 
-                String information = liste.get(i+1);
-                String date_modif = liste.get(i+2);
+                String id = liste.get(i);
+                String nom = liste.get(i+1); 
+                String information = liste.get(i+2);
+                String date_modif = liste.get(i+3);
                 if (date_modif == null) date_modif = "Not yet trained";
                 
                 
-                tableau += "<tr class=\"blue-hover\">\n" +"<td>"+nom+"</td>\n" +"<td>"+information+"</td>\n"+"<td>"+date_modif+"</td>\n"+"<td></td>\n"+"<td></td>\n" +"</tr>\n"; 
+                tableau +=  "<tr class=\"blue-hover\">\n" +
+                                "<td>"+nom+"</td>\n" +
+                                "<td>"+information+"</td>\n"+
+                                "<td>"+date_modif+"</td>\n"+
+                                "<td>"+
+                                    "<form  method=\"post\" action="+TRAIN+" />\n" +
+                                        "<input value=\""+id+"\" name=\"fileId\" hidden>"+
+                                        "<button type=\"submit\" class=\" button\"><i class=\" fi-page-edit \"></i></button>\n" +
+                                    "</form> "+
+                                "</td>\n"+
+                                "<td>"+
+                                    "<form  method=\"post\" action="+MANAGE+" />\n" +
+                                        "<input value=\"delet\" name=\"action\" hidden>"+
+                                        "<input value=\""+id+"\" name=\"fileId\" hidden>"+
+                                        "<button type=\"submit\" class=\"alert hollow button\"><i class=\" fi-trash \"></i></button>\n" +
+                                    "</form> "+
+                                "</td>\n"+
+                            "</tr>\n"; 
             }
             
         } catch (SQLException ex) {
             Logger.getLogger(Manage.class.getName()).log(Level.SEVERE, null, ex);
         }
         return tableau;
+    }
+    
+    private void deleteFile(String fileId, BaseDeDonnee bd, String mail)
+    {
+        //A CODER, SUPPRESSION DE FICHIER.
+        
     }
 }

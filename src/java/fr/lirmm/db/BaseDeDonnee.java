@@ -237,10 +237,11 @@ public class BaseDeDonnee {
             user_id = getUserId(user_mail);
             
             // Exécution de la requête
-            resultat = statement.executeQuery("SELECT \"Name\", \"Info\", \"Date_update\" FROM lirmm.\"File\" WHERE \"Id_user\" = '"+ user_id+"'");
+            resultat = statement.executeQuery("SELECT \"Id_file\", \"Name\", \"Info\", \"Date_update\" FROM lirmm.\"File\" WHERE \"Id_user\" = '"+ user_id+"'");
  
             // Récupération des données
             while (resultat.next()) {
+                file.add(resultat.getString("Id_file"));
                 file.add(resultat.getString("Name"));
                 file.add(resultat.getString("Info"));
                 file.add(resultat.getString("Date_update"));
