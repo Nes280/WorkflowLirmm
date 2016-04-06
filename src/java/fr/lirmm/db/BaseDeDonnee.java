@@ -81,11 +81,13 @@ public class BaseDeDonnee {
             statement = connexion.createStatement();
             Md5 cryptPw = new Md5(password);
             // Creation de la requete
-            String base = "SELECT Fname, Lname, Mail FROM WORKFLOW_USER.Users";              //base de la requete 
-            String spec = "WHERE Mail = "+mail+" AND Password = "+cryptPw.getCode()+"";//specification de la requete
+            String req = "SELECT Fname, Lname, Mail FROM WORKFLOW_USER.Users "//base de la requete 
+                    + "WHERE Mail = '"+mail+"' AND Password = '"+cryptPw.getCode()+"'";   //specification de la requete
 
             // Exécution de la requête
-            resultat = statement.executeQuery(base + spec);
+            resultat 
+                    = 
+                    statement.executeQuery(req);
  
             // Récupération des données
             while (resultat.next()) {
@@ -93,14 +95,14 @@ public class BaseDeDonnee {
                 String prenom = resultat.getString("Lname");
                 String email = resultat.getString("Mail");
                 
-               // System.out.println(nom + "  " + prenom +"      " + email);
+              System.out.println(nom + "  " + prenom +"      " + email);
             
                 utilisateur.setFname(nom);
                 utilisateur.setLname(prenom);
                 utilisateur.setMail(email);
             }
         } catch (SQLException e) {
-            //non traité pour le moment
+           System.out.println(e);
         } finally {
             // Fermeture de la connexion
             try {
@@ -145,7 +147,7 @@ public class BaseDeDonnee {
         connecting();
          
         try {//update article set MonChamp = 'NouvelleValeur' where MonChamp = 'AncienneValeur'
-            PreparedStatement preparedStatement = connexion.prepareStatement("UPDATE WORKFLOW_USER.Users set Fname = '"+Fname+"',Lname = '"+Lname+"',Mail = '"+nMail+"' WHERE Mail = '"+lMail+"';");
+            PreparedStatement preparedStatement = connexion.prepareStatement("UPDATE WORKFLOW_USER.Users set Fname = '"+Fname+"',Lname = '"+Lname+"',Mail = '"+nMail+"' WHERE Mail = '"+lMail+"'");
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -156,7 +158,7 @@ public class BaseDeDonnee {
         connecting();
         Md5 cryptPw = new Md5(password);
         try {//update article set MonChamp = 'NouvelleValeur' where MonChamp = 'AncienneValeur'
-            PreparedStatement preparedStatement = connexion.prepareStatement("UPDATE WORKFLOW_USER.Users set password = '"+cryptPw.getCode()+"'WHERE Mail = '"+Mail+"';");
+            PreparedStatement preparedStatement = connexion.prepareStatement("UPDATE WORKFLOW_USER.Users set password = '"+cryptPw.getCode()+"'WHERE Mail = '"+Mail+"'");
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -231,12 +233,12 @@ public class BaseDeDonnee {
         Statement statement = null;
         ResultSet resultat = null;
         ArrayList<String> file = new ArrayList<String>();
-        String user_id = "";
+        int user_id = 0;
         connecting();
         statement = connexion.createStatement();
         
         try {
-            user_id = getUserId(user_mail);
+            user_id = Integer.parseInt(getUserId(user_mail));
             
             // Exécution de la requête
             resultat = statement.executeQuery("SELECT Id_file, Name, Info, Date_update FROM WORKFLOW_USER.Files WHERE Id_user = '"+ user_id+"'");
@@ -277,7 +279,7 @@ public class BaseDeDonnee {
             statement = connexion.createStatement();
 
             try {
-                PreparedStatement preparedStatement = connexion.prepareStatement("INSERT INTO WORKFLOW_USER.Files(Id_user, Name, Info, Date_create) VALUES(?, ?, ?, ?);");
+                PreparedStatement preparedStatement = connexion.prepareStatement("INSERT INTO WORKFLOW_USER.Files(Id_user, Name, Info, Date_create) VALUES(?, ?, ?, ?)");
 
                 preparedStatement.setInt(1, Integer.parseInt(file.getId()));
                 preparedStatement.setString(2, file.getNom());
@@ -327,7 +329,7 @@ public class BaseDeDonnee {
     public void setIsUpload(String Id, String IsUpload){
         connecting();
         try {
-            PreparedStatement preparedStatement = connexion.prepareStatement("UPDATE WORKFLOW_USER.Users set IsUpload = '"+IsUpload+"'WHERE Id = '"+Id+"';");
+            PreparedStatement preparedStatement = connexion.prepareStatement("UPDATE WORKFLOW_USER.Users set IsUpload = '"+IsUpload+"'WHERE Id = '"+Id+"'");
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

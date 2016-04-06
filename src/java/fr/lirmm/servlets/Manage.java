@@ -56,7 +56,7 @@ public class Manage extends HttpServlet {
         Object mail = session.getAttribute("mail");
         BaseDeDonnee bd = new BaseDeDonnee();
         
-        if(request.getAttribute(ACTION) != null )
+        if(request.getAttribute(ACTION) == null )
         {
             
             Object ficInfo = session.getAttribute(FIC_INFO);
@@ -96,13 +96,14 @@ public class Manage extends HttpServlet {
             {
                 request.setAttribute( "tableau", faireListeFichier(bd, (String)mail) );
                 request.setAttribute( "title", "Manage" );
+                //System.out.println("F5 >< ");
             }
 
            this.getServletContext().getRequestDispatcher( "/WEB-INF/manage.jsp" ).forward( request, response );
         }
         
         //is on a cliqué sur delete
-        if(request.getAttribute(ACTION).equals("delet") )
+        if(request.getParameter(ACTION).equals("delet") )
         {
             String fileId = request.getAttribute(FILEID).toString();
             deleteFile(fileId, bd, mail.toString());
