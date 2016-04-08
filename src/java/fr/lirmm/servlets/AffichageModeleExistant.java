@@ -367,7 +367,7 @@ public class AffichageModeleExistant extends HttpServlet {
                     
                 }                              
                 else{
-                    information = "You have an upload";
+                    information = "You already have an upload";
                 }
             }
         }
