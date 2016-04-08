@@ -56,7 +56,7 @@ public class Manage extends HttpServlet {
         Object mail = session.getAttribute("mail");
         BaseDeDonnee bd = new BaseDeDonnee();
         
-        if(request.getAttribute(ACTION) == null )
+        if(request.getParameter(ACTION).equals("affiche") )
         {
             
             Object ficInfo = session.getAttribute(FIC_INFO);
