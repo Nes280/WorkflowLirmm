@@ -144,7 +144,7 @@
                             <hr>
                             <h3>Upload file</h3>
                             <form method="post" action="<c:url value="/AffichageModeleExistant"/>" enctype="multipart/form-data">
-                                <p>Write a tweet for line. The format of the text is .txt. </p>
+                                <p>Write a tweet for line. The format of the text is .txt. The encoding is UTF-8.</p>
                                 <label for="fileUpload" class="button">Upload File</label>
                                 <input type="file" id="fileUpload" name="fileUpload" class="show-for-sr">
                                 <input value="uploadFile" name="choix" hidden>
