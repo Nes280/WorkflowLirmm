@@ -294,8 +294,6 @@ public class AffichageModeleExistant extends HttpServlet {
                     erreur = 2;
 
                     FileOutputStream os = new FileOutputStream("./fichiers/" + nomFichier);
-                    //String d = decodeUTF8(b);
-                    //b = encodeUTF8(d);
                     os.write(b); 
 
                     System.out.println("Fin d'écriture");
@@ -317,13 +315,13 @@ public class AffichageModeleExistant extends HttpServlet {
 
                         String ligne;
                         while ((ligne=br.readLine())!=null){
-                            System.out.println(ligne);
+                            //System.out.println(ligne);
 
                             //changement encodage 
                             byte[] somebyte = ligne.getBytes();
                             String encoding = "UTF-8"; //ANSI Cp1252 ISO-8859-1
                             String sortie = new String(somebyte, encoding);
-                            System.out.println("sortie " +sortie);
+                            //System.out.println("sortie " +sortie);
 
                             //resultat = a.start(ligne, modele1, modele2, modele3);
                             resultat = a.analyse(sortie, stw, ats, cls);
@@ -548,28 +546,6 @@ public class AffichageModeleExistant extends HttpServlet {
         return valeur;
     }
     
-    public boolean rechercheCookie(Cookie[] cookies, String nomCookie){
-        boolean trouver = false; 
-        //Recherche du cookie
-        for(int i = 0; i < cookies.length; i++){
-            if(cookies[i].getName().equals(nomCookie)){
-                trouver = true; 
-            }
-            System.out.println("cookies " + cookies[i].getName());
-        }
-        return trouver; 
-    }
-    
-    //encodage
-    byte[] encodeUTF8(String string){
-        return string.getBytes(UTF8_CHARSET);
-    }
-    
-    //decodage
-    String decodeUTF8(byte[] bytes){
-        return new String(bytes, UTF8_CHARSET);
-    }
-
 }
 
 
