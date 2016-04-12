@@ -139,6 +139,7 @@ public class Manage extends HttpServlet {
                                 "<td>"+
                                     "<form  method=\"post\" action="+TRAIN+" />\n" +
                                         "<input value=\""+id+"\" name=\"fileId\" hidden>"+
+                                        "<input value=\""+nom+"\" name=\"fileName\" hidden>"+
                                         "<button type=\"submit\" class=\" button\"><i class=\" fi-page-edit \"></i></button>\n" +
                                     "</form> "+
                                 "</td>\n"+

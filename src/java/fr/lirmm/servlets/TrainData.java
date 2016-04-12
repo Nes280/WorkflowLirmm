@@ -26,19 +26,19 @@ public class TrainData extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
         String fileId = request.getParameter("fileId");
+        String fileName = request.getParameter("fileName");
         String form = request.getParameter("hidden");
-        System.out.println(form);
         if (form == null) {
-            System.out.println("test@@@@@@@@@@@@@@@@");
         request.setAttribute("fileId", fileId);
+        request.setAttribute("fileName", fileName);
         request.setAttribute( "title", "Train" );
         request.setAttribute( "topMenuName", "WorkFlow" );
 
         this.getServletContext().getRequestDispatcher( "/WEB-INF/trainForm.jsp" ).forward( request, response );
         }
         else if (form.equals("true")){
-            System.out.println("test################");
-            request.setAttribute("fileId", fileId);
+        request.setAttribute("fileId", fileId);
+        request.setAttribute("fileName", fileName);
         request.setAttribute( "title", "Train" );
         request.setAttribute( "topMenuName", "WorkFlow" );
 
