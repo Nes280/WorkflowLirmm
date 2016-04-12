@@ -19,6 +19,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -108,7 +109,7 @@ public class AffichageModeleExistant extends HttpServlet {
         
         //variable pour le choix du type d'analyse
         String typeAnalysis = request.getParameter(CHAMP_TYPE_ANALYSIS);
-        System.out.println("type Analyse " + typeAnalysis);
+        //System.out.println("type Analyse " + typeAnalysis);
         
         //3 Modeles
         String modele1 = ""; 
@@ -295,10 +296,14 @@ public class AffichageModeleExistant extends HttpServlet {
 
                     FileOutputStream os = new FileOutputStream("./fichiers/" + nomFichier);
                     os.write(b); 
+                    os.close();
+                    is.close();
+                    
 
                     System.out.println("Fin d'écriture");
 
                     try{
+                        //Lecture du fichier
                         InputStream ips = new FileInputStream("./fichiers/" + nomFichier); 
                         InputStreamReader ipsr = new InputStreamReader(ips);
                         BufferedReader br= new BufferedReader(ipsr);
@@ -312,7 +317,8 @@ public class AffichageModeleExistant extends HttpServlet {
                         StringToWordVector stw = a.loadModelOne(modele1);
                         AttributeSelection ats = a.loadModelTwo(modele2);
                         Classifier cls = a.loadModelThree(modele3);
-
+                        
+                        //Parcours du fichier ouvert en lecture
                         String ligne;
                         while ((ligne=br.readLine())!=null){
                             //System.out.println(ligne);
@@ -335,10 +341,8 @@ public class AffichageModeleExistant extends HttpServlet {
                     catch (Exception e){
                             System.out.println(e.toString());
                     }
-                    os.close();
-
-                    is.close();
-
+                    
+                    //Suppression du fichier .txt
                     File f = new File("./fichiers/" + nomFichier);
                     f.delete();
 
@@ -360,8 +364,197 @@ public class AffichageModeleExistant extends HttpServlet {
                     generator.writeEnd().close();
                     System.out.println("Fin du fichie json");
                     
-                    bd.setIsUpload(id, "false");
+                    
+                    //modele pour les threads
+                    /*final String m1 = modele1;
+                    final String m2 = modele2;
+                    final String m3 = modele3;
+                    final String ficJson = nomFichierJSON;*/
+                    
+                    //thread pipe
+                    /*final PipedOutputStream outputLecture = new PipedOutputStream();
+                    final PipedInputStream  inputCalcul  = new PipedInputStream(outputLecture);
+                    final PipedOutputStream outputCalcul = new PipedOutputStream();
+                    final PipedInputStream inputEcriture = new PipedInputStream(outputCalcul);*/
 
+                    //Thread de lecture de fichier
+                    /*Thread thread1 = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                //Lecture du fichier
+                                InputStream ips = new FileInputStream("./fichiers/" + nomFichier); 
+                                InputStreamReader ipsr = new InputStreamReader(ips);
+                                BufferedReader br= new BufferedReader(ipsr);
+
+                                //System.out.println("thread lecture du fichier");
+
+                                //Parcours du fichier ouvert en lecture
+                                String ligne;
+                                while ((ligne=br.readLine())!=null){
+                                    //System.out.println(ligne);
+                                    //changement encodage 
+                                    byte[] somebyte = ligne.getBytes();
+                                    String encoding = "UTF-8"; //ANSI Cp1252 ISO-8859-1
+                                    String sortie = new String(somebyte, encoding);
+                                    //System.out.println("sortie " +sortie);
+                                    
+                                    //caractère de fin de ligne
+                                    char c = '\003';
+                                    byte b = (byte)c;
+                                    
+                                    //preparation de la chaine pour ecriture dans le tube
+                                    byte[] tab = sortie.getBytes();
+                                    int taille = sortie.length();
+                                    tab[taille-1] = b;
+                                    
+                                    //ecriture
+                                    outputLecture.write(tab);
+                                }
+                                br.close(); 
+                                ipsr.close();
+                                //System.out.println("thread fin de lecture");
+                                //Suppression du fichier .txt
+                                File f = new File("./fichiers/" + nomFichier);
+                                f.delete();
+                                outputLecture.close();
+
+                            } catch (IOException e) {
+                                System.out.println(e);
+                                File file = new File("");
+                                System.out.println(file.getAbsolutePath());
+                            }
+                        }
+                    });*/
+
+                    //Thread de calcul
+                    /*Thread thread2 = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                System.out.println("on est dans le thread 2");
+                                //Objet pour l'analyse
+                                AnalyseDeSentiments a = new AnalyseDeSentiments();
+
+                                //Chargement des modèles
+                                StringToWordVector stw = a.loadModelOne(m1);
+                                AttributeSelection ats = a.loadModelTwo(m2);
+                                Classifier cls = a.loadModelThree(m3);
+                                
+                                String resultat;
+                                
+                                String chaine = "";                               
+                                int data = inputCalcul.read();
+                                while(data != -1){
+                                    
+                                    char c = (char)data;
+                                    chaine += c;
+                                    //System.out.println(c);
+                                    if(c == '\003'){
+                                        //System.out.println("thread 2 fin de phrase");
+                                        System.out.println("thread 2 chaine finale " + chaine);
+                                        resultat = a.analyse(chaine, stw, ats, cls);
+                                        
+                                        System.out.println("res "+ resultat);
+                                        //caractère de fin de ligne
+                                        char sep = '\003';
+                                        byte b = (byte)sep;
+                                        
+                                        String chFinal = chaine + "" + resultat;
+                                        System.out.println("final " + chFinal);
+                                        
+                                        boolean valeur = chFinal.contains("\003");
+                                        boolean vl = chFinal.contains("=");
+                                        System.out.println("valeur " + valeur + " " + vl);
+
+                                        //preparation de la chaine pour ecriture dans le tube
+                                        byte[] tab = chFinal.getBytes();
+                                        int taille = chFinal.length();
+                                        System.out.println("taille " + taille);
+                                        tab[taille-1] = b;
+                                        
+                                        //outputCalcul.write(tab);
+                                        //int t = resultat.length();
+                                        //byte[] tabR = resultat.getBytes();                                        
+                                        //tabR[t-1] = b;
+                                        
+                                        String v = new String(tab , "UTF-8");
+                                        System.out.println("taille de envoie " + v.length());
+                                        System.out.println("envoie " + v); 
+                                        outputCalcul.write(tab);
+
+                                        chaine = "";
+                                    }
+                                    //System.out.print((char) data);
+                                    data = inputCalcul.read();
+                                }
+                                inputCalcul.close();
+                                outputCalcul.close();
+                            } catch (IOException e) {
+                                System.out.println(e);                               
+                            } catch (Exception ex) {
+                                Logger.getLogger(AffichageModeleExistant.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    });*/
+                    
+                    
+                    /*Thread thread3 = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                
+                                FileOutputStream fos = new FileOutputStream(new File("./fichiers/" + ficJson));
+
+                                JsonGeneratorFactory factory = Json.createGeneratorFactory(null);
+                                JsonGenerator generator = factory.createGenerator(fos);
+                                generator.writeStartArray();
+
+                                int i = 0;
+                                String tweet = "";
+                                String chaine = "";                               
+                                int data = inputEcriture.read();
+                                while(data != -1){                                  
+                                    char c = (char)data;
+                                    chaine += c;
+                                    System.out.println(c);
+                                    if((c == '\003') && (i % 2 == 0)){
+                                        //System.out.println("thread 3 fin de phrase");
+                                        System.out.println("thread 3 chaine finale " + chaine);
+                                        tweet = chaine;
+                                        chaine = "";
+                                        i++;
+                                    }
+                                    else if((c == '\003') && (i % 2 == 1))
+                                    {
+                                        System.out.println(" json " +  tweet + " " + chaine);
+                                        generator.writeStartObject().write("phrase", tweet).
+                                            write("classe", chaine).writeEnd();
+                                        tweet = "";
+                                        chaine = "";
+                                        i++;
+                                    }
+                                    //System.out.print((char) data);
+                                    data = inputEcriture.read();
+                                }
+                                generator.writeEnd().close();
+                                fos.close();
+                                inputEcriture.close();
+
+                            } catch (IOException e) {
+                                System.out.println(e);      
+                            } catch (Exception ex) {
+                                Logger.getLogger(AffichageModeleExistant.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    });
+
+                    thread1.start();
+                    thread2.start();
+                    thread3.start();*/
+
+                    //Changement dans la base de données
+                    bd.setIsUpload(id, "false");
                     
                 }                              
                 else{
