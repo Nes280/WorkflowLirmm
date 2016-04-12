@@ -19,18 +19,28 @@ import javax.servlet.http.HttpSession;
  *
  * @author Niels
  */
-@WebServlet(name = "train", urlPatterns = {"/train"})
-public class train extends HttpServlet {
+public class TrainDataAdvenced extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
         String fileId = request.getParameter("fileId");
-        
+        String form = request.getParameter("hidden");
+        if (form == null) {
+            
         request.setAttribute("fileId", fileId);
-        request.setAttribute( "title", "Manage" );
+        request.setAttribute( "title", "Train" );
         request.setAttribute( "topMenuName", "WorkFlow" );
 
-        this.getServletContext().getRequestDispatcher( "/WEB-INF/train.jsp" ).forward( request, response );
+        this.getServletContext().getRequestDispatcher( "/WEB-INF/trainAdvenced.jsp" ).forward( request, response );
+        }
+        else if (form.equals("1")){
+            request.setAttribute("fileId", fileId);
+        request.setAttribute( "title", "Train" );
+        request.setAttribute( "topMenuName", "WorkFlow" );
+
+        //this.getServletContext().getRequestDispatcher( "/index" ).forward( request, response );
+        response.sendRedirect("/train-data-advenced");
+        }
     }
 
 }

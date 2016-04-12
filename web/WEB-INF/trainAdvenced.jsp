@@ -1,7 +1,7 @@
 <%-- 
-    Document   : train
-    Created on : 5 avr. 2016, 19:18:27
-    Author     : Niels
+    Document   : trainAdvenced
+    Created on : 12 avr. 2016, 10:58:13
+    Author     : niels
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -13,6 +13,5 @@
     </head>
     <body>
         <h1>Hello World!</h1>
-        <p>You want to train the file n° ${fileId}</p>
     </body>
 </html>

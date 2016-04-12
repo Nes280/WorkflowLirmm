@@ -25,7 +25,7 @@
                 </c:choose>
                 <div class="blog-post">
                     <div class="medium-7 medium-centered large-5 large-centered columns">
-                        <form method="post" action="<c:url value="/logIn"/>" data-abide novalidate>
+                        <form method="post" action="<c:url value="/logIn"/>" data-abide novalidate >
                             <div data-abide-error class="alert callout" style="display: none;">
                                 <p><i class="fi-alert"></i> There are some errors in your form.</p>
                             </div>
