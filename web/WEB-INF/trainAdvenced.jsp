@@ -7,7 +7,7 @@
 <%@include file="head.jsp" %>
     <body>
         <%@include file="topMenu.jsp" %>
-        <form method="post" action="<c:url value="/train-data"/>" data-abide novalidate >
+        <form method="post" action="<c:url value="/train-data-advenced"/>" data-abide novalidate >
             
             <div class="zone column-row">  
                 <div class="row medium-centered" >
@@ -244,7 +244,7 @@
             <div class="row  align-stretch" >
                 <h3>Feature Selection</h3>
                 <label>FeatureSelection.percentageAttributes: 
-                    <input class="small-3" type="number" name="FeatureSelection.percentageAttributes" max="10" min="1" value="10">
+                    <input class="small-3" type="number" name="percentageAttributes" max="10" min="1" value="10">
                 </label>
             </div>
         </div>
@@ -253,7 +253,10 @@
                 <h3>Generate the configuration file</h3>
                 <p>If in doubt , you can use the "reset" button to return to the default configuration.</p>
                 <input  type="submit" value="Send" class="hollow button">
-                <INPUT type="reset" name="reset" value="Reset" class="hollow warning button">
+                <input value="true" name="config" hidden>
+                <input value="${fileId}" name="fileId" hidden>
+                <input value="${fileName}" name="fileName" hidden>
+                <input type="reset" name="reset" value="Reset" class="hollow warning button">
             </div>
         </div>
     </form>
