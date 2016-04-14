@@ -20,23 +20,29 @@ import javax.servlet.http.HttpSession;
  * @author Niels
  */
 public class TrainData extends HttpServlet {
-    
+    public static final String MODE = "mode";
+    public static final String ID = "fileId";
+    public static final String NAME = "fileName";
     
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
-        String fileId = request.getParameter("fileId");
-        String fileName = request.getParameter("fileName");
-        String form = request.getParameter("hidden");
+        String fileId = request.getParameter(ID);
+        String fileName = request.getParameter(NAME);
+        String form = request.getParameter(MODE);
+        
         if (form == null) {
+            
         request.setAttribute("fileId", fileId);
         request.setAttribute("fileName", fileName);
         request.setAttribute( "title", "Train" );
         request.setAttribute( "topMenuName", "WorkFlow" );
 
         this.getServletContext().getRequestDispatcher( "/WEB-INF/trainForm.jsp" ).forward( request, response );
+        
         }
-        else if (form.equals("true")){
+        else if (form.equals("advenced")){
+            
         request.setAttribute("fileId", fileId);
         request.setAttribute("fileName", fileName);
         request.setAttribute( "title", "Train" );
@@ -44,6 +50,12 @@ public class TrainData extends HttpServlet {
 
         this.getServletContext().getRequestDispatcher( "/WEB-INF/trainAdvenced.jsp" ).forward( request, response );
         //response.sendRedirect("/train-data-advenced");
+        }
+        else if (form.equals("tweet")){
+            //A CODER
+        }
+        else if (form.equals("text")){
+            //A CODER
         }
     }
 

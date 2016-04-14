@@ -10,7 +10,7 @@
         <div class="row medium-8 large-7 columns">
             <div class="blog-post">
                 <h1>Hello World!</h1>
-                <p>Welcome to the ${title} of the web sit!</p>
+                <p>Welcome to the ${title} of the web site!</p>
                 <img src="resources/content/ajax-loader.gif"/>
                 <p>${isLog}</p>
                 <br/>
