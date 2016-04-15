@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 import weka.classifiers.Classifier;
 import weka.core.Attribute;
-import weka.core.FastVector;
+import weka.core.DenseInstance;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.filters.supervised.attribute.AttributeSelection;
@@ -100,28 +100,25 @@ public class AnalyseDeSentiments {
     public static Instances makeInstance(String tweet) {
 
         // Liste des attributs
-        FastVector atts = new FastVector(2);
+        ArrayList<Attribute> atts = new ArrayList(2);
         
         // Ajouter le descripteur
-        atts.addElement(new Attribute("_tweet"));
+        atts.add(new Attribute("_tweet",(ArrayList<String>)null));
         
         // Construire l'attribut de classe
         ArrayList<String> classVal = new ArrayList<String>();
         classVal.add("+");
         classVal.add("-");
         classVal.add("=");
-        Attribute cl = new Attribute(" class");
-        cl.addStringValue("+");
-        cl.addStringValue("-");
-        cl.addStringValue("=");
+        
         // Ajouter l'attribut de classe (nominal)
-        atts.addElement(cl);
+        atts.add(new Attribute("_class",classVal));
         
         // Créer l'objet Instances data ayant comme attributs atts
         Instances data = new Instances("instance",atts,0);
         
         // L'instance
-        Instance ins = new Instance(2);
+        Instance ins = new DenseInstance(2);
         ins.setDataset(data);
         
         // Remplir Instance
