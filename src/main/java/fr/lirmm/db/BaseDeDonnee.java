@@ -26,7 +26,7 @@ import java.sql.Date;
  */
 public class BaseDeDonnee {
     //private static String JDBC = "jdbc:postgresql://localhost/workflow_db";
-    private static String JDBC = "jdbc:postgresql://localhost/sentiment_analysis_webpage_users";
+    private static String JDBC = "jdbc:postgresql://localhost/sentiment_analysis_webpage_users_db";
     private static String USER = "sentiment_analysis_webpage_user";
     private static String PASSWORD = "admin";
     private static String DRIVER = "org.postgresql";
