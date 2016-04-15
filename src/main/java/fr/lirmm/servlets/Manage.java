@@ -31,8 +31,8 @@ public class Manage extends HttpServlet {
     public static String FIC_INFO = "ficInfo";
     public static String FIC_NOM = "ficNom";
     public static String F5 = "please, use the submit buton;";
-    public static String MANAGE = "/WorkflowLirmm/manage";
-    public static String TRAIN = "/WorkflowLirmm/train-data";
+    public static String MANAGE = "/sentiment-analysis-webpage/manage";
+    public static String TRAIN = "/sentiment-analysis-webpage/train-data";
 
     
 

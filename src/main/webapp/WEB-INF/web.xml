@@ -3,6 +3,7 @@
     <!--
     INDEX
     !-->
+    
     <servlet>
         <servlet-name>index</servlet-name>
         <servlet-class>fr.lirmm.servlets.Index</servlet-class>
