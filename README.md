@@ -1,5 +1,10 @@
 
-# Créer le user et la DB dans la base de données PSQL
+## Lib utilisées
+
+* Java 8
+* Payara41
+
+## Créer le user et la DB dans la base de données PSQL
 
 Ouvrir postgresql en ligne de commande et exécuter les 2 lignes suivantes :
 
