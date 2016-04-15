@@ -28,20 +28,57 @@ CREATE DATABASE sentiment_analysis_webpage_users_db WITH OWNER = sentiment_analy
 CREATE SCHEMA lirmm;
 
 
--- DROP TABLE lirmm.User
+-- Table: lirmm."User"
 
--- Table créée à partir du reverse engineering du code Java, attendre les tables envoyées par Niels
+-- DROP TABLE lirmm."User";
 
-CREATE TABLE lirmm.User(
-   Id                   serial PRIMARY KEY     NOT NULL,
-   Fname                VARCHAR(70)    NOT NULL,
-   Lname                VARCHAR(70)    NOT NULL,
-   Mail                 VARCHAR(70)    NOT NULL,
-   Password             VARCHAR(70)    NOT NULL,
-   Mod                  BOOLEAN    NOT NULL,
-   IsUpload             BOOLEAN    NOT NULL,
-   IsTraining           BOOLEAN    NOT NULL
+CREATE TABLE lirmm."User"
+(
+  "Id" serial NOT NULL,
+  "Fname" character varying(50),
+  "Lname" character varying(50),
+  "Mail" character varying(50),
+  "Password" character varying(50),
+  "Mod" boolean,
+  "IsUpload" boolean,
+  "IsTraining" boolean,
+  CONSTRAINT "PK" PRIMARY KEY ("Id"),
+  CONSTRAINT mail UNIQUE ("Mail")
+)
+WITH (
+  OIDS=FALSE
 );
+
+
+ALTER TABLE lirmm."User" OWNER TO sentiment_analysis_webpage_user;
+
+
+
+-- Table: lirmm."File"
+
+-- DROP TABLE lirmm."File";
+
+CREATE TABLE lirmm."File"
+(
+  "Id_file" serial NOT NULL,
+  "Id_user" serial NOT NULL,
+  "Name" character varying(50),
+  "Info" character varying(100),
+  "Date_create" date,
+  "Date_update" date,
+  CONSTRAINT "PK-file" PRIMARY KEY ("Id_file"),
+  CONSTRAINT "FK-file-user" FOREIGN KEY ("Id_user")
+      REFERENCES lirmm."User" ("Id") MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+
+
+
+ALTER TABLE lirmm."File" OWNER TO sentiment_analysis_webpage_user;
+
 
 ```
 
