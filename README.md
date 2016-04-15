@@ -25,8 +25,11 @@ CREATE DATABASE sentiment_analysis_webpage_users_db WITH OWNER = sentiment_analy
 -- Il vaudrait mieux changer le nom du schema, pour qu'il soit plus parlant
 -- DROP SCHEMA lirmm;
 
-CREATE SCHEMA lirmm;
+CREATE SCHEMA "lirmm" AUTHORIZATION "sentiment_analysis_webpage_user";
 
+SET search_path= lirmm;
+
+SHOW search_path;
 
 -- Table: lirmm."User"
 
