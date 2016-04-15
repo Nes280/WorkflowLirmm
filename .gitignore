@@ -1,7 +1,10 @@
+
+nb-configuration.xml
+target
+
 nbproject
 build
 dist
-src/java/analysedesentiments/
 
 # Windows image file caches
 Thumbs.db

@@ -6,7 +6,6 @@
 package fr.lirmm.servlets;
 
 import analysedesentiments.AnalyseDeSentiments;
-import com.sun.xml.ws.util.StringUtils;
 import fr.lirmm.beans.Polarite;
 import fr.lirmm.beans.Root;
 import fr.lirmm.db.BaseDeDonnee;
