@@ -6,6 +6,7 @@
 package fr.lirmm.servlets;
 
 import analysedesentiments.AnalyseDeSentiments;
+import analysedesentiments.CalculAttributs;
 import fr.lirmm.beans.Polarite;
 import fr.lirmm.beans.Root;
 import fr.lirmm.db.BaseDeDonnee;
@@ -316,6 +317,7 @@ public class AffichageModeleExistant extends HttpServlet {
                         StringToWordVector stw = a.loadModelOne(modele1);
                         AttributeSelection ats = a.loadModelTwo(modele2);
                         Classifier cls = a.loadModelThree(modele3);
+                        CalculAttributs c = new CalculAttributs();
                         
                         //Parcours du fichier ouvert en lecture
                         String ligne;
@@ -329,7 +331,7 @@ public class AffichageModeleExistant extends HttpServlet {
                             //System.out.println("sortie " +sortie);
 
                             //resultat = a.start(ligne, modele1, modele2, modele3);
-                            resultat = a.analyse(sortie, stw, ats, cls);
+                            resultat = a.analyse(sortie, stw, ats, cls, c);
                             listeTweet.put(sortie, resultat);
                         }
                         br.close(); 

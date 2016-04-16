@@ -22,8 +22,8 @@ public class ConstructionARFF {
     
     private CalculAttributs ca;
     
-    public ConstructionARFF() throws IOException{
-        ca = new CalculAttributs();
+    public ConstructionARFF(CalculAttributs c) throws IOException{
+        ca = c;
     }
     
     public Instances ConstructionInstances(Instances data) throws Exception{

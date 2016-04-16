@@ -29,7 +29,8 @@ public class AnalyseDeSentiments {
         AttributeSelection ats = (AttributeSelection)weka.core.SerializationHelper.read("models/" + m2);
         Classifier cls = (Classifier) weka.core.SerializationHelper.read("models/" + m3);
         
-        ConstructionARFF obj = new ConstructionARFF();
+        CalculAttributs ca = new CalculAttributs();
+        ConstructionARFF obj = new ConstructionARFF(ca);
         data = obj.ConstructionInstances(data);
         Instance ins = data.firstInstance();
         stw.input(ins);
@@ -81,11 +82,11 @@ public class AnalyseDeSentiments {
     /*
     Analyse 
     */
-    public static String analyse(String s, StringToWordVector stw, AttributeSelection ats, Classifier cls) throws Exception{
+    public static String analyse(String s, StringToWordVector stw, AttributeSelection ats, Classifier cls, CalculAttributs c) throws Exception{
         String tweet=s;
         Instances data = makeInstance(tweet);
         
-        ConstructionARFF obj = new ConstructionARFF();
+        ConstructionARFF obj = new ConstructionARFF(c);
         data = obj.ConstructionInstances(data);
         Instance ins = data.firstInstance();
         stw.input(ins);
