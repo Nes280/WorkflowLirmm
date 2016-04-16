@@ -14,10 +14,10 @@ import java.io.IOException;
  * @author niels
  */
 public class Model {
-    private String file_name;
-    private String user_mail;
-    private String info;
-    private String user_id;
+    private final String file_name;
+    private final String user_mail;
+    private final String info;
+    private final String user_id;
     
     public Model(String nom_fichier, String mail_user, String info, String id_user) 
     { 
@@ -29,13 +29,13 @@ public class Model {
     
     public int create()throws IOException
     {
-        File dir = new File("./user_models/" + user_id); 
+        File dir = new File("./user_models/" + user_id + "/" + file_name); 
         if(!dir.exists())
         {
           // si non on le crée
           dir.mkdir();
         }
-        FileOutputStream os = new FileOutputStream("./user_models/" + user_id + "/" + file_name + ".model");
+        FileOutputStream os = new FileOutputStream("./user_models/" + user_id + "/" + file_name + "/" + file_name + ".model");
         os.write(0);
         return 1;
     }

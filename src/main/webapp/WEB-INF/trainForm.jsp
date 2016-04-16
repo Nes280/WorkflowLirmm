@@ -22,7 +22,7 @@
                     
                     <input type="radio" name="classification" value="Cross" id="Cross" checked="checked"><label for="Cross">Cross Validation</label>
                     <label>Folds
-                        <select id="select" class="small-2">
+                        <select id="select" class="small-2" name="folds">
                             <option value="10">10</option>
                             <option value="5">5</option>
                             <option value="3">3</option>

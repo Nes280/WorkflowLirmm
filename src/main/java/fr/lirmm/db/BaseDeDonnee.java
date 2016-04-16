@@ -11,27 +11,22 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
-import java.util.List;
 import fr.lirmm.beans.User;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import fr.lirmm.beans.Model;
-import java.text.SimpleDateFormat;
-import java.sql.Date;
 /**
  *
  * @author niels
  */
 public class BaseDeDonnee {
-    private static String JDBC = "jdbc:postgresql://localhost/workflow_db";
-    private static String USER = "workflow_user";
-    //private static String JDBC = "jdbc:postgresql://localhost/sentiment_analysis_webpage_users_db";
-    //private static String JDBC = "jdbc:postgresql://193.49.110.38:5432/sentiment_analysis_webpage_users_db";
-    //private static String USER = "sentiment_analysis_webpage_user";
-    private static String PASSWORD = "admin";
-    private static String DRIVER = "org.postgresql";
+    private static final String JDBC = "jdbc:postgresql://localhost/workflow_db";
+    private static final String USER = "workflow_user";
+    //private static final String JDBC = "jdbc:postgresql://localhost/sentiment_analysis_webpage_users_db";
+    //private static final String JDBC = "jdbc:postgresql://193.49.110.38:5432/sentiment_analysis_webpage_users_db";
+    //private static final String USER = "sentiment_analysis_webpage_user";
+    private static final String PASSWORD = "admin";
+    private static final String DRIVER = "org.postgresql";
     
     private Connection connexion;
     boolean alreadyConnect = false;
@@ -262,11 +257,18 @@ public class BaseDeDonnee {
      * - indexation du fichier sur la BD
      * 
      * renvoi 0 si OK, -1 si le fichier existe déjà
+     * @param file_name
+     * @param user_mail
+     * @param info
+     * @return
+     * @throws java.sql.SQLException 
+     * @throws java.io.FileNotFoundException 
+     * @throws java.io.IOException 
      */
     public int newFileUser( String file_name, String user_mail, String info )throws SQLException, FileNotFoundException, IOException
     {
         
-        if (!isInDatabase(file_name + ".model", user_mail))
+        if (!isInDatabase(file_name, user_mail))
         {
             String user_id = getUserId(user_mail);
             
