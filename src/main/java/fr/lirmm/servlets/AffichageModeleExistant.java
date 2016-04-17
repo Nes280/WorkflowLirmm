@@ -287,6 +287,8 @@ public class AffichageModeleExistant extends HttpServlet {
                 if(isUpload.equals("f")){
                     //Nom du fichier texte
                     String nomFichier = id + "" + prenom + "" + nom + ".txt"; 
+                    nomFichierJSON = id + "-" + typeAnalysis + ".json";
+
                     
                     bd.setIsUpload(id, "true");
 
@@ -319,6 +321,13 @@ public class AffichageModeleExistant extends HttpServlet {
                         Classifier cls = a.loadModelThree(modele3);
                         CalculAttributs c = new CalculAttributs();
                         
+                        //Fichier JSON
+                        FileOutputStream fos = new FileOutputStream(new File("./fichiers/" + nomFichierJSON));
+
+                        JsonGeneratorFactory factory = Json.createGeneratorFactory(null);
+                        JsonGenerator generator = factory.createGenerator(fos);
+                        generator.writeStartArray();
+
                         //Parcours du fichier ouvert en lecture
                         String ligne;
                         while ((ligne=br.readLine())!=null){
@@ -332,10 +341,16 @@ public class AffichageModeleExistant extends HttpServlet {
 
                             //resultat = a.start(ligne, modele1, modele2, modele3);
                             resultat = a.analyse(sortie, stw, ats, cls, c);
-                            listeTweet.put(sortie, resultat);
+                            //listeTweet.put(sortie, resultat);
+                            
+                            generator.writeStartObject().write("phrase", sortie).
+                                write("classe", resultat).writeEnd().flush();            
+                         
                         }
                         br.close(); 
                         ipsr.close();
+                        generator.writeEnd().close();
+
                         System.out.println("fin de lecture");
 
                     }		
@@ -347,25 +362,7 @@ public class AffichageModeleExistant extends HttpServlet {
                     File f = new File("./fichiers/" + nomFichier);
                     f.delete();
 
-                    System.out.println("Creation du json");
-                    nomFichierJSON = id + "-" + typeAnalysis + ".json";
-
-                    //Création du json
-                    FileOutputStream fos = new FileOutputStream(new File("./fichiers/" + nomFichierJSON));
-
-                    JsonGeneratorFactory factory = Json.createGeneratorFactory(null);
-                    JsonGenerator generator = factory.createGenerator(fos);
-                    generator.writeStartArray();
-
-                    for(Entry<String, String> entry : listeTweet.entrySet())
-                    {
-                        generator.writeStartObject().write("phrase", entry.getKey()).
-                            write("classe", entry.getValue()).writeEnd();            
-                    }            
-                    generator.writeEnd().close();
-                    System.out.println("Fin du fichie json");
-                    
-                    
+                                   
                     //modele pour les threads
                     /*final String m1 = modele1;
                     final String m2 = modele2;
