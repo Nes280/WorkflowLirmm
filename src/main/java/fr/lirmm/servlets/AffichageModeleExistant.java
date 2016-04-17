@@ -116,6 +116,8 @@ public class AffichageModeleExistant extends HttpServlet {
         String modele2 = ""; 
         String modele3 = "";
         
+        String idUser = "";
+        
         //Variable de titre
         String titre = ""; 
         
@@ -285,6 +287,7 @@ public class AffichageModeleExistant extends HttpServlet {
                 
                 //Recupere les valeurs que l'on a besoin 
                 String id = res[0];
+                idUser = id;
                 String isUpload = res[1];
                 
                 if(isUpload.equals("f")){
@@ -626,6 +629,7 @@ public class AffichageModeleExistant extends HttpServlet {
         request.setAttribute(ATT_FILE_XML, fxml);
         request.setAttribute(ATT_FILE_JSON, nomFichierJSON);
         request.setAttribute(ATT_INFO, information);
+        request.setAttribute("id", idUser);
         
         this.getServletContext().getRequestDispatcher(VUE).forward( request, response );
     }
