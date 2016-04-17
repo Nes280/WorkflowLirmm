@@ -205,7 +205,8 @@ public class AffichageModeleExistant extends HttpServlet {
         
         
         //Preparation des résultats
-        Map<String, String> listeTweet = new HashMap<String, String>();
+        //Map<String, String> listeTweet = new HashMap<String, String>();
+        String resultatSaisie[] = new String[2];  
         String message = ""; 
         //boolean erreur = true; 
         int erreur = 0; 
@@ -232,7 +233,9 @@ public class AffichageModeleExistant extends HttpServlet {
 
                 try {
                     resultat = a.start(tweet, modele1, modele2, modele3);
-                    listeTweet.put(tweet, resultat);
+                    resultatSaisie[0] = tweet;
+                    resultatSaisie[1] = resultat; 
+                    //listeTweet.put(tweet, resultat);
                 } catch (Exception ex) {
                     Logger.getLogger(AffichageAPITweet.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -612,7 +615,7 @@ public class AffichageModeleExistant extends HttpServlet {
         
         
         request.setAttribute( "title", "Tweet" );
-        request.setAttribute(ATT_TWEET, listeTweet);
+        request.setAttribute(ATT_TWEET, resultatSaisie);
         request.setAttribute(ATT_MESSAGE, message);
         request.setAttribute(ATT_ERREUR, erreur);
         request.setAttribute(ATT_ROOT, root);

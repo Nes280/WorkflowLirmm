@@ -130,11 +130,9 @@
                             </form>
                             <c:if test="${erreur == 1 }">
                                 <p>
-                                    <c:forEach var="t" items="${tweet}">
-                                        <c:out value="${t.key}"/> 
-                                        <c:out value="${t.value}"/>
-                                        <br/>
-                                    </c:forEach>
+                                    <c:out value="${tweet[0]}"/> 
+                                    <span class="info label"> <c:out value="${tweet[1]}"/></span>                                 
+                                    <br/>
                                 </p>
                             </c:if>
                         </div>
