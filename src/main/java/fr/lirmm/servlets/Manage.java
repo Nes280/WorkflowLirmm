@@ -31,8 +31,9 @@ public class Manage extends HttpServlet {
     public static String FIC_INFO = "ficInfo";
     public static String FIC_NOM = "ficNom";
     public static String F5 = "please, use the submit buton;";
-    public static String MANAGE = "/sentiment-analysis-webpage/manage";
-    public static String TRAIN = "/sentiment-analysis-webpage/train-data";
+    public static String DELETE = "/sentiment-analysis-webpage/delete-model";
+    public static String CONFIG = "/sentiment-analysis-webpage/train-data";
+    public static String TRAIN = "/sentiment-analysis-webpage/train-run";
 
     
 
@@ -137,17 +138,23 @@ public class Manage extends HttpServlet {
                                 "<td>"+information+"</td>\n"+
                                 "<td>"+date_modif+"</td>\n"+
                                 "<td>"+
-                                    "<form  method=\"post\" action="+TRAIN+" />\n" +
+                                    "<form  method=\"post\" action="+CONFIG+" />\n" +
                                         "<input value=\""+id+"\" name=\"fileId\" hidden>"+
                                         "<input value=\""+nom+"\" name=\"fileName\" hidden>"+
-                                        "<button type=\"submit\" class=\" button\"><i class=\" fi-page-edit \"></i></button>\n" +
+                                        "<button type=\"submit\" class=\"hollow button\"><i class=\" fi-page-edit \"></i></button>\n" +
                                     "</form> "+
                                 "</td>\n"+
                                 "<td>"+
-                                    "<form  method=\"post\" action="+MANAGE+" />\n" +
-                                        "<input value=\"delet\" name=\"action\" hidden>"+
+                                    "<form  method=\"post\" action="+TRAIN+" />\n" +
                                         "<input value=\""+id+"\" name=\"fileId\" hidden>"+
-                                        "<button type=\"submit\" class=\"alert hollow button\"><i class=\" fi-trash \"></i></button>\n" +
+                                        "<input value=\""+nom+"\" name=\"fileName\" hidden>"+
+                                        "<button type=\"submit\" class=\" hollow button\"><i class=\" fi-lightbulb \"></i></button>\n" +
+                                    "</form> "+
+                                "</td>\n"+
+                                "<td>"+
+                                    "<form  method=\"post\" action="+DELETE+" onSubmit=\"return attention();\"/>\n" +
+                                        "<input value=\""+id+"\" name=\"fileId\" hidden>"+
+                                        "<button type=\"submit\" class=\"alert hollow button\"><i class=\" fi-trash \" ></i></button>\n" +
                                     "</form> "+
                                 "</td>\n"+
                             "</tr>\n"; 

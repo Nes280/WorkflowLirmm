@@ -6,6 +6,20 @@
 
 <%@include file="head.jsp" %>
     <body>
+        <script>
+
+            function attention()
+{
+	resultat=window.confirm('Caution, you are about to delete your model and all files that would be attached to it. Do you want to continue?');
+	if (resultat==1)
+	{
+	}
+	else
+	{
+            return false;
+	}
+}
+     </script>
       <%@include file="topMenu.jsp" %>
       <c:if test="${ sessionScope.isLog != 1}">
             <%@include file="forbidden.jsp" %>
@@ -20,8 +34,9 @@
                                 <tr>
                                     <th>Model name</th>
                                     <th>Information</th>
-                                    <th>Last update date</th>
-                                    <th>Train it</th>
+                                    <th>Last update</th>
+                                    <th>Configure</th>
+                                    <th>Train</th>
                                     <th>Delete</th>    
                                 </tr>
                             </thead>
@@ -37,6 +52,8 @@
                         </div>
                     </c:otherwise>
                 </c:choose> 
+                
+            </div>
             </div>
             <div class="zone">          
                 <div class="blog-post">

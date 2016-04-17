@@ -29,11 +29,19 @@ public class Model {
     
     public int create()throws IOException
     {
-        File dir = new File("./user_models/" + user_id + "/" + file_name); 
-        if(!dir.exists())
+        File dir1 = new File("./user_models/" + user_id );
+        if(!dir1.exists())
         {
           // si non on le crée
-          dir.mkdir();
+          dir1.mkdir();
+          
+        }
+        File dir2 = new File("./user_models/" + user_id + "/" + file_name );
+        if(!dir2.exists())
+        {
+          // si non on le crée
+          dir2.mkdir();
+          
         }
         FileOutputStream os = new FileOutputStream("./user_models/" + user_id + "/" + file_name + "/" + file_name + ".model");
         os.write(0);

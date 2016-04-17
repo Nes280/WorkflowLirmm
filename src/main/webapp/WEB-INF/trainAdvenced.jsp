@@ -9,12 +9,14 @@
         <%@include file="topMenu.jsp" %>
         <form method="post" action="<c:url value="/train-data-advenced"/>" data-abide novalidate >
             
-            <div class="zone column-row">  
+            <div class="zone column-row"> 
                 <div class="row medium-centered" >
                     <h3>Data</h3>
-                    <label>Data.nbFolds: 
-                        <input class="small-3" type="number" name="Data.nbFolds" max="10" min="1" value="10">
-                    </label>
+                    <c:if test="${classification == 'Cross'}">
+                        <label>Data.nbFolds: 
+                            <input class="small-3" type="number" name="Data.nbFolds" max="10" min="1" value="${folds}">
+                        </label>
+                    </c:if> 
                 </div>
                 <div class="row medium-centered" >
                     <h3>Ngrams</h3>

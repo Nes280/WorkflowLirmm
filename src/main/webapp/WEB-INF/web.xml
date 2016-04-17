@@ -3,7 +3,6 @@
     <!--
     INDEX
     !-->
-    
     <servlet>
         <servlet-name>index</servlet-name>
         <servlet-class>fr.lirmm.servlets.Index</servlet-class>
@@ -39,6 +38,14 @@
     <servlet>
         <servlet-name>TrainDataAdvenced</servlet-name>
         <servlet-class>fr.lirmm.servlets.TrainDataAdvenced</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TrainRun</servlet-name>
+        <jsp-file>/WEB-INF/affichageModeleUtilisateur.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteModel</servlet-name>
+        <servlet-class>fr.lirmm.servlets.DeleteModel</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>index</servlet-name>
@@ -89,6 +96,14 @@
     <servlet-mapping>
         <servlet-name>TrainDataAdvenced</servlet-name>
         <url-pattern>/train-data-advenced</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TrainRun</servlet-name>
+        <url-pattern>/train-run</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteModel</servlet-name>
+        <url-pattern>/delete-model</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>WEB-INF/index.jsp</welcome-file>

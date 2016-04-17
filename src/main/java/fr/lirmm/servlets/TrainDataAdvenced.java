@@ -6,14 +6,19 @@
 package fr.lirmm.servlets;
 
 
+import fr.lirmm.db.BaseDeDonnee;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.sql.SQLException;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -121,13 +126,19 @@ public class TrainDataAdvenced extends HttpServlet {
             if(presencePartOfSpeechTags == null) presencePartOfSpeechTags = "off";
             if(percentageAttributes == null) percentageAttributes= "off";
             
+            if(nbFolds == null) nbFolds = "0";
+            
+            HttpSession session = request.getSession();
+            String mail = session.getAttribute("mail").toString();
+            String path = generatesPath(mail,fileName);
 
             try {
                 //System.out.println(normalizeSlang);
-		output = new FileOutputStream("config.properties");
+		output = new FileOutputStream(path + fileName + ".properties");
 
 		// set the properties value
 		prop.setProperty("Data.nbFolds", nbFolds);
+                prop.setProperty("type", "Advenced");
                 prop.setProperty("Ngrams.min", min);
                 prop.setProperty("Ngrams.max", max);
                 prop.setProperty("Preprocessings.lowercase", lowercase);
@@ -173,6 +184,20 @@ public class TrainDataAdvenced extends HttpServlet {
         else{ 
             // traiter le cas de cette erreur
         }
+    }
+    //genère le chemin du répertoire du model 
+    protected String generatesPath(String mail, String fileName)
+    {
+       
+        BaseDeDonnee bd = new BaseDeDonnee();
+        String id = "";
+        try {
+            id = bd.getUserId(mail);
+        } catch (SQLException ex) {
+            Logger.getLogger(TrainData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         String path = "./user_models/" + id + "/" + fileName +"/";
+         return path;
     }
 
 }

@@ -250,6 +250,28 @@ public class BaseDeDonnee {
         return file;
     }
     
+    public String deleteFileUser(String user_mail, String id_file) throws SQLException
+    {
+        Statement statement = null;
+        ResultSet resultat = null;
+        String delete = "";
+        String user_id = getUserId(user_mail);
+        String requete = "DELETE FROM lirmm.\"File\" WHERE \"Id_user\" = '"+ user_id+"' AND \"Id_file\" = '"+id_file +"'";
+        connecting();
+        statement = connexion.createStatement();
+        
+        try {
+            // Exécution de la requête
+            resultat = statement.executeQuery(requete);
+            while (resultat.next()) {
+                delete = resultat.getString("Id_file");
+            }
+            } catch (NullPointerException n) {
+            System.out.println(n);
+        } 
+        return delete;
+    }
+    
     /**
      * Methode pour la creation d'un fichier (model)
      * cette methode ce deroule en 2 temps:
