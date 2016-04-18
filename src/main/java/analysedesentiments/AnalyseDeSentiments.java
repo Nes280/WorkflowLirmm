@@ -29,8 +29,9 @@ public class AnalyseDeSentiments {
         AttributeSelection ats = (AttributeSelection)weka.core.SerializationHelper.read("models/" + m2);
         Classifier cls = (Classifier) weka.core.SerializationHelper.read("models/" + m3);
         
-        CalculAttributs ca = new CalculAttributs();
-        ConstructionARFF obj = new ConstructionARFF(ca);
+        String path="models/configT1.properties";
+        CalculAttributs ca = new CalculAttributs(path);
+        ConstructionARFF obj = new ConstructionARFF(path,ca);
         data = obj.ConstructionInstances(data);
         Instance ins = data.firstInstance();
         stw.input(ins);
@@ -85,8 +86,8 @@ public class AnalyseDeSentiments {
     public static String analyse(String s, StringToWordVector stw, AttributeSelection ats, Classifier cls, CalculAttributs c) throws Exception{
         String tweet=s;
         Instances data = makeInstance(tweet);
-        
-        ConstructionARFF obj = new ConstructionARFF(c);
+        String path="models/configT1.properties";
+        ConstructionARFF obj = new ConstructionARFF(path,c);
         data = obj.ConstructionInstances(data);
         Instance ins = data.firstInstance();
         stw.input(ins);
@@ -104,7 +105,7 @@ public class AnalyseDeSentiments {
         ArrayList<Attribute> atts = new ArrayList(2);
         
         // Ajouter le descripteur
-        atts.add(new Attribute("_tweet",(ArrayList<String>)null));
+        atts.add(new Attribute("_text",(ArrayList<String>)null));
         
         // Construire l'attribut de classe
         ArrayList<String> classVal = new ArrayList<String>();

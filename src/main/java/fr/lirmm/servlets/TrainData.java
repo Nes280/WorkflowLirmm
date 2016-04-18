@@ -140,11 +140,12 @@ public class TrainData extends HttpServlet {
     protected void getDataFiles(InputStream is, String nomFichier, String path) throws IOException
     {
         
-            
+           
             int i = is.available();
             byte[] b = new byte[i];
             is.read(b);
-            FileOutputStream os = new FileOutputStream(path + nomFichier + ".txt");
+            FileOutputStream os = new FileOutputStream(path + nomFichier + ".arff");
+            
             os.write(b); 
             os.close();
             is.close();
@@ -162,32 +163,42 @@ public class TrainData extends HttpServlet {
             output = new FileOutputStream(path + fileName + ".properties");
 
             // set the properties value
-            prop.setProperty("type", form);
-            prop.setProperty("Data.nbFolds", folds); //si = 0 on n'est pas en cross
+            if(folds.equals("0"))//si = 0 on n'est pas en cross
+            {
+             prop.setProperty("Data.testPath",path +"TEST_DATA.arff");   
+            }
+            else{
+                prop.setProperty("Data.nbFolds", folds);
+                prop.setProperty("Data.testPath",""); 
+            } 
+            
+            prop.setProperty("Data.trainPath",path +"TRAIN_DATA.arff");   
+            prop.setProperty("TreeTagger.path","TreeTagger/");
             prop.setProperty("Ngrams.min", "1");
             prop.setProperty("Ngrams.max", "1");
-            prop.setProperty("Preprocessings.lowercase", "on");
-            prop.setProperty("Preprocessings.lemmatize", "on");
-            prop.setProperty("Preprocessings.removeStopWords", "on");
-            prop.setProperty("Preprocessings.normalizeSlang", "off");
-            prop.setProperty("Preprocessings.normalizeHyperlinks", "on");
-            prop.setProperty("Preprocessings.normalizeEmails", "off");
+            prop.setProperty("Preprocessings.lowercase", "Yes");
+            prop.setProperty("Preprocessings.lemmatize", "Yes");
+            prop.setProperty("Preprocessings.removeStopWords", "Yes");
+            prop.setProperty("Preprocessings.normalizeSlang", "No");
+            prop.setProperty("Preprocessings.normalizeHyperlinks", "Yes");
+            prop.setProperty("Preprocessings.normalizeEmails", "No");
             prop.setProperty("Preprocessings.replacePseudonyms", "yes");
-            prop.setProperty("Lexicons.feelPol", "off");
-            prop.setProperty("Lexicons.polarimotsPol", "off");
-            prop.setProperty("Lexicons.affectsPol", "off");
-            prop.setProperty("Lexicons.dikoPol", "off");
-            prop.setProperty("Lexicons.feelEmo", "off");
-            prop.setProperty("Lexicons.affectsEmo", "off");
-            prop.setProperty("Lexicons.dikoEmo", "off");
-            prop.setProperty("SyntacticFeatures.countCapitalizations", "off");
-            prop.setProperty("SyntacticFeatures.countElongatedWords", "off");
-            prop.setProperty("SyntacticFeatures.countHashtags", "off");
-            prop.setProperty("SyntacticFeatures.countNegators", "off");
-            prop.setProperty("SyntacticFeatures.presenceSmileys", "off");
-            prop.setProperty("SyntacticFeatures.presencePunctuation", "off");
-            prop.setProperty("SyntacticFeatures.presencePartOfSpeechTags", "off");
-            prop.setProperty("FeatureSelection.percentageAttributes", "100");
+            prop.setProperty("Lexicons.feelPol", "Yes");
+            prop.setProperty("Lexicons.polarimotsPol", "No");
+            prop.setProperty("Lexicons.affectsPol", "Yes");
+            prop.setProperty("Lexicons.dikoPol", "Yes");
+            prop.setProperty("Lexicons.feelEmo", "No");
+            prop.setProperty("Lexicons.affectsEmo", "No");
+            prop.setProperty("Lexicons.dikoEmo", "No");
+            prop.setProperty("SyntacticFeatures.countCapitalizations", "Yes");
+            prop.setProperty("SyntacticFeatures.countElongatedWords", "No");
+            prop.setProperty("SyntacticFeatures.countHashtags", "No");
+            prop.setProperty("SyntacticFeatures.countNegators", "No");
+            prop.setProperty("SyntacticFeatures.presenceSmileys", "No");
+            prop.setProperty("SyntacticFeatures.presencePunctuation", "No");
+            prop.setProperty("SyntacticFeatures.presencePartOfSpeechTags", "No");
+            prop.setProperty("FeatureSelection.percentageAttributes", "ig");
+            prop.setProperty("SVM.CompexityParameter", "1");
 
             // save properties to model folder
             prop.store(output, null );

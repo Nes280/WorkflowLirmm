@@ -34,7 +34,7 @@
                 <h3>Preprocessings</h3>
             
                 <p>Preprocessings.lowercase</p>
-                <div class="switch large">
+                <div class="switch">
                     <input class="switch-input" id="yes-no1" type="checkbox" checked name="lowercase">
                     <label class="switch-paddle" for="yes-no1">
                         <span class="show-for-sr">Preprocessings.lowercase</span>

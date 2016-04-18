@@ -3,9 +3,9 @@ package analysedesentiments;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import org.annolab.tt4j.TreeTaggerWrapper;
 import org.annolab.tt4j.TokenHandler;
 import org.annolab.tt4j.TreeTaggerException;
-import org.annolab.tt4j.TreeTaggerWrapper;
 
 /**
  *

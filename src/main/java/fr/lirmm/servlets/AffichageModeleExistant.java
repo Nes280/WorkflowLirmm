@@ -325,7 +325,7 @@ public class AffichageModeleExistant extends HttpServlet {
                         StringToWordVector stw = a.loadModelOne(modele1);
                         AttributeSelection ats = a.loadModelTwo(modele2);
                         Classifier cls = a.loadModelThree(modele3);
-                        CalculAttributs c = new CalculAttributs();
+                        CalculAttributs c = new CalculAttributs("models/configT1.properties");
                         
                         //Fichier JSON
                         FileOutputStream fos = new FileOutputStream(new File("./fichiers/" + nomFichierJSON));

@@ -41,7 +41,7 @@
     </servlet>
     <servlet>
         <servlet-name>TrainRun</servlet-name>
-        <jsp-file>/WEB-INF/affichageModeleUtilisateur.jsp</jsp-file>
+        <servlet-class>fr.lirmm.servlets.TrainRun</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DeleteModel</servlet-name>
