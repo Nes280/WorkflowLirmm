@@ -110,3 +110,18 @@ ALTER TABLE lirmm."File" OWNER TO sentiment_analysis_webpage_user;
 * JNDI Name: jdbc/sentimentanalysiswebpage
 * Pool Name: SentimentAnalysisWebpagePool
 
+
+### Ajouter les models sur Docker
+
+Il est nécessaire que les models soient dans le dossier `config/models` du domain utilisé dans Payara
+
+`docker cp models furious_turing:/opt/payara41/glassfish/domains/payaradomain/config`
+
+Changer le Owner et les permissions pour les fichiers models dans le container
+
+```bash
+docker exec -i -t --user root furious_turing bash
+cd /opt/payara41/glassfish/domains/payaradomain/config
+chown -R payara:payara *
+chmod -R 755 models/
+```
