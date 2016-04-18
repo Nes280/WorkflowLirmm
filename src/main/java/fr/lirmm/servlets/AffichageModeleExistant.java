@@ -680,6 +680,7 @@ public class AffichageModeleExistant extends HttpServlet {
     public String[] valeurUrlXml(String f,String expression){
         String[] valeur = null;
         try{
+            // Permet de lire le fichier XML directement depuis le war (marche partout comme ça)
             String path = Thread.currentThread().getContextClassLoader().getResource(f).getPath();
             File file = new File(path);
             DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
@@ -716,6 +717,7 @@ public class AffichageModeleExistant extends HttpServlet {
         String[] valeur = null;
 
         try{
+            // Permet de lire le fichier XML directement depuis le war (marche partout comme ça)
             String path = Thread.currentThread().getContextClassLoader().getResource(f).getPath();
             File file = new File(path);
             DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();

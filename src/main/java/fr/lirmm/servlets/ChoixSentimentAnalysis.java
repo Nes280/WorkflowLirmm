@@ -77,6 +77,7 @@ public class ChoixSentimentAnalysis extends HttpServlet {
     public String valeurXml(String f, String expression){
         String valeur = "";
         try{
+            // Permet de lire le fichier XML directement depuis le war (marche partout comme ça)
             String path = Thread.currentThread().getContextClassLoader().getResource(f).getPath();
             File file = new File(path);
             DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
