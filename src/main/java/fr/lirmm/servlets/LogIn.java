@@ -61,8 +61,26 @@ public void doPost( HttpServletRequest request, HttpServletResponse response ) t
             session.setAttribute(FIC_INFO, "");
             session.setAttribute(FIC_NOM, "");
             session.setAttribute(BOOLEANLOG, "1");
-            session.setAttribute(UPLOAD, "0");
-          
+            //session.setAttribute(UPLOAD, "0");
+            
+            //Colonne IsUpload remis à false quand connexion
+            BaseDeDonnee bd = new BaseDeDonnee();
+            String[] res = new String[2];
+            try {
+                res = bd.getUserIsUpload(connecter.Mail + "");
+            }
+            catch(Exception ex)
+            {
+                System.out.println(ex);
+            }
+             //Recupere les valeurs que l'on a besoin 
+            String id = res[0];
+            //String idUser = id;
+            String isUpload = res[1];
+            System.out.println("id LogIn " + id );
+            System.out.println(isUpload);
+            bd.setIsUpload(id, "false");
+            
             request.setAttribute("utilisateur", utilisateur.recupererUtilisateurs(mail,pass));
             String breadcrumbs = "<li><a href=\"/index\">Index</a></li>";
             request.setAttribute( "title", "Index" );
