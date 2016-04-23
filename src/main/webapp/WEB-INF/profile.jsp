@@ -59,7 +59,7 @@
                                             <span class="prefix"><i class="fi-mail"></i></span>
                                         </div>
                                         <div class="small-10  columns">
-                                            <input pattern="mail" type="text" name="Mail" value="${sessionScope.mail}" required>
+                                            <input pattern="eMail" type="text" name="Mail" value="${sessionScope.mail}" required>
                                         </div>
                                     </div>
                                     <button type="submit" class="alert hollow button">Send</button>
