@@ -17,6 +17,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.*;
+import org.jdom.*;
+import org.jdom.input.*;
+import org.jdom.filter.*;
+import java.util.List;
+import java.util.Iterator;
 
 /**
  *
@@ -34,15 +40,50 @@ public class TrainRun extends HttpServlet {
         
         String fileName = request.getParameter(NAME);
             
-        String propPath = generatesPath(mail,fileName);
+        String propPath = generatesPath(mail,fileName) + fileName+".properties";
+        String  path = generatesPath(mail,fileName);
         
-         try {
-             System.out.println("Learn commancé");
-             LearnModel.learn(propPath);
-             System.out.println("Learn terminé");
-         } catch (Exception ex) {
-             Logger.getLogger(TrainRun.class.getName()).log(Level.SEVERE, null, ex);
-         }
+        try {
+            System.out.println("Learn commancé");
+            LearnModel.learn(propPath, path);
+            System.out.println("Learn terminé");
+        } catch (Exception ex) {
+            Logger.getLogger(TrainRun.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         
+         SAXBuilder sxb = new SAXBuilder();
+         org.jdom.Document document = new Document();
+        try
+        {
+           //On crée un nouveau document JDOM avec en argument le fichier XML
+           
+           document = sxb.build(new File(path+"result.xml"));
+        }
+        catch(Exception e){}
+
+        //On initialise un nouvel élément racine avec l'élément racine du document.
+        Element racine = document.getRootElement();
+
+        List listEtudiants = racine.getChildren("root");
+
+        //On crée un Iterator sur notre liste
+        Iterator i = listEtudiants.iterator();
+        i.hasNext();
+        
+           //On recrée l'Element courant à chaque tour de boucle afin de
+           //pouvoir utiliser les méthodes propres aux Element comme :
+           //sélectionner un nœud fils, modifier du texte, etc...
+           Element courant = (Element)i.next();
+           
+           request.setAttribute("microprecision",courant.getChild("microprecision").getText());
+           request.setAttribute("microrecall",courant.getChild("microrecall").getText());
+           request.setAttribute("microfmeasure",courant.getChild("microfmeasure").getText());
+           request.setAttribute("macroprecision",courant.getChild("macroprecision").getText());
+           request.setAttribute("macrorecall",courant.getChild("macrorecall").getText());
+           request.setAttribute("macrofmeasure",courant.getChild("macrofmeasure").getText());
+           request.setAttribute("path",path);
+        
+         
         //request.setAttribute("fileName", fileName);
         request.setAttribute( "title", "Result" );
         request.setAttribute( "topMenuName", "WorkFlow" );
@@ -59,7 +100,7 @@ public class TrainRun extends HttpServlet {
         } catch (SQLException ex) {
             Logger.getLogger(TrainData.class.getName()).log(Level.SEVERE, null, ex);
         }
-         String path = "./user_models/" + id + "/" + fileName +"/"+fileName+".properties";
+         String path = "./user_models/" + id + "/" + fileName +"/";
          return path;
     }
 

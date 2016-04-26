@@ -17,6 +17,9 @@ import weka.core.converters.ArffSaver;
 import weka.filters.Filter;
 import weka.filters.supervised.attribute.AttributeSelection;
 import weka.filters.unsupervised.attribute.StringToWordVector;
+import java.io.*;
+import org.jdom.*;
+import org.jdom.output.*;
 
 public class LearnModel
 {
@@ -28,7 +31,7 @@ public class LearnModel
     private static ArrayList<Object> MaR=new ArrayList<>();
     private static ArrayList<Object> MaF=new ArrayList<>();
   
-  public static void learn(String propPath)
+  public static void learn(String propPath, String path)
     throws Exception
   {     
         Properties prop = new Properties();
@@ -54,7 +57,7 @@ public class LearnModel
         else nbFolds=Integer.parseInt(prop.getProperty("Data.nbFolds"));
         System.out.println("  Number of selected attributes = " + train.numAttributes());
         
-        if (nbFolds==0) Run(train,test,propPath);
+        if (nbFolds==0) Run(train,test,propPath, path);
         else{
             Instances data=train;
             Random rand = new Random();   // create seeded number generator
@@ -66,7 +69,7 @@ public class LearnModel
                 System.out.println("######## Fold"+(f+1)+" ########");
                 train = data.trainCV(nbFolds,f);
                 test = data.testCV(nbFolds,f);
-                Run(train,test,propPath);
+                Run(train,test,propPath, path);
             }
             System.out.println();
             System.out.println("######## Global results ########");
@@ -79,16 +82,58 @@ public class LearnModel
                 mar+=(Double) MaR.get(i);
                 maf+=(Double) MaF.get(i);
             }
+            /*
             System.out.println("    miP="+roundTwoDecimals(mip/nbFolds));
             System.out.println("    miR="+roundTwoDecimals(mir/nbFolds));
             System.out.println("    miF="+roundTwoDecimals(mif/nbFolds));
             System.out.println("    maP="+roundTwoDecimals(map/nbFolds));
             System.out.println("    maR="+roundTwoDecimals(mar/nbFolds));
             System.out.println("    maF="+roundTwoDecimals(maf/nbFolds));
+            */
+            Element racine = new Element("modele");
+            org.jdom.Document document = new Document(racine);
+            
+            Element root = new Element("root");
+            racine.addContent(root);
+            
+            Element miP = new Element("microprecision");
+            miP.setText(roundTwoDecimals(mip/nbFolds));
+            root.addContent(miP);
+            
+            Element miR = new Element("microrecall");
+            miR.setText(roundTwoDecimals(mir/nbFolds));
+            root.addContent(miR);
+            
+            Element miF = new Element("microfmeasure");
+            miF.setText(roundTwoDecimals(mif/nbFolds));
+            root.addContent(miF);
+            
+            Element maP = new Element("macroprecision");
+            maP.setText(roundTwoDecimals(map/nbFolds));
+            root.addContent(maP);
+            
+            Element maR = new Element("macrorecall");
+            maR.setText(roundTwoDecimals(mar/nbFolds));
+            root.addContent(maR);
+            
+            Element maF = new Element("macrofmeasure");
+            maF.setText(roundTwoDecimals(maf/nbFolds));
+            root.addContent(maF);
+            
+            try
+            {
+               //On utilise ici un affichage classique avec getPrettyFormat()
+               XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
+               //Remarquez qu'il suffit simplement de créer une instance de FileOutputStream
+               //avec en argument le nom du fichier pour effectuer la sérialisation.
+               sortie.output(document, new FileOutputStream(path+"result.xml"));
+            }
+            catch (java.io.IOException e){}
+         
         }
   }
   
-  public static void Run(Instances train, Instances test,String propPath) throws Exception{
+  public static void Run(Instances train, Instances test, String propPath, String path) throws Exception{
         Properties prop = new Properties();
 	InputStream input = new FileInputStream(propPath);
         prop.load(input);
@@ -98,11 +143,10 @@ public class LearnModel
         test = Filter.useFilter(test, filter);
         train.setClass(train.attribute("_class"));
         test.setClass(train.attribute("_class"));
-        System.out.println("  Number of attributes after Tokenization = " + train.numAttributes());
         
         double macroPrecision, macroRappel, macroFmesure;
         
-        AttributeSelection f;
+        AttributeSelection f = new AttributeSelection();
         if (prop.getProperty("FeatureSelection.percentageAttributes").equalsIgnoreCase("ig")){
             f = SelectionAttributs.InfoGainAttributeEval(train);
             f.setInputFormat(train);
@@ -123,6 +167,11 @@ public class LearnModel
         double c = Double.parseDouble(prop.getProperty("SVM.CompexityParameter"));
         classifier.setC(c);
         classifier.buildClassifier(train);
+        
+        // Save the models
+        weka.core.SerializationHelper.write(path+"SMO.model", classifier);
+        weka.core.SerializationHelper.write(path+"STW.model", filter);
+        weka.core.SerializationHelper.write(path+"IG.model", f);
         
         Evaluation eTest = new Evaluation(train);
         eTest.evaluateModel(classifier, test);

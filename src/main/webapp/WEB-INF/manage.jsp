@@ -73,7 +73,8 @@
                         </div>   
                     </form> 
                 </div>
-            </div>   
+            </div> 
+            
         </c:if>
         <%@include file="foot.jsp" %>    
         <%@include file="foundation.jsp" %>
