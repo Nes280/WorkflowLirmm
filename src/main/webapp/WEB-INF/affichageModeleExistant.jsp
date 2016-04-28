@@ -180,11 +180,11 @@
                       , scale: 1 // Scales overall size of the spinner
                       , corners: 1 // Corner roundness (0..1)
                       , color: '#000' // #rgb or #rrggbb or array of colors
-                      , opacity: 0.25 // Opacity of the lines
+                      , opacity: 0.10 // Opacity of the lines
                       , rotate: 0 // The rotation offset
                       , direction: 1 // 1: clockwise, -1: counterclockwise
                       , speed: 1 // Rounds per second
-                      , trail: 60 // Afterglow percentage
+                      , trail: 80 // Afterglow percentage
                       , fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
                       , zIndex: 2e9 // The z-index (defaults to 2000000000)
                       , className: 'spinner' // The CSS class to assign to the spinner

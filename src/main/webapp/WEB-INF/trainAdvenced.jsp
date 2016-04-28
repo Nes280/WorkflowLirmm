@@ -175,7 +175,7 @@
         </div>
         
         <div class="zone">
-            <div class="row medium-centered " >
+            <div class="row large-centered " >
                 <h3>Syntactic Features</h3>
                 <div class="row align-spaced">
                     <p>count capitalizations</p>

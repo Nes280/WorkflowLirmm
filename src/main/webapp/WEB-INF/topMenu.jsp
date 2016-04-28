@@ -18,16 +18,8 @@
 <c:if test="${ sessionScope.isLog == 1}">
         <div class="top-bar-right">
             <ul class="dropdown menu" data-dropdown-menu>
-                <li><a href="#">Sentiment analysis</a>
-                    <ul class="menu vertical">
-                        <li><a href="saisieTexteTweet">Tweets</a></li>
-                        <li><a href="#">Movie reviews</a></li>
-                        <li><a href="#">Book reviews</a></li>
-                        <li><a href="#">Parliamentary debates</a></li>
-                    </ul>
-                </li>
                 <li><a href="choixSentimentAnalysis">New Sentiment analysis</a>
-                <li><a href="#">Help</a></li>
+                <li><a href="<c:url value="/manage"/>">Manage your models</a></li>
                 <!--li><button class="warning hollow button" data-open="offCanvas">${sessionScope.prenom} ${sessionScope.nom}</button></li!-->
                 <li><button class="warning hollow button" type="button" data-toggle="example-dropdown" data-open="infos">${sessionScope.prenom} ${sessionScope.nom}</button></li>  
             </ul>  

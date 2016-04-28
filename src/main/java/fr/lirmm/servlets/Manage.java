@@ -128,10 +128,10 @@ public class Manage extends HttpServlet {
                                     "</form> "+
                                 "</td>\n"+
                                 "<td>"+
-                                    "<form  method=\"post\" action="+TRAIN+" />\n" +
+                                    "<form  id=\"submit\" method=\"post\" action="+TRAIN+" />\n" +
                                         "<input value=\""+id+"\" name=\"fileId\" hidden>"+
                                         "<input value=\""+nom+"\" name=\"fileName\" hidden>"+
-                                        "<button id=\"submit\" type=\"submit\" class=\" hollow button\"><i class=\" fi-lightbulb \"></i></button>\n" +
+                                        "<button  type=\"submit\" class=\" hollow button\"><i class=\" fi-lightbulb \"></i></button>\n" +
                                     "</form> "+
                                 "</td>\n"+
                                 "<td>"+
