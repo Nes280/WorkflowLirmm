@@ -47,6 +47,10 @@
         <servlet-name>DeleteModel</servlet-name>
         <servlet-class>fr.lirmm.servlets.DeleteModel</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteUserModel</servlet-name>
+        <servlet-class>fr.lirmm.servlets.DeleteUserModel</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>index</servlet-name>
         <url-pattern>/index</url-pattern>
@@ -114,6 +118,10 @@
         <res-auth>Container</res-auth>
         <res-sharing-scope>Shareable</res-sharing-scope>
     </resource-ref>
+    <servlet-mapping>
+        <servlet-name>DeleteUserModel</servlet-name>
+        <url-pattern>/deleteUserModel</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

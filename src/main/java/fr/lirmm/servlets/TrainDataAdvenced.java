@@ -10,6 +10,7 @@ import fr.lirmm.db.BaseDeDonnee;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import static java.lang.Integer.parseInt;
 import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -78,8 +79,8 @@ public class TrainDataAdvenced extends HttpServlet {
             OutputStream output = null;
             
             String nbFolds = request.getParameter(NB_FOLDS);
-            String min = request.getParameter(N_MIN);
-            String max = request.getParameter(N_MAX);
+            int iMin = parseInt(request.getParameter(N_MIN));
+            int iMax = parseInt(request.getParameter(N_MAX));
             String lowercase = request.getParameter(P_LOWERCASE);
             String lemmatize = request.getParameter(P_LEMMATIZE);
             String removeStopWords = request.getParameter(P_REMOVESTOPWORDS);
@@ -101,30 +102,85 @@ public class TrainDataAdvenced extends HttpServlet {
             String presenceSmileys = request.getParameter(SF_PRESENCESMILEYS);
             String presencePunctuation = request.getParameter(SF_PRESENCEPUNCTUATION);
             String presencePartOfSpeechTags = request.getParameter(SF_PRESENCEPARTOFSPEECHTAGS);
-            String percentageAttributes = request.getParameter(FS_PERCENTTAGEATTRIBUTES);
+            int iPercentageAttributes = parseInt(request.getParameter(FS_PERCENTTAGEATTRIBUTES));     
             
+            // test si min < max et <4
+            String min = "";
+            String max = "";
+            if(iMin <= iMax)
+            {
+                if (iMin <= 3 )
+                {
+                    min += iMin;
+                    max += iMax;
+                }  
+                else {
+                    min = "1";
+                    max = "1";
+                }
+            }
+            else if(iMax <=3)
+            {
+                min += iMax;
+                max += iMax;
+            }
+            else {
+                    min = "1";
+                    max = "1";
+                }
+            
+            //test si percentageAttributes est valide
+            String percentageAttributes = "";
+            if(iPercentageAttributes <=10)
+            {
+                percentageAttributes += iPercentageAttributes;
+            }
+            else percentageAttributes = "10";
+                
+                    
             if(lowercase == null) lowercase = "No";
+            else lowercase = "Yes";
             if(lemmatize == null) lemmatize = "No";
+            else lemmatize = "Yes";
             if(removeStopWords == null) removeStopWords = "No";
+            else removeStopWords = "Yes";
             if(normalizeSlang == null) normalizeSlang = "No";
+            else normalizeSlang = "Yes";
             if(normalizeHyperlinks == null) normalizeHyperlinks = "No";
+            else normalizeHyperlinks = "Yes";
             if(normalizeEmails == null) normalizeEmails = "No";
+            else normalizeEmails = "Yes";
             if(replacePseudonyms == null) replacePseudonyms = "No";
+            else replacePseudonyms = "Yes";
             if(feelPol == null) feelPol = "No";
+            else feelPol = "Yes";
             if(polarimotsPol == null) polarimotsPol = "No";
+            else polarimotsPol = "Yes";
             if(affectsPol == null) affectsPol = "No";
+            else affectsPol = "Yes";
             if(dikoPol== null) dikoPol = "No";
+            else dikoPol = "Yes";
             if(feelEmo== null) feelEmo = "No";
+            else feelEmo = "Yes";
             if(affectsEmo== null) affectsEmo = "No";
+            else affectsEmo = "Yes";
             if(dikoEmo == null) dikoEmo = "No";
+            else dikoEmo = "Yes";
             if(countCapitalizations == null) countCapitalizations = "No";
+            else countCapitalizations = "Yes";
             if(countElongatedWords == null) countElongatedWords = "No";
+            else countElongatedWords = "Yes";
             if(countHashtags == null) countHashtags = "No";
+            else countHashtags = "Yes";
             if(countNegators == null) countNegators = "No";
+            else countNegators = "Yes";
             if(presenceSmileys == null) presenceSmileys = "No";
+            else presenceSmileys = "Yes";
             if(presencePunctuation == null) presencePunctuation = "No";
+            else presencePunctuation = "Yes";
             if(presencePartOfSpeechTags == null) presencePartOfSpeechTags = "No";
-            if(percentageAttributes == null) percentageAttributes= "No";
+            else presencePartOfSpeechTags = "Yes";
+            
             
             if(nbFolds == null) nbFolds = "0";
             
@@ -136,9 +192,18 @@ public class TrainDataAdvenced extends HttpServlet {
                 //System.out.println(normalizeSlang);
 		output = new FileOutputStream(path + fileName + ".properties");
 
+                // set the properties value
+                if(nbFolds.equals("0"))//si = 0 on n'est pas en cross
+                {
+                 prop.setProperty("Data.testPath",path +"TEST_DATA.arff");   
+                }
+                else{
+                    prop.setProperty("Data.nbFolds", nbFolds);
+                    prop.setProperty("Data.testPath",""); 
+                } 
 		// set the properties value
-		prop.setProperty("Data.nbFolds", nbFolds);
-                prop.setProperty("type", "Advenced");
+                prop.setProperty("Data.trainPath",path +"TRAIN_DATA.arff");   
+                prop.setProperty("TreeTagger.path","TreeTagger/");
                 prop.setProperty("Ngrams.min", min);
                 prop.setProperty("Ngrams.max", max);
                 prop.setProperty("Preprocessings.lowercase", lowercase);
@@ -163,6 +228,7 @@ public class TrainDataAdvenced extends HttpServlet {
                 prop.setProperty("SyntacticFeatures.presencePunctuation", presencePunctuation);
                 prop.setProperty("SyntacticFeatures.presencePartOfSpeechTags", presencePartOfSpeechTags);
                 prop.setProperty("FeatureSelection.percentageAttributes", percentageAttributes);
+                prop.setProperty("SVM.CompexityParameter", "1");
 
 		// save properties to project root folder
 		prop.store(output, null);

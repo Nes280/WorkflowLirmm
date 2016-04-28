@@ -70,6 +70,7 @@ public class TrainData extends HttpServlet {
             InputStream is = request.getPart(p.getName()).getInputStream();
             getDataFiles(is, "TRAIN_DATA", path);
             
+            
             if(folds.equals("0"))
             {
                 //récupère le fichier 2

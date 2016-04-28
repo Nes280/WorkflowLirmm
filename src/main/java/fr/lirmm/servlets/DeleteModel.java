@@ -6,8 +6,9 @@
 package fr.lirmm.servlets;
 
 import fr.lirmm.db.BaseDeDonnee;
+import fr.lirmm.utilities.Utilities;
+import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,11 +25,13 @@ import javax.servlet.http.HttpSession;
 public class DeleteModel extends HttpServlet {
 
     public static final String ID = "fileId";
+    public static final String NOM = "fileName";
     
-    //A CODER
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
         String id_file = request.getParameter(ID);
+        String nom_file = request.getParameter(NOM);
+         
         HttpSession session = request.getSession();
         String user_mail = session.getAttribute("mail").toString();
         BaseDeDonnee bd = new BaseDeDonnee();
@@ -37,10 +40,15 @@ public class DeleteModel extends HttpServlet {
         } catch (SQLException ex) {
             Logger.getLogger(DeleteModel.class.getName()).log(Level.SEVERE, null, ex);
         }
+        String path = Utilities.generatePath(user_mail, nom_file);
+        File aSupprimer = new File(path);
+        Utilities.deleteAll(aSupprimer);
         //request.setAttribute("fileName", fileName);
         request.setAttribute( "title", "Result" );
         request.setAttribute( "topMenuName", "WorkFlow" );
 
         response.sendRedirect("manage");
     }
+    
+    
 }

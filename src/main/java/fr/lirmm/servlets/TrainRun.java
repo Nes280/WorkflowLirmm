@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
+import java.text.ParseException;
 import org.jdom.*;
 import org.jdom.input.*;
 import org.jdom.filter.*;
@@ -30,7 +31,7 @@ import java.util.Iterator;
  */
 public class TrainRun extends HttpServlet {
      public static final String NAME = "fileName";
-    //A CODER
+     public static final String ID = "fileId";
      
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("Learn ::");
@@ -39,7 +40,8 @@ public class TrainRun extends HttpServlet {
         String mail = session.getAttribute("mail").toString();
         
         String fileName = request.getParameter(NAME);
-            
+        String fileId = request.getParameter(ID);
+        
         String propPath = generatesPath(mail,fileName) + fileName+".properties";
         String  path = generatesPath(mail,fileName);
         
@@ -74,6 +76,16 @@ public class TrainRun extends HttpServlet {
            //pouvoir utiliser les méthodes propres aux Element comme :
            //sélectionner un nœud fils, modifier du texte, etc...
            Element courant = (Element)i.next();
+           
+           //on met a jour la date
+        try {
+             BaseDeDonnee bd = new BaseDeDonnee();
+             bd.updateDate(fileId);
+         } catch (SQLException ex) {
+             Logger.getLogger(TrainRun.class.getName()).log(Level.SEVERE, null, ex);
+         } catch (ParseException ex) {
+             Logger.getLogger(TrainRun.class.getName()).log(Level.SEVERE, null, ex);
+         }
            
            request.setAttribute("microprecision",courant.getChild("microprecision").getText());
            request.setAttribute("microrecall",courant.getChild("microrecall").getText());

@@ -16,8 +16,8 @@
                     </div>
                         
                     <label for="fileUpload">Train Data 
-                        <label for="fileUpload" class="button">Upload file</label>
-                        <input type="file" id="fileUpload" name="fileUpload" class="show-for-sr">
+                        <label for="fileUpload" class="button">Upload file in arff</label>
+                        <input type="file" id="fileUpload" name="fileUpload" class="show-for-sr" required>
                     </label>
                     
                     <input type="radio" name="classification" value="Cross" id="Cross" checked="checked"><label for="Cross">Cross Validation</label>

@@ -15,6 +15,7 @@ import fr.lirmm.beans.User;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import fr.lirmm.beans.Model;
+import java.text.ParseException;
 /**
  *
  * @author niels
@@ -215,6 +216,30 @@ public class BaseDeDonnee {
             System.out.println(n);
         } 
         return !file.isEmpty();
+    }
+    /**
+     * methode pour metre a jour la date d'entrainnement
+     * @param file_name
+     * @param user_mail
+     * @throws SQLException 
+     */
+    public void updateDate(String file_id)throws SQLException, ParseException
+    {
+        Statement statement = null;
+        connecting();
+        statement = connexion.createStatement();
+        
+        java.util.Date d = new java.util.Date();
+        java.sql.Date sqlDate = new java.sql.Date(d.getTime());
+        try {
+           
+            // Exécution de la requête
+            PreparedStatement preparedStatement = connexion.prepareStatement("UPDATE lirmm.\"File\" SET \"Date_update\"='"+ sqlDate +"' WHERE \"Id_file\" = '"+ file_id+"'");
+            preparedStatement.executeUpdate();
+        } catch (NullPointerException n) {
+            System.out.println(n);
+        } 
+        
     }
     
     /**

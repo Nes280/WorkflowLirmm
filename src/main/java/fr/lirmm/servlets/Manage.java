@@ -7,7 +7,6 @@ package fr.lirmm.servlets;
 
 import fr.lirmm.db.BaseDeDonnee;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -57,9 +56,7 @@ public class Manage extends HttpServlet {
         Object mail = session.getAttribute("mail");
         BaseDeDonnee bd = new BaseDeDonnee();
         
-        //if(request.getAttribute(ACTION) != null )
-        //{
-            
+        
             Object ficInfo = session.getAttribute(FIC_INFO);
             Object ficNom = session.getAttribute(FIC_NOM);
             String file_name = request.getParameter(FILE_NAME);
@@ -100,20 +97,6 @@ public class Manage extends HttpServlet {
             }
 
            this.getServletContext().getRequestDispatcher( "/WEB-INF/manage.jsp" ).forward( request, response );
-        //}
-        
-        /*//si on a cliqué sur delete
-        if(request.getAttribute(ACTION).equals("delet") )
-        {
-            String fileId = request.getAttribute(FILEID).toString();
-            deleteFile(fileId, bd, mail.toString());
-
-            request.setAttribute( "tableau", faireListeFichier(bd, (String)mail) );
-            request.setAttribute( "title", "Manage" );
-            request.setAttribute( "topMenuName", "WorkFlow" );
-
-            this.getServletContext().getRequestDispatcher( "/WEB-INF/manage.jsp" ).forward( request, response );
-        }*/
         
     }
     
@@ -154,6 +137,7 @@ public class Manage extends HttpServlet {
                                 "<td>"+
                                     "<form  method=\"post\" action="+DELETE+" onSubmit=\"return attention();\"/>\n" +
                                         "<input value=\""+id+"\" name=\"fileId\" hidden>"+
+                                        "<input value=\""+nom+"\" name=\"fileName\" hidden>"+
                                         "<button type=\"submit\" class=\"alert hollow button\"><i class=\" fi-trash \" ></i></button>\n" +
                                     "</form> "+
                                 "</td>\n"+
@@ -164,11 +148,5 @@ public class Manage extends HttpServlet {
             Logger.getLogger(Manage.class.getName()).log(Level.SEVERE, null, ex);
         }
         return tableau;
-    }
-    
-    private void deleteFile(String fileId, BaseDeDonnee bd, String mail)
-    {
-        //A CODER, SUPPRESSION DE FICHIER.
-        
     }
 }
