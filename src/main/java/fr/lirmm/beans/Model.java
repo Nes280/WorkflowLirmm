@@ -6,7 +6,6 @@
 package fr.lirmm.beans;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
@@ -43,8 +42,8 @@ public class Model {
           dir2.mkdir();
           
         }
-        FileOutputStream os = new FileOutputStream("./user_models/" + user_id + "/" + file_name + "/" + file_name + ".model");
-        os.write(0);
+        //FileOutputStream os = new FileOutputStream("./user_models/" + user_id + "/" + file_name + "/" + file_name + ".model");
+        //os.write(0);
         return 1;
     }
     

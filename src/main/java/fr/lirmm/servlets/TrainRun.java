@@ -58,8 +58,8 @@ public class TrainRun extends HttpServlet {
         try
         {
            //On crée un nouveau document JDOM avec en argument le fichier XML
-           
-           document = sxb.build(new File(path+"result.xml"));
+           File f = new File(path+"result.xml");
+           document = sxb.build(f);
         }
         catch(Exception e){}
 
@@ -76,6 +76,7 @@ public class TrainRun extends HttpServlet {
            //pouvoir utiliser les méthodes propres aux Element comme :
            //sélectionner un nœud fils, modifier du texte, etc...
            Element courant = (Element)i.next();
+           
            
            //on met a jour la date
         try {

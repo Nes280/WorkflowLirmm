@@ -38,7 +38,7 @@ public class LearnModel
 	InputStream input = new FileInputStream(propPath);
         prop.load(input);
         
-        BufferedReader r, rt;
+        BufferedReader r , rt;
         Instances train, test = null;
         
         r = new BufferedReader(new InputStreamReader(new FileInputStream(prop.getProperty("Data.trainPath")), "UTF-8"));
@@ -53,6 +53,7 @@ public class LearnModel
             test = new Instances(rt);
             test.setClassIndex(test.numAttributes() - 1);
             test = obj.ConstructionInstances(test);
+            rt.close();
         }
         else nbFolds=Integer.parseInt(prop.getProperty("Data.nbFolds"));
         System.out.println("  Number of selected attributes = " + train.numAttributes());
@@ -126,11 +127,19 @@ public class LearnModel
                XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
                //Remarquez qu'il suffit simplement de créer une instance de FileOutputStream
                //avec en argument le nom du fichier pour effectuer la sérialisation.
-               sortie.output(document, new FileOutputStream(path+"result.xml"));
+               FileOutputStream f = new FileOutputStream(path+"result.xml");
+               sortie.output(document, f);
+               f.close();
             }
             catch (java.io.IOException e){}
          
         }
+        r.close();
+        try {
+             input.close();
+        } catch (IOException e) {
+            System.out.println(e);
+	}
   }
   
   public static void Run(Instances train, Instances test, String propPath, String path) throws Exception{
@@ -197,6 +206,13 @@ public class LearnModel
         MaR.add(macroRappel);
         System.out.println("    maF="+roundTwoDecimals(macroFmesure));
         MaF.add(macroFmesure);
+        
+       
+        try {
+             input.close();
+        } catch (IOException e) {
+            System.out.println(e);
+	}
   }
   
   public static String Lemmatiser(String tweet, LemmatiseurHandler lm)

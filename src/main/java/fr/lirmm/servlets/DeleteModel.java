@@ -42,6 +42,7 @@ public class DeleteModel extends HttpServlet {
         }
         String path = Utilities.generatePath(user_mail, nom_file);
         File aSupprimer = new File(path);
+        System.out.println(path);
         Utilities.deleteAll(aSupprimer);
         //request.setAttribute("fileName", fileName);
         request.setAttribute( "title", "Result" );
