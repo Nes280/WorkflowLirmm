@@ -198,7 +198,7 @@ public class TrainData extends HttpServlet {
             prop.setProperty("SyntacticFeatures.presenceSmileys", "No");
             prop.setProperty("SyntacticFeatures.presencePunctuation", "No");
             prop.setProperty("SyntacticFeatures.presencePartOfSpeechTags", "No");
-            prop.setProperty("FeatureSelection.percentageAttributes", "ig");
+            prop.setProperty("FeatureSelection.perform", "Yes");
             prop.setProperty("SVM.CompexityParameter", "1");
 
             // save properties to model folder

@@ -245,9 +245,14 @@
             </div>
             <div class="row  align-stretch" >
                 <h3>Feature Selection</h3>
-                <label>percentage attributes (max. 10): 
-                    <input class="small-3" type="number" name="percentageAttributes" pattern="wholeNumber" max="10" min="1" value="10" required>
-                </label>
+                <div class="switch">
+                        <input class="switch-input" id="yes-no22" type="checkbox" checked name="perform">
+                        <label class="switch-paddle" for="yes-no22">
+                            <span class="show-for-sr">perform</span>
+                            <span class="switch-active" aria-hidden="true">Yes</span>
+                            <span class="switch-inactive" aria-hidden="true">No</span>
+                        </label>
+                    </div>
             </div>
         </div>
         <div class="zone">

@@ -13,7 +13,22 @@
         </c:if>
         <c:if test="${ sessionScope.isLog == 1}">
             
+            <c:if test="${erreur != null}">
+                    <div class="row medium-8 large-7 columns">
+                        <div class="blog-post">
+                            <div class="large-12 large-centered large-5 large-centered columns">
+                                <div large large-centered large-5 large-centered columns >
+                                    <div class="alert callout primary">
+                                        <h5>Information:</h5>
+                                        <p>${erreur}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </c:if>
             <div class="zone" id="main">
+                
                 <c:choose>  
                     <c:when  test="${tableau != ''}">   
                         <table class="">

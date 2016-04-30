@@ -52,7 +52,7 @@ public class TrainDataAdvenced extends HttpServlet {
     public static final String SF_PRESENCESMILEYS = "presenceSmileys";
     public static final String SF_PRESENCEPUNCTUATION = "presencePunctuation";
     public static final String SF_PRESENCEPARTOFSPEECHTAGS = "presencePartOfSpeechTags";
-    public static final String FS_PERCENTTAGEATTRIBUTES = "percentageAttributes";
+    public static final String FS_PERFORM = "perform";
     
     
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -102,7 +102,7 @@ public class TrainDataAdvenced extends HttpServlet {
             String presenceSmileys = request.getParameter(SF_PRESENCESMILEYS);
             String presencePunctuation = request.getParameter(SF_PRESENCEPUNCTUATION);
             String presencePartOfSpeechTags = request.getParameter(SF_PRESENCEPARTOFSPEECHTAGS);
-            int iPercentageAttributes = parseInt(request.getParameter(FS_PERCENTTAGEATTRIBUTES));     
+            String perform = request.getParameter(FS_PERFORM);     
             
             // test si min < max et <4
             String min = "";
@@ -129,13 +129,7 @@ public class TrainDataAdvenced extends HttpServlet {
                     max = "1";
                 }
             
-            //test si percentageAttributes est valide
-            String percentageAttributes = "";
-            if(iPercentageAttributes <=10)
-            {
-                percentageAttributes += iPercentageAttributes;
-            }
-            else percentageAttributes = "10";
+            
                 
                     
             if(lowercase == null) lowercase = "No";
@@ -180,6 +174,8 @@ public class TrainDataAdvenced extends HttpServlet {
             else presencePunctuation = "Yes";
             if(presencePartOfSpeechTags == null) presencePartOfSpeechTags = "No";
             else presencePartOfSpeechTags = "Yes";
+            if(perform == null) presencePartOfSpeechTags = "No";
+            else perform = "Yes";
             
             
             if(nbFolds == null) nbFolds = "0";
@@ -227,7 +223,7 @@ public class TrainDataAdvenced extends HttpServlet {
                 prop.setProperty("SyntacticFeatures.presenceSmileys", presenceSmileys);
                 prop.setProperty("SyntacticFeatures.presencePunctuation", presencePunctuation);
                 prop.setProperty("SyntacticFeatures.presencePartOfSpeechTags", presencePartOfSpeechTags);
-                prop.setProperty("FeatureSelection.percentageAttributes", percentageAttributes);
+                prop.setProperty("FeatureSelection.perform", perform);
                 prop.setProperty("SVM.CompexityParameter", "1");
 
 		// save properties to project root folder

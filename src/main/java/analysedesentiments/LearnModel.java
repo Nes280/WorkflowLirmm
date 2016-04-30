@@ -23,15 +23,15 @@ import org.jdom.output.*;
 
 public class LearnModel
 {
-    private static int nbFolds=0;
-    private static ArrayList<Object> MiP=new ArrayList<>();
-    private static ArrayList<Object> MiR=new ArrayList<>();
-    private static ArrayList<Object> MiF=new ArrayList<>();
-    private static ArrayList<Object> MaP=new ArrayList<>();
-    private static ArrayList<Object> MaR=new ArrayList<>();
-    private static ArrayList<Object> MaF=new ArrayList<>();
+    private  int nbFolds=0;
+    private  ArrayList<Object> MiP=new ArrayList<>();
+    private  ArrayList<Object> MiR=new ArrayList<>();
+    private  ArrayList<Object> MiF=new ArrayList<>();
+    private  ArrayList<Object> MaP=new ArrayList<>();
+    private  ArrayList<Object> MaR=new ArrayList<>();
+    private  ArrayList<Object> MaF=new ArrayList<>();
   
-  public static void learn(String propPath, String path)
+  public void learn(String propPath, String path)
     throws Exception
   {     
         Properties prop = new Properties();
@@ -83,14 +83,14 @@ public class LearnModel
                 mar+=(Double) MaR.get(i);
                 maf+=(Double) MaF.get(i);
             }
-            /*
+            
             System.out.println("    miP="+roundTwoDecimals(mip/nbFolds));
             System.out.println("    miR="+roundTwoDecimals(mir/nbFolds));
             System.out.println("    miF="+roundTwoDecimals(mif/nbFolds));
             System.out.println("    maP="+roundTwoDecimals(map/nbFolds));
             System.out.println("    maR="+roundTwoDecimals(mar/nbFolds));
             System.out.println("    maF="+roundTwoDecimals(maf/nbFolds));
-            */
+            
             Element racine = new Element("modele");
             org.jdom.Document document = new Document(racine);
             
@@ -142,7 +142,7 @@ public class LearnModel
 	}
   }
   
-  public static void Run(Instances train, Instances test, String propPath, String path) throws Exception{
+  public void Run(Instances train, Instances test, String propPath, String path) throws Exception{
         Properties prop = new Properties();
 	InputStream input = new FileInputStream(propPath);
         prop.load(input);
@@ -156,16 +156,8 @@ public class LearnModel
         double macroPrecision, macroRappel, macroFmesure;
         
         AttributeSelection f = new AttributeSelection();
-        if (prop.getProperty("FeatureSelection.percentageAttributes").equalsIgnoreCase("ig")){
+        if (prop.getProperty("FeatureSelection.perform").equalsIgnoreCase("Yes")){
             f = SelectionAttributs.InfoGainAttributeEval(train);
-            f.setInputFormat(train);
-            train = Filter.useFilter(train, f);
-            test =  Filter.useFilter(test, f);
-        }
-        else if (Double.parseDouble(prop.getProperty("FeatureSelection.percentageAttributes"))<100){
-            double numberOfAtt=100;
-            numberOfAtt = (Double.parseDouble(prop.getProperty("FeatureSelection.percentageAttributes"))*train.numAttributes())/numberOfAtt;
-            f = SelectionAttributs.InfoGainAttributeEval(train,(int) Math.round(numberOfAtt));
             f.setInputFormat(train);
             train = Filter.useFilter(train, f);
             test =  Filter.useFilter(test, f);
@@ -215,7 +207,7 @@ public class LearnModel
 	}
   }
   
-  public static String Lemmatiser(String tweet, LemmatiseurHandler lm)
+  public String Lemmatiser(String tweet, LemmatiseurHandler lm)
     throws Exception
   {
     String tweet_lem = "";
@@ -239,14 +231,14 @@ public class LearnModel
     return tweet_lem;
   }
   
-  public static void Save(Instances data, String file) throws IOException{
+  public void Save(Instances data, String file) throws IOException{
       ArffSaver saver = new ArffSaver();
       saver.setInstances(data);
       saver.setFile(new File(file));
       saver.writeBatch();
   }
   
-  public static String roundTwoDecimals(double d) {
+  public String roundTwoDecimals(double d) {
     double r=d*100;
     DecimalFormat twoDForm = new DecimalFormat("#.#");
     return twoDForm.format(r).replaceAll(",", ".");

@@ -38,14 +38,14 @@
                             
                         <input type="radio" name="mode" value="text" id="text" checked="checked">
                         <label for="text">Default free text 
-                            <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="Fancy word for a beetle."><i class=" fi-info "></i></span>
+                            <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="Default configuration for free text."><i class=" fi-info "></i></span>
                         </label>
                          
                         <br />
                            
                         <input type="radio" name="mode" value="tweet" id="tweet" >
                         <label for="tweet">Default tweet 
-                            <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="Fancy word for a beetle."><i class=" fi-info "></i></span>
+                            <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="Default configuration for tweet text."><i class=" fi-info "></i></span>
                         </label>
                             
                         <br />
