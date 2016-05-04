@@ -11,32 +11,16 @@
             <div class="blog-post">
                 <h3>French text analysis.</h3>
                 <br />
-                <p>The best performing analysis Tweet in French!</p>
-                <!--div class="orbit" role="region" aria-label="Favorite" data-orbit>
-                    <ul class="orbit-container">
-                      <button class="orbit-previous"><span class="show-for-sr">Previous Slide</span>&#9664;&#xFE0E;</button>
-                      <button class="orbit-next"><span class="show-for-sr">Next Slide</span>&#9654;&#xFE0E;</button>
-                      <li class="is-active orbit-slide">
-                        <img class="orbit-image" src="resources/content/1.png" alt="Space">
-                        <figcaption class="orbit-caption">Space, the final frontier.</figcaption>
-                      </li>
-                      <li class="orbit-slide">
-                        <img class="orbit-image" src="resources/content/2.png" alt="Space">
-                        <figcaption class="orbit-caption">Lets Rocket!</figcaption>
-                      </li>
-                      <li class="orbit-slide">
-                        <img class="orbit-image" src="resources/content/3.png" alt="Space">
-                        <figcaption class="orbit-caption">Encapsulating</figcaption>
-                      </li>
-                      
-                    </ul>
-                    <nav class="orbit-bullets">
-                      <button class="is-active" data-slide="0"><span class="show-for-sr">First slide details.</span><span class="show-for-sr">Current Slide</span></button>
-                      <button data-slide="1"><span class="show-for-sr">Second slide details.</span></button>
-                      <button data-slide="2"><span class="show-for-sr">Third slide details.</span></button>
-                    </nav>
-                  </div>
-            </div!-->
+                <h4>The best performing analysis Tweet in French!</h4>
+                
+                <P>This web platform allows you to perform sentiment classification of pieces of text. 
+                    You can use the available classification models or build your own models using tagged datasets. 
+                    The available models have been learned on DEFT 2015 benchmarks (https://deft.limsi.fr/2015/).</p> 
+                <p>In order to learn your own models, you have to upload tagged data and choose between a default mode and an advanced mode. 
+                    In the default mode, the features and parameters are predefined according to the text nature, while in the advanced mode, 
+                    you have to set the different features and methods.</p>
+                
+               
         </div>
       </div>
         <%@include file="foot.jsp" %>    
