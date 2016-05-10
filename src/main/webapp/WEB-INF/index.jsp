@@ -15,7 +15,7 @@
                 
                 <P>This web platform allows you to perform sentiment classification of pieces of text. 
                     You can use the available classification models or build your own models using tagged datasets. 
-                    The available models have been learned on DEFT 2015 benchmarks (https://deft.limsi.fr/2015/).</p> 
+                    The available models have been learned on <a href="https://deft.limsi.fr/2015/">DEFT 2015 benchmarks</a>.</p> 
                 <p>In order to learn your own models, you have to upload tagged data and choose between a default mode and an advanced mode. 
                     In the default mode, the features and parameters are predefined according to the text nature, while in the advanced mode, 
                     you have to set the different features and methods.</p>
