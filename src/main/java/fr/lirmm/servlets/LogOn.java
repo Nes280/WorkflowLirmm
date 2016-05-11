@@ -77,7 +77,7 @@ public class LogOn extends HttpServlet {
             }
        }
        else { //erreur dans les mots de passe
-           additionalInformation = SAME_PW + pass + rePass;
+           additionalInformation = SAME_PW;
        }
        
        request.setAttribute( "topMenuName", "WorkFlow" );       
