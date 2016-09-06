@@ -49,6 +49,7 @@
     </dependencies>
 
     <build>
+        <finalName>sentiment-analysis-webpage</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
