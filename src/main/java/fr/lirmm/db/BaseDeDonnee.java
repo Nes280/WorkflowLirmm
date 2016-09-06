@@ -21,17 +21,17 @@ import java.text.ParseException;
  * @author niels
  */
 public class BaseDeDonnee {
-    private static final String JDBC = "jdbc:postgresql://localhost/workflow_db";
-    private static final String USER = "workflow_user";
-    //private static final String JDBC = "jdbc:postgresql://localhost/sentiment_analysis_webpage_users_db";
+    //Old user used by Niels and Elsa:
+    //private static final String JDBC = "jdbc:postgresql://localhost/workflow_db";
+    // private static final String USER = "workflow_user";
+    private static final String JDBC = "jdbc:postgresql://localhost/sentiment_analysis_webpage_users_db";
     //private static final String JDBC = "jdbc:postgresql://193.49.110.38:5432/sentiment_analysis_webpage_users_db";
-    //private static final String USER = "sentiment_analysis_webpage_user";
+    private static final String USER = "sentiment_analysis_webpage_user";
     private static final String PASSWORD = "admin";
     private static final String DRIVER = "org.postgresql";
     
     private Connection connexion;
     boolean alreadyConnect = false;
-    //private String JDBC = "jdbc:postgresql://192.168.0.2:5432/workflow_db"; 
     
     private void connecting(){
         if (!alreadyConnect) {
