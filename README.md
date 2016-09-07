@@ -22,6 +22,14 @@ docker exec -i -t furious_turing bash
 ./asadmin start-domain payaradomain
 ```
 
+* If not created:
+
+Exposing ports on localhost: 4848 and 8081 (for traditional 8080)
+
+```
+docker run -t -p 4848:4848 -p 8081:8080 -p 8181:8181 -d payaradocker/payaraserver:4.1.1.161 /bin/bash
+```
+
 * Get to the application
 
     * Webpage: http://advanse.lirmm.fr:8081/sentiment-analysis-webpage-0.1/index
