@@ -60,7 +60,7 @@ select * FROM lirmm."User";
 
 Ouvrir postgresql en ligne de commande avec `sudo -u postgres psql postgres`
 
-````sql
+```sql
 -- Role: sentiment_analysis_webpage_user
 
 -- DROP ROLE sentiment_analysis_webpage_user;
