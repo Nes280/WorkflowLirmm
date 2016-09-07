@@ -4,9 +4,51 @@
 * Java 8
 * Payara41
 
+## Deployed on Advanse
+
+### Payara on Docker
+
+`docker ps` to check if the container is running (the payaraserver image with the name "furious_turing")
+
+* If not running:
+
+```
+docker start furious_turing
+
+# Attach to the container to start payara:
+docker exec -i -t furious_turing bash
+
+# In container run the following to start payara
+./asadmin start-domain payaradomain
+```
+
+* Get to the application
+
+    * Webpage: http://advanse.lirmm.fr:8081/sentiment-analysis-webpage-0.1/index
+
+    * Admin: https://advanse.lirmm.fr:4848
+Login: admin / Password: glassfish
+
+
+### Postgres DB
+
+Postgres DB on Advanse server postgres, at adress: 193.49.110.38
+
+`sudo -u postgres psql postgres`
+
+```
+\c sentiment_analysis_webpage_users_db
+SHOW search_path;  (should be "lirmm")
+\dt
+
+# Check if something in User table
+select * FROM lirmm."User";
+```
+
+
 ## Créer le user et la DB dans la base de données PSQL
 
-Ouvrir postgresql en ligne de commande et exécuter les 2 lignes suivantes :
+Ouvrir postgresql en ligne de commande avec `sudo -u postgres psql postgres`
 
 ````sql
 -- Role: sentiment_analysis_webpage_user
@@ -110,3 +152,27 @@ ALTER TABLE lirmm."File" OWNER TO sentiment_analysis_webpage_user;
 * JNDI Name: jdbc/sentimentanalysiswebpage
 * Pool Name: SentimentAnalysisWebpagePool
 
+
+### Add resources files to the Payara container
+
+* Copy the files to the container
+
+```
+docker cp ressources furious_turing:/opt/payara41/glassfish/domains/payaradomain/config
+docker cp models furious_turing:/opt/payara41/glassfish/domains/payaradomain/config
+docker cp TreeTagger furious_turing:/opt/payara41/glassfish/domains/payaradomain/config
+docker cp XML furious_turing:/opt/payara41/glassfish/domains/payaradomain/config
+```
+
+* Then change owner and permission for files added in the containers (it needs to be payara)
+
+```
+docker exec -i -t --user root furious_turing bash
+cd /opt/payara41/glassfish/domains/payaradomain/config
+
+chown -R payara:payara *
+chmod -R 755 ressources/
+chmod -R 755 models/
+chmod -R 755 XML/
+chmod -R 755 TreeTagger/
+```
