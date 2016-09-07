@@ -237,7 +237,9 @@ public class AffichageAPITweet extends HttpServlet{
     public String valeurXml(String expression){
         String valeur = "";
         try{
-            File file = new File("XML/tweet.xml");
+            // Permet de lire le fichier XML directement depuis le war (marche partout comme ça)
+            String path = Thread.currentThread().getContextClassLoader().getResource("tweet.xml").getPath();
+            File file = new File(path);
             DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder =  builderFactory.newDocumentBuilder();
             Document xmlDocument = builder.parse(file);

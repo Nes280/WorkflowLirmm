@@ -186,9 +186,3 @@ chmod -R 755 models/
 chmod -R 755 TreeTagger/
 ```
 
-### Enhancement
-
-See branch "resources_in_war": resources have been put directly in the war (to copy less files on the server)
-
-https://github.com/Nes280/sentiment-analysis-webpage/commits/resources_in_war
-
