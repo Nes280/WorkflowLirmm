@@ -164,7 +164,6 @@ cd resources_on_server
 docker cp ressources furious_turing:/opt/payara41/glassfish/domains/payaradomain/config
 docker cp models furious_turing:/opt/payara41/glassfish/domains/payaradomain/config
 docker cp TreeTagger furious_turing:/opt/payara41/glassfish/domains/payaradomain/config
-docker cp XML furious_turing:/opt/payara41/glassfish/domains/payaradomain/config
 ```
 
 * Then change owner and permission for files added in the containers (it needs to be payara)
@@ -176,7 +175,6 @@ cd /opt/payara41/glassfish/domains/payaradomain/config
 chown -R payara:payara *
 chmod -R 755 ressources/
 chmod -R 755 models/
-chmod -R 755 XML/
 chmod -R 755 TreeTagger/
 ```
 
