@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<tweet>
+	<description>Descrion about the tweet analysis</description>
+	<root>
+		<microfmeasure>50%</microfmeasure>
+		<macrofmeasure>40%</macrofmeasure>
+		<microprecision>10%</microprecision>
+		<macroprecision>20%</macroprecision>
+		<microrecall>80%</microrecall>
+		<macrorecall>100%</macrorecall>
+	</root>
+	<positive>
+		<fmeasure>70%</fmeasure>
+		<precision>10%</precision>
+		<recall>100%</recall>
+	</positive>
+	<neutre>
+		<fmeasure>55%</fmeasure>
+		<precision>15%</precision>
+		<recall>85%</recall>
+	</neutre>
+	<negative>
+		<fmeasure>50%</fmeasure>
+		<precision>10%</precision>
+		<recall>90%</recall>
+	</negative>
+</tweet>

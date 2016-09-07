@@ -29,6 +29,8 @@ docker exec -i -t furious_turing bash
     * Admin: https://advanse.lirmm.fr:4848
 Login: admin / Password: glassfish
 
+* Check the logs
+`cat /opt/payara41/glassfish/domains/payaradomain/logs/server.log`
 
 ### Postgres DB
 
@@ -158,6 +160,7 @@ ALTER TABLE lirmm."File" OWNER TO sentiment_analysis_webpage_user;
 * Copy the files to the container
 
 ```
+cd resources_on_server
 docker cp ressources furious_turing:/opt/payara41/glassfish/domains/payaradomain/config
 docker cp models furious_turing:/opt/payara41/glassfish/domains/payaradomain/config
 docker cp TreeTagger furious_turing:/opt/payara41/glassfish/domains/payaradomain/config
@@ -176,3 +179,10 @@ chmod -R 755 models/
 chmod -R 755 XML/
 chmod -R 755 TreeTagger/
 ```
+
+### Enhancement
+
+See branch "resources_in_war": resources have been put directly in the war (to copy less files on the server)
+
+https://github.com/Nes280/sentiment-analysis-webpage/commits/resources_in_war
+
