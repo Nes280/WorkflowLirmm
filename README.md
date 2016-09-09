@@ -10,7 +10,7 @@
 
 Here what you have to check to make sure the application works:
 
-* Postgres DB well defined and created. Setup address in https://github.com/Nes280/sentiment-analysis-webpage/blob/master/src/main/java/fr/lirmm/db/BaseDeDonnee.java#L28
+* Postgres DB well defined and created. Setup address in https://github.com/Nes280/sentiment-analysis-webpage/blob/master/src/main/java/fr/lirmm/db/BaseDeDonnee.java#L28 (For advanse it is 193.49.110.38:5432)
 * resources files added to the Payara docker container
 * `asadmin start-domain payaradomain` have been run in the Payara docker container
 * Connection pool created in Payara
