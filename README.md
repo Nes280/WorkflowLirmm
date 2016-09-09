@@ -6,6 +6,17 @@
 
 ## Deployed on Advanse
 
+### To make it work
+
+Here what you have to check to make sure the application works:
+
+* Postgres DB well defined and created. Setup address in https://github.com/Nes280/sentiment-analysis-webpage/blob/master/src/main/java/fr/lirmm/db/BaseDeDonnee.java#L28
+* resources files added to the Payara docker container
+* `asadmin start-domain payaradomain` have been run in the Payara docker container
+* Connection pool created in Payara
+
+To set it right refer to the following sections
+
 ### Payara on Docker
 
 `docker ps` to check if the container is running (the payaraserver image with the name "furious_turing")
@@ -185,10 +196,3 @@ chmod -R 755 ressources/
 chmod -R 755 models/
 chmod -R 755 TreeTagger/
 ```
-
-### Enhancement
-
-See branch "resources_in_war": resources have been put directly in the war (to copy less files on the server)
-
-https://github.com/Nes280/sentiment-analysis-webpage/commits/resources_in_war
-
