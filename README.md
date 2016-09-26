@@ -20,12 +20,12 @@ Here what you have to check to make sure the application works:
 
 * You need to have a Postgres DB well defined and created. Setup address in https://gite.lirmm.fr/advanse/sentiment-analysis-webpage/blob/master/src/main/java/fr/lirmm/db/BaseDeDonnee.java#L29 (For advanse it is 193.49.110.38:5432)
 
-* `docker ps` to check if the container is running (the payaraserver image with the name "furious_turing"). If not running:
+* `docker ps` to check if the container is running (the payaraserver image with the name "sentiment_analysis_payara"). If not running:
 ```
-docker start furious_turing
+docker start sentiment_analysis_payara
 
 # Attach to the container to start payara:
-docker exec -i -t furious_turing bash
+docker exec -i -t sentiment_analysis_payara bash
 
 # In container run the following to start payara
 ./asadmin start-domain payaradomain
@@ -41,7 +41,7 @@ To set it right refer to the following sections
 
 ## Deploy it on your computer
 
-**BE CAREFUL, for we are using "furious_turing" as the container name, change it according to your container name**
+**BE CAREFUL, for we are using "sentiment_analysis_payara" as the container name, change it according to your container name**
 
 #### Install pre-requisites
 
