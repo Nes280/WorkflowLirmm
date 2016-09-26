@@ -85,7 +85,11 @@ chmod -R 755 TreeTagger/
 #### Run payara
 
 ```
-docker exec -i -t --user root sentiment_analysis_payara bash
+# Attach to the container to start payara:
+docker exec -i -t sentiment_analysis_payara bash
+
+# In container run the following to start payara
+./asadmin start-domain payaradomain
 ```
 
 #### Create the JDBC Connection Pool in Payara
