@@ -1,7 +1,9 @@
 package analysedesentiments;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Properties;
 import weka.core.Instances;
 //import weka.core.stemmers.LovinsStemmer;
@@ -23,7 +25,8 @@ public class Tokenisation {
         filter.setTFTransform(false);
         filter.setIDFTransform(false);
         // ATTENTION, on a pas MotsVides.txt !!!
-        if (prop.getProperty("Preprocessings.removeStopWords").equalsIgnoreCase("yes")) filter.setStopwords(new File("ressources//MotsVides.txt"));
+        String filePath = Thread.currentThread().getContextClassLoader().getResource("MotsVides.txt").getPath();
+        if (prop.getProperty("Preprocessings.removeStopWords").equalsIgnoreCase("yes")) filter.setStopwords(new File(filePath));
         filter.setWordsToKeep(10000);
         filter.setMinTermFreq(1);
         NGramTokenizer tok = new NGramTokenizer();
