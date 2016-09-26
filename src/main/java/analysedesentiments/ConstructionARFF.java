@@ -27,8 +27,8 @@ public class ConstructionARFF {
     public ConstructionARFF(String prop, CalculAttributs c) throws IOException{
         this.propPath=prop;
         ca = c;
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream("ressources/POS.txt")));
+        String filePath = Thread.currentThread().getContextClassLoader().getResource("POS.txt").getPath();
+        BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream(filePath)));
         String line;
         while ((line=r.readLine())!=null) POS.add(line);
         r.close();

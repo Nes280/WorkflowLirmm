@@ -22,6 +22,7 @@ public class Tokenisation {
         filter.setOutputWordCounts(false);
         filter.setTFTransform(false);
         filter.setIDFTransform(false);
+        // ATTENTION, on a pas MotsVides.txt !!!
         if (prop.getProperty("Preprocessings.removeStopWords").equalsIgnoreCase("yes")) filter.setStopwords(new File("ressources//MotsVides.txt"));
         filter.setWordsToKeep(10000);
         filter.setMinTermFreq(1);

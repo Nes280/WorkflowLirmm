@@ -449,8 +449,8 @@ public class CalculAttributs {
     if (lasttoken.equals("lienHTTP")) {
       lasttoken = tok[tok.length - 2];
     }
-    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-    BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("ressources/emoticone.txt")));
+    String filePath = Thread.currentThread().getContextClassLoader().getResource("emoticone.txt").getPath();
+    BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filePath)));
     String ligne;
     while ((ligne = br.readLine()) != null) {
       String[] tmp = ligne.split("\t");
@@ -478,7 +478,8 @@ public class CalculAttributs {
     ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
     while (st.hasMoreElements()) {
       String token = (String) st.nextElement();
-      BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("ressources/emoticone.txt")));
+      String filePath = Thread.currentThread().getContextClassLoader().getResource("emoticone.txt").getPath();
+      BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filePath)));
       String ligne;
       while ((ligne = br.readLine()) != null) {
         String[] tmp = ligne.split("\t");
@@ -498,7 +499,8 @@ public class CalculAttributs {
     ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
     while (st.hasMoreElements()) {
       String token = (String) st.nextElement();
-      BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("ressources/emoticone.txt")));
+      String filePath = Thread.currentThread().getContextClassLoader().getResource("emoticone.txt").getPath();
+      BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filePath)));
       String ligne;
       while ((ligne = br.readLine()) != null) {
         String[] tmp = ligne.split("\t");
