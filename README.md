@@ -6,30 +6,20 @@
 
 ## Deployed on Advanse
 
-### How to update the war
+### How to update the war on Advanse Server
 
 * `git pull` the project
 * `mvn clean package` to package the poroject in a war with maven
 * Go to http://advanse.lirmm.fr:4848, log with credentials, go to application and deploy the new war
 * Go to http://advanse.lirmm.fr:8081/sentiment-analysis-webpage/index
 
-### To make it work
+### Quick "how make it work" on Advanse server
 
 Here what you have to check to make sure the application works:
 
-* Postgres DB well defined and created. Setup address in https://github.com/Nes280/sentiment-analysis-webpage/blob/master/src/main/java/fr/lirmm/db/BaseDeDonnee.java#L28 (For advanse it is 193.49.110.38:5432)
-* resources files added to the Payara docker container
-* `asadmin start-domain payaradomain` have been run in the Payara docker container
-* Connection pool created in Payara
+* You need to have a Postgres DB well defined and created. Setup address in https://gite.lirmm.fr/advanse/sentiment-analysis-webpage/blob/master/src/main/java/fr/lirmm/db/BaseDeDonnee.java#L29 (For advanse it is 193.49.110.38:5432)
 
-To set it right refer to the following sections
-
-### Payara on Docker
-
-`docker ps` to check if the container is running (the payaraserver image with the name "furious_turing")
-
-* If not running:
-
+* `docker ps` to check if the container is running (the payaraserver image with the name "furious_turing"). If not running:
 ```
 docker start furious_turing
 
@@ -40,7 +30,27 @@ docker exec -i -t furious_turing bash
 ./asadmin start-domain payaradomain
 ```
 
-* If not created:
+* Check that resources files (from resource_on_server) has been added to the Payara docker container
+
+* Connection pool created in Payara admin webpage
+
+To set it right refer to the following sections
+
+
+
+## Deploy it on your computer
+
+**BE CAREFUL, for we are using "furious_turing" as the container name, change it according to your container name**
+
+#### Install pre-requisites
+
+* Install docker
+
+* If you are not using the Advanse Postgres server (only available from LIRMM network), then you will have to create a new postgres database. See the `Create PSQL database and user` part below for more details.
+You can change the Postgres DB address here: https://gite.lirmm.fr/advanse/sentiment-analysis-webpage/blob/master/src/main/java/fr/lirmm/db/BaseDeDonnee.java#L29 (For advanse it is 193.49.110.38:5432)
+
+
+#### Create the payara docker container
 
 Exposing ports on localhost: 4848 and 8081 (for traditional 8080)
 
@@ -48,17 +58,75 @@ Exposing ports on localhost: 4848 and 8081 (for traditional 8080)
 docker run -t -p 4848:4848 -p 8081:8080 -p 8181:8181 -d payaradocker/payaraserver:4.1.1.161 /bin/bash
 ```
 
-* Get to the application
+#### Add resources files to the Payara container
 
-    * Webpage: http://advanse.lirmm.fr:8081/sentiment-analysis-webpage-0.1/index
+* Copy the files from the git project (in resources_on_server) to the container
 
-    * Admin: https://advanse.lirmm.fr:4848
+```
+cd resources_on_server
+docker cp ressources furious_turing:/opt/payara41/glassfish/domains/payaradomain/config
+docker cp models furious_turing:/opt/payara41/glassfish/domains/payaradomain/config
+docker cp TreeTagger furious_turing:/opt/payara41/glassfish/domains/payaradomain/config
+```
+
+* Then change owner and permission for files added in the containers (it needs to be payara)
+
+```
+docker exec -i -t --user root furious_turing bash
+cd /opt/payara41/glassfish/domains/payaradomain/config
+
+chown -R payara:payara *
+chmod -R 755 ressources/
+chmod -R 755 models/
+chmod -R 755 TreeTagger/
+```
+
+#### Run payara
+
+```
+docker exec -i -t --user root furious_turing bash
+```
+
+#### Create the JDBC Connection Pool in Payara
+
+* Open Payara admin UI ( https://advanse.lirmm.fr:4848 )
+* Resources > JDBC > JDBC Connection Pools
+* Click on "New..."
+* Fill the fiels with the following :
+    * Pool Name: SentimentAnalysisWebpagePool
+    * Resource Type: javax.sql.DataSource
+    * Database Driver Vendor: Postgresql
+    * Cliquer sur Next
+
+* Fill some *Additional Properties*:
+    * User: sentiment_analysis_webpage_user
+    * Password: admin
+    * ServerName: 193.49.110.38 ou localhost
+    * PortNumber: 5432
+    * DatabaseName: sentiment_analysis_webpage_users_db
+
+
+* Create the JDBC Resources in Payara
+    * Resources > JDBC > JDBC Resources
+    * JNDI Name: jdbc/sentimentanalysiswebpage
+    * Pool Name: SentimentAnalysisWebpagePool
+
+
+
+#### Get to the application
+
+* Webpage: http://advanse.lirmm.fr:8081/sentiment-analysis-webpage-0.1/index
+
+* Admin: https://advanse.lirmm.fr:4848
 Login: admin / Password: glassfish
 
 * Check the logs
 `cat /opt/payara41/glassfish/domains/payaradomain/logs/server.log`
 
-### Postgres DB
+
+## Postgres DB
+
+### PSQL on Advanse server
 
 Postgres DB on Advanse server postgres, at adress: 193.49.110.38
 
@@ -74,9 +142,11 @@ select * FROM lirmm."User";
 ```
 
 
-## Créer le user et la DB dans la base de données PSQL
+## Create PSQL database and user
 
-Ouvrir postgresql en ligne de commande avec `sudo -u postgres psql postgres`
+Create the user and the DB in the PSQL database
+
+Open postgresql as command line with `sudo -u postgres psql postgres`. And run the following script to create the users and tables.
 
 ```sql
 -- Role: sentiment_analysis_webpage_user
@@ -122,10 +192,7 @@ WITH (
   OIDS=FALSE
 );
 
-
 ALTER TABLE lirmm."User" OWNER TO sentiment_analysis_webpage_user;
-
-
 
 -- Table: lirmm."File"
 
@@ -148,58 +215,5 @@ WITH (
   OIDS=FALSE
 );
 
-
-
 ALTER TABLE lirmm."File" OWNER TO sentiment_analysis_webpage_user;
-
-
-```
-
-### Créer le JDBC Connection Pool dans Payara
-
-* Ouvrir l'interface admin de Payara ( https://advanse.lirmm.fr:4848 )
-* Resources > JDBC > JDBC Connection Pools
-* Cliquer sur "New..."
-* Remplir les champs avec les données suivantes :
-    * Pool Name: SentimentAnalysisWebpagePool
-    * Resource Type: javax.sql.DataSource
-    * Database Driver Vendor: Postgresql
-    * Cliquer sur Next
-
-* Remplir certains Additional Properties:
-    * User: sentiment_analysis_webpage_user
-    * Password: admin
-    * ServerName: 193.49.110.38 ou localhost
-    * PortNumber: 5432
-    * DatabaseName: sentiment_analysis_webpage_users_db
-
-
-### Créer le JDBC Resources dans Payara
-
-* Resources > JDBC > JDBC Resources
-* JNDI Name: jdbc/sentimentanalysiswebpage
-* Pool Name: SentimentAnalysisWebpagePool
-
-
-### Add resources files to the Payara container
-
-* Copy the files to the container
-
-```
-cd resources_on_server
-docker cp ressources furious_turing:/opt/payara41/glassfish/domains/payaradomain/config
-docker cp models furious_turing:/opt/payara41/glassfish/domains/payaradomain/config
-docker cp TreeTagger furious_turing:/opt/payara41/glassfish/domains/payaradomain/config
-```
-
-* Then change owner and permission for files added in the containers (it needs to be payara)
-
-```
-docker exec -i -t --user root furious_turing bash
-cd /opt/payara41/glassfish/domains/payaradomain/config
-
-chown -R payara:payara *
-chmod -R 755 ressources/
-chmod -R 755 models/
-chmod -R 755 TreeTagger/
 ```
