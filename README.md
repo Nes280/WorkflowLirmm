@@ -1,8 +1,9 @@
 
-## Lib utilisées
+## Used technologies
 
 * Java 8
 * Payara41
+* Postgres PSQL DB
 
 ## Deployed on Advanse
 
@@ -115,10 +116,11 @@ docker exec -i -t --user root furious_turing bash
 
 #### Get to the application
 
-* Webpage: http://advanse.lirmm.fr:8081/sentiment-analysis-webpage-0.1/index
-
 * Admin: https://advanse.lirmm.fr:4848
 Login: admin / Password: glassfish
+And deploy the new war: Applications > Deploy...
+
+* Webpage: http://advanse.lirmm.fr:8081/sentiment-analysis-webpage-0.1/index
 
 * Check the logs
 `cat /opt/payara41/glassfish/domains/payaradomain/logs/server.log`

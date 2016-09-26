@@ -237,7 +237,7 @@ public class AffichageAPITweet extends HttpServlet{
     public String valeurXml(String expression){
         String valeur = "";
         try{
-            File file = new File("XML/tweet.xml");
+            File file = new File("resources/tweet.xml");
             DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder =  builderFactory.newDocumentBuilder();
             Document xmlDocument = builder.parse(file);
