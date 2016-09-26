@@ -6,6 +6,13 @@
 
 ## Deployed on Advanse
 
+### How to update the war
+
+* `git pull` the project
+* `mvn clean package` to package the poroject in a war with maven
+* Go to http://advanse.lirmm.fr:4848, log with credentials, go to application and deploy the new war
+* Go to http://advanse.lirmm.fr:8081/sentiment-analysis-webpage/index
+
 ### To make it work
 
 Here what you have to check to make sure the application works:
