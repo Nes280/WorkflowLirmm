@@ -359,7 +359,7 @@ public class AffichageModeleExistant extends HttpServlet {
 
                         System.out.println("fin de lecture");
 
-                    }		
+                    }
                     catch (Exception e){
                             System.out.println(e.toString());
                     }
@@ -653,7 +653,8 @@ public class AffichageModeleExistant extends HttpServlet {
     public String valeurXml(String f, String expression){
         String valeur = "";
         try{
-            File file = new File("XML/" + f);
+            String path = Thread.currentThread().getContextClassLoader().getResource(f).getPath();
+            File file = new File(path);
             DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder =  builderFactory.newDocumentBuilder();
             Document xmlDocument = builder.parse(file);
@@ -679,7 +680,9 @@ public class AffichageModeleExistant extends HttpServlet {
     public String[] valeurUrlXml(String f,String expression){
         String[] valeur = null;
         try{
-            File file = new File("XML/" + f);
+            // Permet de lire le fichier XML directement depuis le war (marche partout comme ça)
+            String path = Thread.currentThread().getContextClassLoader().getResource(f).getPath();
+            File file = new File(path);
             DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder =  builderFactory.newDocumentBuilder();
             Document xmlDocument = builder.parse(file);
@@ -714,7 +717,9 @@ public class AffichageModeleExistant extends HttpServlet {
         String[] valeur = null;
 
         try{
-            File file = new File("XML/" + f);
+            // Permet de lire le fichier XML directement depuis le war (marche partout comme ça)
+            String path = Thread.currentThread().getContextClassLoader().getResource(f).getPath();
+            File file = new File(path);
             DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder =  builderFactory.newDocumentBuilder();
             Document xmlDocument = builder.parse(file);

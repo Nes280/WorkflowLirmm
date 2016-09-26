@@ -65,19 +65,19 @@ docker run -t -p 4848:4848 -p 8081:8080 -p 8181:8181 --name sentiment_analysis_p
 
 ```
 cd resources_on_server
-docker cp ressources furious_turing:/opt/payara41/glassfish/domains/payaradomain/config
-docker cp models furious_turing:/opt/payara41/glassfish/domains/payaradomain/config
-docker cp TreeTagger furious_turing:/opt/payara41/glassfish/domains/payaradomain/config
+docker cp resources sentiment_analysis_payara:/opt/payara41/glassfish/domains/payaradomain/config
+docker cp models sentiment_analysis_payara:/opt/payara41/glassfish/domains/payaradomain/config
+docker cp TreeTagger sentiment_analysis_payara:/opt/payara41/glassfish/domains/payaradomain/config
 ```
 
 * Then change owner and permission for files added in the containers (it needs to be payara)
 
 ```
-docker exec -i -t --user root furious_turing bash
+docker exec -i -t --user root sentiment_analysis_payara bash
 cd /opt/payara41/glassfish/domains/payaradomain/config
 
 chown -R payara:payara *
-chmod -R 755 ressources/
+chmod -R 755 resources/
 chmod -R 755 models/
 chmod -R 755 TreeTagger/
 ```
@@ -85,7 +85,7 @@ chmod -R 755 TreeTagger/
 #### Run payara
 
 ```
-docker exec -i -t --user root furious_turing bash
+docker exec -i -t --user root sentiment_analysis_payara bash
 ```
 
 #### Create the JDBC Connection Pool in Payara
