@@ -122,7 +122,7 @@ docker exec -i -t sentiment_analysis_payara bash
 
 * Admin: https://advanse.lirmm.fr:4848
 Login: admin / Password: glassfish
-And deploy the new war: Applications > Deploy...
+And deploy the new war: Applications > Deploy... or use the **compile.sh** script to mvn package and then put the war on payara
 
 * Webpage: http://advanse.lirmm.fr:8081/sentiment-analysis-webpage-0.1/index
 
