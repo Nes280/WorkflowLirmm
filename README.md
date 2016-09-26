@@ -56,7 +56,7 @@ You can change the Postgres DB address here: https://gite.lirmm.fr/advanse/senti
 Exposing ports on localhost: 4848 and 8081 (for traditional 8080)
 
 ```
-docker run -t -p 4848:4848 -p 8081:8080 -p 8181:8181 -d payaradocker/payaraserver:4.1.1.161 /bin/bash
+docker run -t -p 4848:4848 -p 8081:8080 -p 8181:8181 --name sentiment_analysis_payara -d payaradocker/payaraserver:4.1.1.161 /bin/bash
 ```
 
 #### Add resources files to the Payara container
