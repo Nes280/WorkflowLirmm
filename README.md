@@ -24,9 +24,11 @@ Here what you have to check to make sure the application works:
 ```
 docker start sentiment_analysis_payara
 
+# Run start script in container
+docker exec sentiment_analysis_payara asadmin start-domain payaradomain
+
 # Attach to the container to start payara:
 docker exec -i -t sentiment_analysis_payara bash
-
 # In container run the following to start payara
 ./asadmin start-domain payaradomain
 ```
