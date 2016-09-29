@@ -25,7 +25,7 @@ Here what you have to check to make sure the application works:
 docker start sentiment_analysis_payara
 
 # Run start script in container
-docker exec sentiment_analysis_payara asadmin start-domain payaradomain
+docker exec sentiment_analysis_payara /opt/payara41/glassfish/bin/asadmin start-domain payaradomain
 
 # Attach to the container to start payara:
 docker exec -i -t sentiment_analysis_payara bash
