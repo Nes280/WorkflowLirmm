@@ -18,7 +18,7 @@
 
 #### Restart the container
 
- `docker ps` to check if the container is running (the payaraserver image with the name "sentiment_analysis_payara"). If not running:
+`docker ps` to check if the container is running (the payaraserver image with the name "sentiment_analysis_payara"). If not running:
 ```
 docker start sentiment_analysis_payara
 
@@ -31,7 +31,9 @@ docker exec -i -t sentiment_analysis_payara bash
 ./asadmin start-domain payaradomain
 ```
 
-#### Things to check if not working properly
+#### Things to check if not working properly and known bugs
+
+To set those things right refer to the following sections.
 
 * Check that resources files (from resource_on_server) has been added to the Payara docker container (with proper permissions)
 
@@ -39,7 +41,16 @@ docker exec -i -t sentiment_analysis_payara bash
 
 * Connection pool created in Payara admin webpage
 
-To set those things right refer to the following sections.
+* *Port already in use*: port used by payara (8081, 4848) can be already used (it can come from a bad shutdown of the app) and preventing from running the app
+To set free those port:
+
+```
+# Display port information (with PID of process running on each port)
+sudo netstat -tulpn
+
+# Get port 4848 process PID
+kill -9 process_pid
+```
 
 
 
