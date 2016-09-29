@@ -7,20 +7,18 @@
 
 ## Deployed on Advanse
 
-### How to update the war on Advanse Server
+### How to run it on Advanse server
+
+#### How to update the war on Advanse Server
 
 * `git pull` the project
 * `mvn clean package` to package the poroject in a war with maven
 * Go to http://advanse.lirmm.fr:4848, log with credentials, go to application and deploy the new war
 * Go to http://advanse.lirmm.fr:8081/sentiment-analysis-webpage/index
 
-### Quick "how make it work" on Advanse server
+#### Restart the container
 
-Here what you have to check to make sure the application works:
-
-* You need to have a Postgres DB well defined and created. Setup address in https://gite.lirmm.fr/advanse/sentiment-analysis-webpage/blob/master/src/main/java/fr/lirmm/db/BaseDeDonnee.java#L29 (For advanse it is 193.49.110.38:5432)
-
-* `docker ps` to check if the container is running (the payaraserver image with the name "sentiment_analysis_payara"). If not running:
+ `docker ps` to check if the container is running (the payaraserver image with the name "sentiment_analysis_payara"). If not running:
 ```
 docker start sentiment_analysis_payara
 
@@ -33,17 +31,21 @@ docker exec -i -t sentiment_analysis_payara bash
 ./asadmin start-domain payaradomain
 ```
 
-* Check that resources files (from resource_on_server) has been added to the Payara docker container
+#### Things to check if not working properly
+
+* Check that resources files (from resource_on_server) has been added to the Payara docker container (with proper permissions)
+
+* You need to have a Postgres DB well defined and created. Setup address in https://gite.lirmm.fr/advanse/sentiment-analysis-webpage/blob/master/src/main/java/fr/lirmm/db/BaseDeDonnee.java#L29 (For advanse it is 193.49.110.38:5432)
 
 * Connection pool created in Payara admin webpage
 
-To set it right refer to the following sections
+To set those things right refer to the following sections.
 
 
 
 ## Deploy it on your computer
 
-**BE CAREFUL, for we are using "sentiment_analysis_payara" as the container name, change it according to your container name**
+We are using "sentiment_analysis_payara" as the container name, change it according to your container name
 
 #### Install pre-requisites
 
@@ -89,9 +91,11 @@ chmod -R 755 TreeTagger/
 ```
 # Attach to the container to start payara:
 docker exec -i -t sentiment_analysis_payara bash
-
 # In container run the following to start payara
 ./asadmin start-domain payaradomain
+
+# Or directly run start script in container:
+docker exec sentiment_analysis_payara /opt/payara41/glassfish/bin/asadmin start-domain payaradomain
 ```
 
 #### Create the JDBC Connection Pool in Payara
